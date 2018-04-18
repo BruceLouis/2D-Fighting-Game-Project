@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 6bc1a39a5288d1c4a9b169c70234de0b
+timeCreated: 1518510042
+licenseType: Free
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: KING ARTHUR
+  fontNames:
+  - KING ARTHUR
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

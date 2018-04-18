@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Lost
+  - P2Won
+  - P1Won
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - Player1
+  - Player2
+  - Border
+  - IgnorePlayer1
+  - IgnorePlayer2
+  - AirtoAir
+  - HitBox
+  - HurtBox
+  - KnockedDown
+  - ProjectileP1
+  - ProjectileP2
+  - InvincibleToP1
+  - InvincibleToP2
+  - FinishedRound
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 1471678813
+    locked: 0
+  - name: Foreground
+    uniqueID: 1900496811
+    locked: 0
+  - name: Characters
+    uniqueID: 2964452863
+    locked: 0
+  - name: Projectiles
+    uniqueID: 328138293
+    locked: 0
+  - name: Effects
+    uniqueID: 3150224285
+    locked: 0
