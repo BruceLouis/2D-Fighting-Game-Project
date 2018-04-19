@@ -7,6 +7,7 @@ public class KnockDown : StateMachineBehaviour {
 	 // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
 	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 		animator.SetBool("isKnockedDown", true);
+		animator.SetBool("isRolling", false);
 		animator.SetBool("isAttacking", false);
 		animator.SetBool("isInHitStun", false);
 		animator.SetBool("isThrown", false);

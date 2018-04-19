@@ -5,8 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Lost
-  - P2Won
-  - P1Won
+  - Player1
+  - Player2
   layers:
   - Default
   - TransparentFX
@@ -21,15 +21,15 @@ TagManager:
   - Border
   - IgnorePlayer1
   - IgnorePlayer2
-  - AirtoAir
+  - 
   - HitBox
   - HurtBox
-  - KnockedDown
   - ProjectileP1
   - ProjectileP2
-  - InvincibleToP1
-  - InvincibleToP2
   - FinishedRound
+  - PushBoxP1
+  - PushBoxP2
+  - 
   - 
   - 
   - 

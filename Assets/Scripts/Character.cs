@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,7 +18,7 @@ public class Character : MonoBehaviour {
 	
 	public GameObject projectile;
 	
-	public AudioClip hadoukenSound, shoryukenSound,hurricaneKickSound, KOsound; 
+	public AudioClip hadoukenSound, shoryukenSound, hurricaneKickSound, KOsound; 
 	public AudioClip normalAttackSound, hadoukenCreatedSound, fellSound, flameSound;
 	
 	private Rigidbody2D physicsbody;
@@ -30,14 +30,17 @@ public class Character : MonoBehaviour {
 	private bool 	backPressed, airborne, midAirRecovering, invincible, didntHit,
 					hurricaneActive, isHitStunned,  isBlockStunned, isKnockDown, isKO;
 	
-	private int 	shoryukenType, hadoukenType, hadoukenOwner;
+	private int 	shoryukenType;
 	
-	
+		
 	void Start(){
 		hitBox = GetComponentInChildren<HitBox>();
 		physicsbody = GetComponent<Rigidbody2D>();
 		animator = GetComponent<Animator>();
 		animator.SetBool("isStanding", true);
+		foreach(Transform child in transform){
+			child.gameObject.tag = transform.gameObject.tag;
+		}
 	}
 	// Update is called once per frame
 	void Update(){	
@@ -342,15 +345,7 @@ public class Character : MonoBehaviour {
 			hitType = HitType.hurricaneKick;
 		}
 	}
-	
-	public void KenHadouken(int punchType, int projectileOwner){
-		if (animator.GetBool("isLiftingOff") == false){	
-			animator.Play("KenHadouken",0);			
-			hadoukenType = punchType;
-			hadoukenOwner = projectileOwner;
-		}
-	}
-	
+		
 	public void KenShoryuken(){
 		shoryukenType = animator.GetInteger("shoryukenPunchType");
 		if (animator.GetBool("isLiftingOff") == false){	
@@ -382,7 +377,6 @@ public class Character : MonoBehaviour {
 	
 	public void KenRoll(){
 		if (animator.GetBool("isLiftingOff") == false){	
-			animator.SetBool("isInvincible", true);
 			if (animator.GetInteger("rollKickType") == 0){
 				if (side == Side.P1){
 					physicsbody.velocity = new Vector2(2f, 0f);
@@ -407,13 +401,14 @@ public class Character : MonoBehaviour {
 					physicsbody.velocity = new Vector2(-3f, 0f);
 				}				
 			}
+			animator.SetBool("isRolling", true);
 		}
 	}
-	
-	public void KenRollSetFalse(){
-		animator.SetBool("isInvincible", false);
+		
+	public void KenFinishedRolling(){
+		animator.SetBool("isRolling", false);
 	}
-	
+		
 	public void KenHurricaneLanding(){
 		animator.SetBool("hurricaneKickActive", false);
 	}
@@ -424,11 +419,13 @@ public class Character : MonoBehaviour {
 		Rigidbody2D rigidbody = hadouken.GetComponent<Rigidbody2D>();
 		SpriteRenderer hadoukenSprite = hadouken.GetComponentInChildren<SpriteRenderer>();		
 		AudioSource.PlayClipAtPoint(hadoukenCreatedSound, transform.position);
-		if (hadoukenOwner == 1){
+		if (animator.GetInteger("hadoukenOwner") == 1){
 			hadouken.gameObject.layer = LayerMask.NameToLayer("ProjectileP1");
+			hadouken.gameObject.tag = "Player1";
 		}
 		else{
 			hadouken.gameObject.layer = LayerMask.NameToLayer("ProjectileP2");
+			hadouken.gameObject.tag = "Player2";
 		} 
 		if (side == Side.P1){
 			hadouken.transform.position = transform.position + offset;
@@ -436,7 +433,7 @@ public class Character : MonoBehaviour {
 		else{
 			hadouken.transform.position = transform.position - offset;
 		}
-		if (hadoukenType == 0){
+		if (animator.GetInteger("hadoukenPunchType") == 0){
 			if (side == Side.P1){
 				rigidbody.velocity = new Vector2(3f, 0f);
 			}
@@ -445,7 +442,7 @@ public class Character : MonoBehaviour {
 				hadoukenSprite.flipX = true;
 			}
 		}
-		else if (hadoukenType == 1){
+		else if (animator.GetInteger("hadoukenPunchType") == 1){
 			if (side == Side.P1){
 				rigidbody.velocity = new Vector2(3.5f, 0f);
 			}
@@ -493,7 +490,6 @@ public class Character : MonoBehaviour {
 		}
 		AudioSource.PlayClipAtPoint(normalAttackSound,transform.position);
 		animator.SetBool("isAirborne", true);
-		animator.SetBool("isInvincible", false);
 	}
 	
 	public void ThrowRoll(){

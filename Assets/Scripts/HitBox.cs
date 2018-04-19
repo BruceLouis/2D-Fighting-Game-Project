@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,7 +16,8 @@ public class HitBox : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D collider){
 		HurtBox hurtBox = collider.gameObject.GetComponentInChildren<HurtBox>();		
-		Animator animator = collider.gameObject.GetComponentInChildren<Animator>();	
+		Animator animator = collider.gameObject.GetComponentInParent<Animator>();	
+		
 		if (hurtBox){
 			
 			cancellable = true;
@@ -129,13 +130,40 @@ public class HitBox : MonoBehaviour {
 	}
 	
 	void InHitStun(float timerArg, Character attacker, Character receiver, Animator anim, Vector3 sparkPlace, Rigidbody2D rigid){
-		timerArg = attacker.GetEnforceHitStun();
 		receiver.SetDamage(attacker.GetDamage()); 
 		anim.SetBool("isInHitStun", true);
 		if (attacker.GetHitType() != Character.HitType.normal && attacker.GetHitType() != Character.HitType.hurricaneKick){
+			timerArg = attacker.GetEnforceHitStun();
 			OtherHitStunProperties(attacker, receiver, anim, sparkPlace, rigid);
 		}
+		else if (anim.GetBool("isAirborne") == true && attacker.GetHitType() != Character.HitType.sweep  && attacker.GetHitType() != Character.HitType.shoryuken){
+			
+			timerArg = 15f;
+			AudioSource.PlayClipAtPoint(normalHit, transform.position);
+			if (receiver.GetHealth () <= 0){				
+				GotKOed (receiver, anim, rigid);
+			}
+			else{
+				anim.Play("KenMidAirHit",0,0f);
+				TimeControl.slowDownTimer = 20;
+				if (distance > 0){
+					receiver.side = Character.Side.P2;
+					receiver.SideSwitch();
+					rigid.velocity = new Vector2(attacker.GetEnforcePushBack() * 0.15f, 2f);
+				}
+				else{
+					receiver.side = Character.Side.P1;
+					receiver.SideSwitch();
+					rigid.velocity = new Vector2(-attacker.GetEnforcePushBack() * 0.15f, 2f);						
+				}
+				TimeControl.slowDownTimer = 20;
+			}
+			
+			Instantiate(hitSpark, sparkPlace, Quaternion.identity);
+		}
 		else{
+		
+			timerArg = attacker.GetEnforceHitStun();
 			AudioSource.PlayClipAtPoint(normalHit, transform.position);
 			if (receiver.GetHealth () <= 0){				
 				GotKOed (receiver, anim, rigid);
@@ -155,30 +183,6 @@ public class HitBox : MonoBehaviour {
 			}
 			Instantiate(hitSpark, sparkPlace, Quaternion.identity);
 		} 
-		if (anim.GetBool("isAirborne") == true && attacker.GetHitType() != Character.HitType.sweep  && attacker.GetHitType() != Character.HitType.shoryuken){
-			
-			AudioSource.PlayClipAtPoint(normalHit, transform.position);
-			if (receiver.GetHealth () <= 0){				
-				GotKOed (receiver, anim, rigid);
-			}
-			else{
-				anim.Play("KenMidAirHit",0,0f);
-				TimeControl.slowDownTimer = 20;
-				if (distance > 0){
-					receiver.side = Character.Side.P2;
-					receiver.SideSwitch();
-					rigid.velocity = new Vector2(attacker.GetEnforcePushBack() * 0.15f, 1.5f);
-				}
-				else{
-					receiver.side = Character.Side.P1;
-					receiver.SideSwitch();
-					rigid.velocity = new Vector2(-attacker.GetEnforcePushBack() * 0.15f, 1.5f);						
-				}
-			}
-			
-			Instantiate(hitSpark, sparkPlace, Quaternion.identity);
-			TimeControl.slowDownTimer = 20;
-		}
 		anim.SetFloat ("hitStunTimer", timerArg);	
 	}
 	
@@ -207,6 +211,7 @@ public class HitBox : MonoBehaviour {
 				anim.Play("KenKOBlendTree",0,0f);
 			}
 			else{		
+				TimeControl.slowDownTimer = 30;
 				anim.Play("KenKnockDownBlendTree",0,0f);
 			}
 			if (distance > 0){
@@ -254,7 +259,6 @@ public class HitBox : MonoBehaviour {
 
 	void GotShoryukened (Animator anim, Rigidbody2D rigid, float x, float airborneY, float groundedY)
 	{
-		TimeControl.slowDownTimer = 30;
 		if (anim.GetBool ("isAirborne") == false) {
 			rigid.velocity = new Vector2 (x, groundedY);
 		}

@@ -15,8 +15,15 @@ public class Player : MonoBehaviour {
 	private bool pressedForward;
 	private bool pressedBackward;
 	private float distance;	
-//	private float hScene;
-//	private float wScene;
+	
+	void Awake () {
+		gameObject.layer = LayerMask.NameToLayer("Player1");
+		gameObject.tag = "Player1";
+		foreach(Transform character in gameObject.transform){
+			character.gameObject.layer = LayerMask.NameToLayer("Player1");	
+			character.gameObject.tag = "Player1";
+		}			
+	}
 	
 	// Use this for initialization
 	void Start () {		
@@ -29,17 +36,12 @@ public class Player : MonoBehaviour {
 		physicsbody = GetComponentInChildren<Rigidbody2D>();
 		comboSystem = GetComponent<ComboSystem>();
 		character.side = Character.Side.P1;			
-		gameObject.layer = LayerMask.NameToLayer("Player1");
 		healthBar = FindObjectOfType<HealthBarP1>();	
-		foreach(Transform character in gameObject.transform){
-			character.gameObject.layer = LayerMask.NameToLayer("Player1");	
-		}			
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
-		Debug.Log ("Player gameOn " + timeControl.gameOn);
 		
 		if (timeControl.gameOn == true){
 		
@@ -64,7 +66,6 @@ public class Player : MonoBehaviour {
 		
 			character.SetBackPressed(pressedBackward);
 			if (animator.GetBool("isKnockedDown") == false && animator.GetBool("isThrown") == false && animator.GetBool("isMidAirRecovering") == false){
-				WalkInput();
 				if (animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false 
 					&& animator.GetBool("isLiftingOff") == false){
 					if (animator.GetBool("isStanding") == true && animator.GetBool("isAirborne") == false && animator.GetBool("isAttacking") == false){
@@ -78,7 +79,8 @@ public class Player : MonoBehaviour {
 					}				
 					AttacksInput();
 				}
-			}			
+			}		
+			WalkInput();	
 			WalkNoMoreInput();
 		}
 		else{	
@@ -97,7 +99,7 @@ public class Player : MonoBehaviour {
 		if (character.GetHealth() <= 0){
 			animator.SetBool("isKOed", true);
 		}
-		PushBoxCollisions();	
+		
 		healthBar.SetHealth(character.GetHealth());	
 	}
 	
@@ -211,17 +213,18 @@ public class Player : MonoBehaviour {
 					Debug.Log ("Hadouken inputed");
 					if (animator.GetBool("isAttacking") == false){
 						character.AttackState();
-						character.KenHadouken(0, 1);
+						animator.Play("KenHadouken",0);			
 					}
 					animator.SetTrigger("hadoukenInputed");
+					animator.SetInteger("hadoukenPunchType", 0);
+					animator.SetInteger("hadoukenOwner", 1);
 					comboSystem.ResetHadoukenSequence();
 				}
 				else if (CheckShoryukenSequence() && animator.GetBool("isAirborne") == false){
 					Debug.Log ("Shoryuken inputed");
 					if (animator.GetBool("isAttacking") == false){
 						character.AttackState();
-						animator.Play("KenShoryukenJab",0);
-						animator.SetBool("isInvincible", true);		
+						animator.Play("KenShoryukenJab",0);	
 					}
 					animator.SetTrigger("shoryukenInputed");
 					animator.SetInteger("shoryukenPunchType", 0);
@@ -237,9 +240,11 @@ public class Player : MonoBehaviour {
 					Debug.Log ("Hadouken inputed");
 					if (animator.GetBool("isAttacking") == false){
 						character.AttackState();
-						character.KenHadouken(1, 1);
+						animator.Play("KenHadouken",0);			
 					}
 					animator.SetTrigger("hadoukenInputed");
+					animator.SetInteger("hadoukenPunchType", 1);
+					animator.SetInteger("hadoukenOwner", 1);
 					comboSystem.ResetHadoukenSequence();
 				}
 				else if (CheckShoryukenSequence() && animator.GetBool("isAirborne") == false){
@@ -247,7 +252,6 @@ public class Player : MonoBehaviour {
 					if (animator.GetBool("isAttacking") == false){
 						character.AttackState();
 						animator.Play("KenShoryukenStrong",0);
-						animator.SetBool("isInvincible", true);		
 					}
 					animator.SetTrigger("shoryukenInputed");
 					animator.SetInteger("shoryukenPunchType", 1);
@@ -262,10 +266,12 @@ public class Player : MonoBehaviour {
 				if (CheckHadoukenSequence() && animator.GetBool("isAirborne") == false){
 					Debug.Log ("Hadouken inputed");
 					if (animator.GetBool("isAttacking") == false){
-						character.AttackState();
-						character.KenHadouken(2, 1);
+						character.AttackState();				
+						animator.Play("KenHadouken",0);			
 					}
 					animator.SetTrigger("hadoukenInputed");
+					animator.SetInteger("hadoukenPunchType", 2);
+					animator.SetInteger("hadoukenOwner", 1);
 					comboSystem.ResetHadoukenSequence();
 				}
 				else if (CheckShoryukenSequence() && animator.GetBool("isAirborne") == false){
@@ -273,7 +279,6 @@ public class Player : MonoBehaviour {
 					if (animator.GetBool("isAttacking") == false){
 						character.AttackState();
 						animator.Play("KenShoryukenFierce",0);
-						animator.SetBool("isInvincible", true);		
 					}
 					animator.SetTrigger("shoryukenInputed");
 					animator.SetInteger("shoryukenPunchType", 2);
@@ -363,38 +368,6 @@ public class Player : MonoBehaviour {
 				}
 			}	
 		}
-	}
-	
-	void PushBoxCollisions(){		
-	//ignore PushBox when character is in the air		
-		if (animator.GetBool("isAirborne") == true || animator.GetBool("isLiftingOff") == true){
-			if (animator.GetBool("isMidAirRecovering") == false && animator.GetBool("isKnockedDown") == false
-				&& animator.GetBool("hurricaneKickActive") == false){
-				foreach(Transform character in gameObject.transform){
-					character.gameObject.layer = LayerMask.NameToLayer("IgnorePlayer2");	
-				}
-			}
-			else if (animator.GetBool("isMidAirRecovering") == true || animator.GetBool("isKnockedDown") == true){
-				foreach(Transform character in gameObject.transform){
-					character.gameObject.layer = LayerMask.NameToLayer("KnockedDown");	
-				}
-			}
-		}
-		else if (animator.GetBool("isMidAirRecovering") == true || animator.GetBool("isKnockedDown") == true){
-			foreach(Transform character in gameObject.transform){
-				character.gameObject.layer = LayerMask.NameToLayer("KnockedDown");	
-			}
-		}
-		else if (animator.GetBool("isInvincible") == true || animator.GetBool("throwTargetAcquired") == true){
-			foreach(Transform character in gameObject.transform){
-				character.gameObject.layer = LayerMask.NameToLayer("InvincibleToP2");	
-			}	
-		}
-		else{
-			foreach(Transform character in gameObject.transform){
-				character.gameObject.layer = LayerMask.NameToLayer("Player1");	
-			}
-		}		
 	}
 
 	void WhoWonAndLost (string WonOrLost)

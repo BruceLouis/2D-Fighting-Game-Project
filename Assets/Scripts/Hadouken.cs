@@ -1,13 +1,11 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Hadouken : MonoBehaviour {
 
-	public float damage;
-	public float pushBack;
-	public float hitStun;
-	public float blockStun;
+	public float damage, pushBack;
+	public float hitStun, blockStun;
 	
 	public GameObject shoryukenSpark;
 	public GameObject blockSpark;
@@ -18,10 +16,11 @@ public class Hadouken : MonoBehaviour {
 	private Animator animator;
 	private Rigidbody2D physicsBody;
 	
+	
 	void Start(){
 		animator = GetComponent<Animator>();
 		physicsBody = GetComponent<Rigidbody2D>();
-		animator.SetBool("madeContact", false);
+		animator.SetBool("madeContact", false); 
 	}
 	
 	void StopMovingHadouken(){
@@ -40,13 +39,13 @@ public class Hadouken : MonoBehaviour {
 			rigid.velocity = new Vector2(-pushBack * 0.2f, receiver.transform.position.y);				
 		}
 	}
-	
+		
 	void OnTriggerEnter2D(Collider2D collider){
 		HurtBox hurtBox = collider.gameObject.GetComponentInChildren<HurtBox>();	
-		Animator hurtCharAnimator = collider.gameObject.GetComponent<Animator>();	
+		Animator hurtCharAnimator = collider.gameObject.GetComponentInParent<Animator>();	
 		Hadouken otherHadouken = collider.gameObject.GetComponent<Hadouken>();
 		float timer; 
-		if (hurtBox){	
+		if (hurtBox && hurtBox.gameObject.tag != gameObject.tag){	
 			Character hurtCharacter = hurtBox.GetComponentInParent<Character>();
 			Rigidbody2D hurtPhysicsbody = hurtCharacter.GetComponent<Rigidbody2D>();
 			animator.SetBool("madeContact", true);	

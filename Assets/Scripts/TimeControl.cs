@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -31,6 +31,7 @@ public class TimeControl : MonoBehaviour {
 		gameTimer = 99;
 		internalTimer = 50;
 		restartTimer = 100;
+//		countDownTimer = 0;
 		countDownTimer = 3;
 		playedOnce = 1;
 		gameTimerText.text = gameTimer.ToString();

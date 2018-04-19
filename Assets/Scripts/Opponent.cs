@@ -19,6 +19,15 @@ public class Opponent : MonoBehaviour {
 	
 	private int decision, decisionTimerInput;
 	
+	void Awake () {
+		gameObject.layer = LayerMask.NameToLayer("Player2");
+		gameObject.tag = "Player2";
+		foreach(Transform character in gameObject.transform){
+			character.gameObject.layer = LayerMask.NameToLayer("Player2");	
+			character.gameObject.tag = "Player2";
+		}			
+	}
+	
 	// Use this for initialization
 	void Start () {		
 		
@@ -28,11 +37,7 @@ public class Opponent : MonoBehaviour {
 		character = GetComponentInChildren<Character>();
 		animator = GetComponentInChildren<Animator>();	
 		physicsbody = GetComponentInChildren<Rigidbody2D>();	
-		gameObject.layer = LayerMask.NameToLayer("Player2");	
 		healthBar = FindObjectOfType<HealthBarP2>();	
-		foreach(Transform character in gameObject.transform){
-			character.gameObject.layer = LayerMask.NameToLayer("Player2");	
-		}		
 		
 		decisionTimerInput = decisionTimer;		
 		
@@ -40,8 +45,6 @@ public class Opponent : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
-		Debug.Log ("Opponent gameOn " + timeControl.gameOn);
 		
 		if (timeControl.gameOn == true){
 		
@@ -74,7 +77,6 @@ public class Opponent : MonoBehaviour {
 			animator.SetBool("isKOed", true);
 		}
 		DetermineSide();
-		PushBoxCollisions();		
 		healthBar.SetHealth(character.GetHealth());
 	}
 	
@@ -440,7 +442,6 @@ public class Opponent : MonoBehaviour {
 				character.AttackState();
 				animator.Play("KenShoryukenJab",0);
 				animator.SetInteger("shoryukenPunchType", 0);
-				animator.SetBool("isInvincible", true);
 			}
 		}
 	}
@@ -468,7 +469,6 @@ public class Opponent : MonoBehaviour {
 					animator.Play("KenShoryukenFierce",0);
 					animator.SetInteger("shoryukenPunchType", 2);
 				}
-				animator.SetBool("isInvincible", true);
 			}
 		}
 	}
@@ -484,7 +484,9 @@ public class Opponent : MonoBehaviour {
 			if(animator.GetBool("isAttacking") == false){			
 				AIStand();	
 				character.AttackState();
-				character.KenHadouken(Random.Range(0,3), 2);
+				animator.Play("KenHadouken",0);		
+				animator.SetInteger("hadoukenPunchType", Random.Range(0,3));
+				animator.SetInteger("hadoukenOwner", 2);
 			}
 		}
 	}
@@ -748,39 +750,7 @@ public class Opponent : MonoBehaviour {
 			SideSwitch();
 		}
 	}
-	
-	void PushBoxCollisions(){		
-		//ignore PushBox when character is in the air		
-		if (animator.GetBool("isAirborne") == true || animator.GetBool("isLiftingOff") == true){
-			if (animator.GetBool("isMidAirRecovering") == false && animator.GetBool("isKnockedDown") == false
-			    && animator.GetBool("hurricaneKickActive") == false){
-				foreach(Transform character in gameObject.transform){
-					character.gameObject.layer = LayerMask.NameToLayer("IgnorePlayer1");	
-				}
-			}
-			else if (animator.GetBool("isMidAirRecovering") == true || animator.GetBool("isKnockedDown") == true){
-				foreach(Transform character in gameObject.transform){
-					character.gameObject.layer = LayerMask.NameToLayer("KnockedDown");	
-				}
-			}
-		}
-		else if (animator.GetBool("isMidAirRecovering") == true || animator.GetBool("isKnockedDown") == true){
-			foreach(Transform character in gameObject.transform){
-				character.gameObject.layer = LayerMask.NameToLayer("KnockedDown");	
-			}
-		}
-		else if (animator.GetBool("isInvincible") == true || animator.GetBool("throwTargetAcquired") == true){
-			foreach(Transform character in gameObject.transform){
-				character.gameObject.layer = LayerMask.NameToLayer("InvincibleToP1");	
-			}	
-		}
-		else{
-			foreach(Transform character in gameObject.transform){
-				character.gameObject.layer = LayerMask.NameToLayer("Player2");	
-			}
-		}
-	}
-	
+		
 	void CharacterWalkState(){
 		pressedForward = false;
 		pressedBackward = false;
@@ -867,7 +837,9 @@ public class Opponent : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.Alpha3)){
 			if(animator.GetBool("isAttacking") == false && animator.GetBool("isAirborne") == false){				
 				character.AttackState();
-				character.KenHadouken(0, 2);
+				animator.Play("KenHadouken",0);		
+				animator.SetInteger("hadoukenPunchType", Random.Range(0,3));
+				animator.SetInteger("hadoukenOwner", 2);
 			}
 			animator.SetTrigger("hadoukenInputed");
 		}	
@@ -880,7 +852,6 @@ public class Opponent : MonoBehaviour {
 				if (animator.GetBool("isAttacking") == false){
 					character.AttackState();
 					animator.Play("KenShoryukenJab",0);
-					animator.SetBool("isInvincible", true);
 				}
 				animator.SetTrigger("shoryukenInputed");
 				animator.SetInteger("shoryukenPunchType", 0);
@@ -894,7 +865,7 @@ public class Opponent : MonoBehaviour {
 			animator.SetBool("isStanding", true);
 			animator.SetBool("isCrouching", false);
 		}	
-		character.SetBackPressed(false);
+		character.SetBackPressed(pressedBackward);
 	}
 	
 }

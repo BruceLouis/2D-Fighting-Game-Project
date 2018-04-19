@@ -10,7 +10,7 @@ public class ThrowBox : MonoBehaviour {
 	
 	void OnTriggerEnter2D(Collider2D collider){		
 		HurtBox hurtBox = collider.gameObject.GetComponentInChildren<HurtBox>();		
-		Animator animator = collider.gameObject.GetComponentInChildren<Animator>();	
+		Animator animator = collider.gameObject.GetComponentInParent<Animator>();	
 		Animator selfAnimator = gameObject.GetComponentInParent<Animator>();
 		
 		if (hurtBox){	

@@ -11,6 +11,7 @@ public class HitStun : StateMachineBehaviour {
 		animator.SetBool("isWalkingBackward", false);
 		animator.SetBool("isWalkingForward", false);
 		animator.SetBool("isLiftingOff", false);
+		animator.SetBool("isRolling", false);
 		timer = animator.GetFloat ("hitStunTimer");
 	}
 
