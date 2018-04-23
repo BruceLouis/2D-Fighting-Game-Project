@@ -1,0 +1,217 @@
+fileFormatVersion: 2
+guid: 5a282c3423a7d9a4a8f314fc3f267825
+timeCreated: 1520090945
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: FeiLongStandRoundhouse_0
+    21300002: FeiLongStandRoundhouse_1
+    21300004: FeiLongStandRoundhouse_2
+    21300006: FeiLongStandRoundhouse_3
+    21300008: FeiLongStandRoundhouse_4
+    21300010: FeiLongStandRoundhouse_5
+    21300012: FeiLongStandRoundhouse_6
+    21300014: FeiLongStandRoundhouse_7
+  externalObjects: {}
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: FeiLongStandRoundhouse_0
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 13
+        width: 100
+        height: 96
+      alignment: 9
+      pivot: {x: 0.37, y: 0.48}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: FeiLongStandRoundhouse_1
+      rect:
+        serializedVersion: 2
+        x: 143
+        y: 6
+        width: 72
+        height: 96
+      alignment: 9
+      pivot: {x: 0.18, y: 0.48}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: FeiLongStandRoundhouse_2
+      rect:
+        serializedVersion: 2
+        x: 233
+        y: 8
+        width: 121
+        height: 99
+      alignment: 9
+      pivot: {x: 0.18, y: 0.46}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: FeiLongStandRoundhouse_3
+      rect:
+        serializedVersion: 2
+        x: 374
+        y: 9
+        width: 114
+        height: 99
+      alignment: 9
+      pivot: {x: 0.26, y: 0.46}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: FeiLongStandRoundhouse_4
+      rect:
+        serializedVersion: 2
+        x: 511
+        y: 10
+        width: 91
+        height: 97
+      alignment: 9
+      pivot: {x: 0.2, y: 0.48}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: FeiLongStandRoundhouse_5
+      rect:
+        serializedVersion: 2
+        x: 623
+        y: 12
+        width: 71
+        height: 98
+      alignment: 9
+      pivot: {x: 0.2, y: 0.48}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: FeiLongStandRoundhouse_6
+      rect:
+        serializedVersion: 2
+        x: 716
+        y: 14
+        width: 93
+        height: 94
+      alignment: 9
+      pivot: {x: 0.44, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: FeiLongStandRoundhouse_7
+      rect:
+        serializedVersion: 2
+        x: 834
+        y: 16
+        width: 97
+        height: 91
+      alignment: 9
+      pivot: {x: 0.5, y: 0.52}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    outline: []
+    physicsShape: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

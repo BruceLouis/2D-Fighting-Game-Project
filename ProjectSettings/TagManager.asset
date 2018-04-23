@@ -50,12 +50,15 @@ TagManager:
   - name: Foreground
     uniqueID: 1900496811
     locked: 0
-  - name: Characters
+  - name: Shadows
     uniqueID: 2964452863
     locked: 0
-  - name: Projectiles
+  - name: Characters
     uniqueID: 328138293
     locked: 0
-  - name: Effects
+  - name: Projectiles
     uniqueID: 3150224285
+    locked: 0
+  - name: Effects
+    uniqueID: 534712913
     locked: 0

@@ -14,8 +14,10 @@ public class KnockDown : StateMachineBehaviour {
 		animator.SetBool("isLiftingOff", false);
 		animator.SetBool("isWalkingBackward", false);
 		animator.SetBool("isWalkingForward", false);
+		animator.SetBool("isMidAirHit", false);		
 		animator.SetFloat("hitStunTimer", 0.0f);
 		animator.ResetTrigger("shoryukenInputed");	
+		animator.ResetTrigger("reverseShoryukenInputed");	
 		animator.ResetTrigger("hadoukenInputed");
 		animator.ResetTrigger("hurricaneKickInputed");
 		animator.ResetTrigger("rollInputed");

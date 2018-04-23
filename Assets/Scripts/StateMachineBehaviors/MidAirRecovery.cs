@@ -8,6 +8,7 @@ public class MidAirRecovery : StateMachineBehaviour {
 	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {		
 		animator.SetBool("isMidAirRecovering", true);
 		animator.SetBool("isInHitStun", false);
+		animator.SetBool("isMidAirHit", false);
 		animator.SetFloat("hitStunTimer", 0.0f);
 	}
 

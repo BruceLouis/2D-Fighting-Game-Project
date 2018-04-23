@@ -392,7 +392,7 @@ AnimationClip:
       - serializedVersion: 2
         time: 0.26666668
         value: 0.34590465
-        inSlope: 0
+        inSlope: Infinity
         outSlope: 0
         tangentMode: 1
       m_PreInfinity: 2
@@ -414,7 +414,7 @@ AnimationClip:
       - serializedVersion: 2
         time: 0.26666668
         value: 0.79135907
-        inSlope: 0
+        inSlope: Infinity
         outSlope: 0
         tangentMode: 1
       m_PreInfinity: 2
@@ -436,7 +436,7 @@ AnimationClip:
       - serializedVersion: 2
         time: 0.26666668
         value: 0.045754522
-        inSlope: 0
+        inSlope: Infinity
         outSlope: 0
         tangentMode: 1
       m_PreInfinity: 2
@@ -458,7 +458,7 @@ AnimationClip:
       - serializedVersion: 2
         time: 0.26666668
         value: 0.27890766
-        inSlope: 0
+        inSlope: Infinity
         outSlope: 0
         tangentMode: 1
       m_PreInfinity: 2
@@ -1005,7 +1005,7 @@ AnimationClip:
       - serializedVersion: 2
         time: 0.26666668
         value: 0.34590465
-        inSlope: 0
+        inSlope: Infinity
         outSlope: 0
         tangentMode: 1
       m_PreInfinity: 2
@@ -1027,7 +1027,7 @@ AnimationClip:
       - serializedVersion: 2
         time: 0.26666668
         value: 0.79135907
-        inSlope: 0
+        inSlope: Infinity
         outSlope: 0
         tangentMode: 1
       m_PreInfinity: 2
@@ -1049,7 +1049,7 @@ AnimationClip:
       - serializedVersion: 2
         time: 0.26666668
         value: 0.045754522
-        inSlope: 0
+        inSlope: Infinity
         outSlope: 0
         tangentMode: 1
       m_PreInfinity: 2
@@ -1071,7 +1071,7 @@ AnimationClip:
       - serializedVersion: 2
         time: 0.26666668
         value: 0.27890766
-        inSlope: 0
+        inSlope: Infinity
         outSlope: 0
         tangentMode: 1
       m_PreInfinity: 2

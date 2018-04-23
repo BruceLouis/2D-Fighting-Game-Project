@@ -20,7 +20,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4511961732295196}
   - component: {fileID: 61721796746873604}
-  - component: {fileID: 114538335780943142}
   m_Layer: 15
   m_Name: HurtBox2
   m_TagString: Untagged
@@ -73,7 +72,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4245055710381570}
   - component: {fileID: 61325722522896966}
-  - component: {fileID: 114103284101290618}
   m_Layer: 15
   m_Name: HurtBox1
   m_TagString: Untagged
@@ -451,17 +449,6 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114103284101290618
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1363197596428754}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60825f62cf533044b84564c909c1392f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114264016615937340
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -489,17 +476,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: af86dfc527f03294f95bf85215d9f5ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &114538335780943142
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1163847580649374}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60825f62cf533044b84564c909c1392f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &114551887617505384
@@ -605,8 +581,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1330514433
-  m_SortingLayer: 3
+  m_SortingLayerID: 328138293
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: bb26af6190543c74886f3e94b11c5c3b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

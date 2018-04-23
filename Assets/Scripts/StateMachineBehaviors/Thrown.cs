@@ -12,8 +12,10 @@ public class Thrown : StateMachineBehaviour {
 		animator.SetBool("isLiftingOff", false);
 		animator.SetBool("hurricaneKickActive", false);
 		animator.SetBool("isRolling", false);
+		animator.SetBool("isMidAirHit", false);		
 		animator.SetBool("isThrown", true);
 		animator.ResetTrigger("shoryukenInputed");	
+		animator.ResetTrigger("reverseShoryukenInputed");	
 		animator.ResetTrigger("hadoukenInputed");
 		animator.ResetTrigger("hurricaneKickInputed");
 		animator.ResetTrigger("rollInputed");

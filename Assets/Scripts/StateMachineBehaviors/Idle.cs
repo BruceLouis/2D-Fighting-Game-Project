@@ -15,8 +15,10 @@ public class Idle : StateMachineBehaviour {
 		animator.SetBool("throwTargetAcquired", false);
 		animator.SetBool("isKnockedDown", false);	
 		animator.SetBool("isRolling", false);
+		animator.SetBool("isMidAirHit", false);		
 		animator.SetBool("hasntHit", true);
 		animator.ResetTrigger("shoryukenInputed");	
+		animator.ResetTrigger("reverseShoryukenInputed");	
 		animator.ResetTrigger("hadoukenInputed");
 		animator.ResetTrigger("hurricaneKickInputed");
 		animator.ResetTrigger("rollInputed");
