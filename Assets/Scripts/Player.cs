@@ -209,162 +209,180 @@ public class Player : MonoBehaviour {
 		}
 		else{
 			if (Input.GetKeyDown(KeyCode.A)){
-				if (CheckHadoukenSequence() && animator.GetBool("isAirborne") == false){
-					Debug.Log ("Hadouken inputed");
-					if (animator.GetBool("isAttacking") == false){
-						character.AttackState();
-						animator.Play("KenHadouken",0);			
+				
+				if (character.GetComponent<Ken>() != null){
+					if (CheckHadoukenSequence() && animator.GetBool("isAirborne") == false){
+						Debug.Log ("Hadouken inputed");
+						if (animator.GetBool("isAttacking") == false){
+							character.AttackState();
+							animator.Play("KenHadouken",0);			
+						}
+						animator.SetTrigger("hadoukenInputed");
+						animator.SetInteger("hadoukenPunchType", 0);
+						animator.SetInteger("hadoukenOwner", 1);
+						comboSystem.ResetHadoukenSequence();
 					}
-					animator.SetTrigger("hadoukenInputed");
-					animator.SetInteger("hadoukenPunchType", 0);
-					animator.SetInteger("hadoukenOwner", 1);
-					comboSystem.ResetHadoukenSequence();
-				}
-				else if (CheckShoryukenSequence() && animator.GetBool("isAirborne") == false){
-					Debug.Log ("Shoryuken inputed");
-					if (animator.GetBool("isAttacking") == false){
-						character.AttackState();
-						animator.Play("KenShoryukenJab",0);	
+					else if (CheckShoryukenSequence() && animator.GetBool("isAirborne") == false){
+						Debug.Log ("Shoryuken inputed");
+						if (animator.GetBool("isAttacking") == false){
+							character.AttackState();
+							animator.Play("KenShoryukenJab",0);	
+						}
+						animator.SetTrigger("shoryukenInputed");
+						animator.SetInteger("shoryukenPunchType", 0);
+						comboSystem.ResetShoryukenSequence();
 					}
-					animator.SetTrigger("shoryukenInputed");
-					animator.SetInteger("shoryukenPunchType", 0);
-					comboSystem.ResetShoryukenSequence();
-				}
-				else if (animator.GetBool("isAttacking") == false){					
-					character.AttackState();
-					character.CharacterJab();
+					else if (animator.GetBool("isAttacking") == false){					
+						character.AttackState();
+						character.CharacterJab();
+					}
 				}
 			}		
 			if (Input.GetKeyDown(KeyCode.S)){
-				if (CheckHadoukenSequence() && animator.GetBool("isAirborne") == false){
-					Debug.Log ("Hadouken inputed");
-					if (animator.GetBool("isAttacking") == false){
-						character.AttackState();
-						animator.Play("KenHadouken",0);			
+				
+				if (character.GetComponent<Ken>() != null){
+					if (CheckHadoukenSequence() && animator.GetBool("isAirborne") == false){
+						Debug.Log ("Hadouken inputed");
+						if (animator.GetBool("isAttacking") == false){
+							character.AttackState();
+							animator.Play("KenHadouken",0);			
+						}
+						animator.SetTrigger("hadoukenInputed");
+						animator.SetInteger("hadoukenPunchType", 1);
+						animator.SetInteger("hadoukenOwner", 1);
+						comboSystem.ResetHadoukenSequence();
 					}
-					animator.SetTrigger("hadoukenInputed");
-					animator.SetInteger("hadoukenPunchType", 1);
-					animator.SetInteger("hadoukenOwner", 1);
-					comboSystem.ResetHadoukenSequence();
-				}
-				else if (CheckShoryukenSequence() && animator.GetBool("isAirborne") == false){
-					Debug.Log ("Shoryuken inputed");
-					if (animator.GetBool("isAttacking") == false){
+					else if (CheckShoryukenSequence() && animator.GetBool("isAirborne") == false){
+						Debug.Log ("Shoryuken inputed");
+						if (animator.GetBool("isAttacking") == false){
+							character.AttackState();
+							animator.Play("KenShoryukenStrong",0);
+						}
+						animator.SetTrigger("shoryukenInputed");
+						animator.SetInteger("shoryukenPunchType", 1);
+						comboSystem.ResetShoryukenSequence();
+					}	
+					else if (animator.GetBool("isAttacking") == false){					
 						character.AttackState();
-						animator.Play("KenShoryukenStrong",0);
+						character.CharacterStrong();
 					}
-					animator.SetTrigger("shoryukenInputed");
-					animator.SetInteger("shoryukenPunchType", 1);
-					comboSystem.ResetShoryukenSequence();
-				}	
-				else if (animator.GetBool("isAttacking") == false){					
-					character.AttackState();
-					character.CharacterStrong();
 				}
 			}			
 			if (Input.GetKeyDown(KeyCode.D)){
-				if (CheckHadoukenSequence() && animator.GetBool("isAirborne") == false){
-					Debug.Log ("Hadouken inputed");
-					if (animator.GetBool("isAttacking") == false){
-						character.AttackState();				
-						animator.Play("KenHadouken",0);			
+				
+				if (character.GetComponent<Ken>() != null){
+					if (CheckHadoukenSequence() && animator.GetBool("isAirborne") == false){
+						Debug.Log ("Hadouken inputed");
+						if (animator.GetBool("isAttacking") == false){
+							character.AttackState();				
+							animator.Play("KenHadouken",0);			
+						}
+						animator.SetTrigger("hadoukenInputed");
+						animator.SetInteger("hadoukenPunchType", 2);
+						animator.SetInteger("hadoukenOwner", 1);
+						comboSystem.ResetHadoukenSequence();
 					}
-					animator.SetTrigger("hadoukenInputed");
-					animator.SetInteger("hadoukenPunchType", 2);
-					animator.SetInteger("hadoukenOwner", 1);
-					comboSystem.ResetHadoukenSequence();
-				}
-				else if (CheckShoryukenSequence() && animator.GetBool("isAirborne") == false){
-					Debug.Log ("Shoryuken inputed");
-					if (animator.GetBool("isAttacking") == false){
+					else if (CheckShoryukenSequence() && animator.GetBool("isAirborne") == false){
+						Debug.Log ("Shoryuken inputed");
+						if (animator.GetBool("isAttacking") == false){
+							character.AttackState();
+							animator.Play("KenShoryukenFierce",0);
+						}
+						animator.SetTrigger("shoryukenInputed");
+						animator.SetInteger("shoryukenPunchType", 2);
+						comboSystem.ResetShoryukenSequence();
+					}	
+					else if (animator.GetBool("isAttacking") == false){					
 						character.AttackState();
-						animator.Play("KenShoryukenFierce",0);
+						character.CharacterFierce();
 					}
-					animator.SetTrigger("shoryukenInputed");
-					animator.SetInteger("shoryukenPunchType", 2);
-					comboSystem.ResetShoryukenSequence();
-				}	
-				else if (animator.GetBool("isAttacking") == false){					
-					character.AttackState();
-					character.CharacterFierce();
 				}
 			}
-			if (Input.GetKeyDown(KeyCode.Z)){					
-				if (CheckHurricaneKickSequence() && animator.GetBool("isAirborne") == false){
-					Debug.Log ("Hurricane kick inputed");
-					if (animator.GetBool("isAttacking") == false){
-						animator.Play("KenHurricaneKickLiftOff",0);
-						character.AttackState();
+			if (Input.GetKeyDown(KeyCode.Z)){	
+			
+				if (character.GetComponent<Ken>() != null){				
+					if (CheckHurricaneKickSequence() && animator.GetBool("isAirborne") == false){
+						Debug.Log ("Hurricane kick inputed");
+						if (animator.GetBool("isAttacking") == false){
+							animator.Play("KenHurricaneKickLiftOff",0);
+							character.AttackState();
+						}
+						animator.SetTrigger("hurricaneKickInputed");
+						animator.SetInteger("hurricaneKickType", 0);
+						comboSystem.ResetHurricaneKickSequence();
 					}
-					animator.SetTrigger("hurricaneKickInputed");
-					animator.SetInteger("hurricaneKickType", 0);
-					comboSystem.ResetHurricaneKickSequence();
-				}
-				else if (CheckHadoukenSequence() && animator.GetBool("isAirborne") == false){
-					Debug.Log ("Hadouken inputed");
-					if (animator.GetBool("isAttacking") == false){
-						character.AttackState();
-						animator.Play("KenRoll");
+					else if (CheckHadoukenSequence() && animator.GetBool("isAirborne") == false){
+						Debug.Log ("Hadouken inputed");
+						if (animator.GetBool("isAttacking") == false){
+							character.AttackState();
+							animator.Play("KenRoll");
+						}
+						animator.SetTrigger("rollInputed");
+						animator.SetInteger("rollKickType", 0);
+						comboSystem.ResetHadoukenSequence();
 					}
-					animator.SetTrigger("rollInputed");
-					animator.SetInteger("rollKickType", 0);
-					comboSystem.ResetHadoukenSequence();
-				}
-				else if (animator.GetBool("isAttacking") == false){
-					character.AttackState();
-					character.CharacterShort();
+					else if (animator.GetBool("isAttacking") == false){
+						character.AttackState();
+						character.CharacterShort();
+					}
 				}
 			}	
 			if (Input.GetKeyDown(KeyCode.X)){
-				if (CheckHurricaneKickSequence() && animator.GetBool("isAirborne") == false){
-					Debug.Log ("Hurricane kick inputed");
-					if (animator.GetBool("isAttacking") == false){
-						animator.Play("KenHurricaneKickLiftOff",0);
-						character.AttackState();
+			
+				if (character.GetComponent<Ken>() != null){
+					if (CheckHurricaneKickSequence() && animator.GetBool("isAirborne") == false){
+						Debug.Log ("Hurricane kick inputed");
+						if (animator.GetBool("isAttacking") == false){
+							animator.Play("KenHurricaneKickLiftOff",0);
+							character.AttackState();
+						}
+						animator.SetTrigger("hurricaneKickInputed");
+						animator.SetInteger("hurricaneKickType", 1);
+						comboSystem.ResetHurricaneKickSequence();
 					}
-					animator.SetTrigger("hurricaneKickInputed");
-					animator.SetInteger("hurricaneKickType", 1);
-					comboSystem.ResetHurricaneKickSequence();
-				}
-				else if (CheckHadoukenSequence() && animator.GetBool("isAirborne") == false){
-					Debug.Log ("Hadouken inputed");
-					if (animator.GetBool("isAttacking") == false){
-						character.AttackState();
-						animator.Play("KenRoll");
+					else if (CheckHadoukenSequence() && animator.GetBool("isAirborne") == false){
+						Debug.Log ("Hadouken inputed");
+						if (animator.GetBool("isAttacking") == false){
+							character.AttackState();
+							animator.Play("KenRoll");
+						}
+						animator.SetTrigger("rollInputed");
+						animator.SetInteger("rollKickType", 1);
+						comboSystem.ResetHadoukenSequence();
 					}
-					animator.SetTrigger("rollInputed");
-					animator.SetInteger("rollKickType", 1);
-					comboSystem.ResetHadoukenSequence();
-				}
-				else if (animator.GetBool("isAttacking") == false){
-					character.AttackState();
-					character.CharacterForward();
+					else if (animator.GetBool("isAttacking") == false){
+						character.AttackState();
+						character.CharacterForward();
+					}
 				}
 			}	
 			if (Input.GetKeyDown(KeyCode.C)){
-				if (CheckHurricaneKickSequence() && animator.GetBool("isAirborne") == false){
-					Debug.Log ("Hurricane kick inputed");
-					if (animator.GetBool("isAttacking") == false){
-						animator.Play("KenHurricaneKickLiftOff",0);
-						character.AttackState();
+				
+				if (character.GetComponent<Ken>() != null){
+					if (CheckHurricaneKickSequence() && animator.GetBool("isAirborne") == false){
+						Debug.Log ("Hurricane kick inputed");
+						if (animator.GetBool("isAttacking") == false){
+							animator.Play("KenHurricaneKickLiftOff",0);
+							character.AttackState();
+						}
+						animator.SetTrigger("hurricaneKickInputed");
+						animator.SetInteger("hurricaneKickType", 2);
+						comboSystem.ResetHurricaneKickSequence();
 					}
-					animator.SetTrigger("hurricaneKickInputed");
-					animator.SetInteger("hurricaneKickType", 2);
-					comboSystem.ResetHurricaneKickSequence();
-				}
-				else if (CheckHadoukenSequence() && animator.GetBool("isAirborne") == false){
-					Debug.Log ("Hadouken inputed");
-					if (animator.GetBool("isAttacking") == false){
-						character.AttackState();
-						animator.Play("KenRoll");
+					else if (CheckHadoukenSequence() && animator.GetBool("isAirborne") == false){
+						Debug.Log ("Hadouken inputed");
+						if (animator.GetBool("isAttacking") == false){
+							character.AttackState();
+							animator.Play("KenRoll");
+						}
+						animator.SetTrigger("rollInputed");
+						animator.SetInteger("rollKickType", 1);
+						comboSystem.ResetHadoukenSequence();
 					}
-					animator.SetTrigger("rollInputed");
-					animator.SetInteger("rollKickType", 1);
-					comboSystem.ResetHadoukenSequence();
-				}
-				else if (animator.GetBool("isAttacking") == false){
-					character.AttackState();
-					character.CharacterRoundhouse();
+					else if (animator.GetBool("isAttacking") == false){
+						character.AttackState();
+						character.CharacterRoundhouse();
+					}
 				}
 			}	
 		}

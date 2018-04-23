@@ -58,11 +58,11 @@ public class Hadouken : MonoBehaviour {
 				timer = blockStun;
 				hurtCharAnimator.SetBool("isInBlockStun", true);
 				if (hurtCharAnimator.GetBool("isStanding") == true){
-					hurtCharAnimator.Play("KenStandBlockStun",0,0f);
+					hurtCharAnimator.Play("StandBlockStun",0,0f);
 					PushBack(hurtCharacter, hurtPhysicsbody);
 				}
 				else if (hurtCharAnimator.GetBool("isCrouching") == true){
-					hurtCharAnimator.Play("KenCrouchBlockStun",0,0f);
+					hurtCharAnimator.Play("CrouchBlockStun",0,0f);
 					PushBack(hurtCharacter, hurtPhysicsbody);
 				} 
 				hurtCharAnimator.SetFloat ("blockStunTimer", timer);	
@@ -74,7 +74,7 @@ public class Hadouken : MonoBehaviour {
 				AudioSource.PlayClipAtPoint(connectedSound, transform.position);
 				hurtCharacter.SetDamage(damage);
 				if (hurtCharacter.GetHealth () <= 0){				
-					hurtCharAnimator.Play("KenKOBlendTree",0);
+					hurtCharAnimator.Play("KOBlendTree",0);
 					if (hurtCharacter.side == Character.Side.P1){
 						hurtPhysicsbody.velocity = new Vector2(-2f, 4f);
 					}
@@ -85,7 +85,7 @@ public class Hadouken : MonoBehaviour {
 				else{
 					timer = hitStun;
 					if (hurtCharAnimator.GetBool("isAirborne") == true){
-						hurtCharAnimator.Play("KenKnockDownBlendTree",0,0f);
+						hurtCharAnimator.Play("KnockDownBlendTree",0,0f);
 						if (hurtCharacter.side == Character.Side.P2){
 							hurtPhysicsbody.velocity = new Vector2(pushBack * 0.15f, 3f);
 						}
@@ -94,11 +94,11 @@ public class Hadouken : MonoBehaviour {
 						}
 					}
 					else if (hurtCharAnimator.GetBool("isCrouching") == true){
-						hurtCharAnimator.Play("KenCrouchHit",0,0f);
+						hurtCharAnimator.Play("CrouchHit",0,0f);
 						PushBack(hurtCharacter, hurtPhysicsbody);
 					}
 					else {
-						hurtCharAnimator.Play("KenHighHit",0,0f);
+						hurtCharAnimator.Play("HighHit",0,0f);
 						PushBack(hurtCharacter, hurtPhysicsbody);
 					}						
 					hurtCharAnimator.SetBool("isInHitStun", true);

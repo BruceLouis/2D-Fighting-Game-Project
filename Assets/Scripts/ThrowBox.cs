@@ -32,7 +32,7 @@ public class ThrowBox : MonoBehaviour {
 				}
 				animator.SetBool("isThrown", true);
 				selfAnimator.SetBool("throwTargetAcquired", true);
-				animator.Play("KenThrown");
+				animator.Play("Thrown");
 			}
 		}
 	}

@@ -56,6 +56,7 @@ GameObject:
   - component: {fileID: 50185509637383524}
   - component: {fileID: 95811054904830952}
   - component: {fileID: 114814384510232478}
+  - component: {fileID: 114264016615937340}
   m_Layer: 0
   m_Name: Ken
   m_TagString: Untagged
@@ -461,6 +462,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60825f62cf533044b84564c909c1392f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114264016615937340
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1311962846860956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7c8025bee3b1e4469302c3ab3b62976, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectile: {fileID: 1782454228098628, guid: 4842196045d6090428aec7cb92ab4a47, type: 2}
+  hadoukenSound: {fileID: 8300000, guid: fdbc927d6c8e3d341926c3e5bba0f278, type: 3}
+  shoryukenSound: {fileID: 8300000, guid: 14cea16d3c2606f479c55fb3accde7f9, type: 3}
+  flameSound: {fileID: 8300000, guid: e5cb133c672b808489f4ae12d3881e33, type: 3}
+  hurricaneKickSound: {fileID: 8300000, guid: b14fdd6b640c0834994ac752572154e0, type: 3}
+  hadoukenCreatedSound: {fileID: 8300000, guid: 85d3bc95bd420f440872550ad68c0b16,
+    type: 3}
 --- !u!114 &114380169046229582
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -524,19 +543,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22ee38b807a8428498e1ded842a56028, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 1
+  walkSpeed: 1.5
   health: 1000
   side: 0
   moveType: 0
   hitType: 0
-  projectile: {fileID: 1782454228098628, guid: 4842196045d6090428aec7cb92ab4a47, type: 2}
-  hadoukenSound: {fileID: 8300000, guid: fdbc927d6c8e3d341926c3e5bba0f278, type: 3}
-  shoryukenSound: {fileID: 8300000, guid: 14cea16d3c2606f479c55fb3accde7f9, type: 3}
-  hurricaneKickSound: {fileID: 8300000, guid: b14fdd6b640c0834994ac752572154e0, type: 3}
-  KOsound: {fileID: 8300000, guid: 32c564ed913afa347a6622a0f4899244, type: 3}
   normalAttackSound: {fileID: 8300000, guid: 591f3f0aef3a9674688fe1f55e73a8b7, type: 3}
-  hadoukenCreatedSound: {fileID: 8300000, guid: 85d3bc95bd420f440872550ad68c0b16,
-    type: 3}
+  KOsound: {fileID: 8300000, guid: 32c564ed913afa347a6622a0f4899244, type: 3}
   fellSound: {fileID: 8300000, guid: 44d2a74b3d0ed2746ba8492917f7564b, type: 3}
   flameSound: {fileID: 8300000, guid: e5cb133c672b808489f4ae12d3881e33, type: 3}
 --- !u!114 &114931195424782174

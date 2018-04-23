@@ -56,7 +56,10 @@ public class Opponent : MonoBehaviour {
 				PunchBagControls();
 			}
 			else{
-				AIControls();
+				
+				if (character.GetComponent<Ken>() != null){
+					KenAIControls();
+				}
 			}
 		}
 		else{
@@ -80,7 +83,7 @@ public class Opponent : MonoBehaviour {
 		healthBar.SetHealth(character.GetHealth());
 	}
 	
-	void AIControls(){
+	void KenAIControls(){
 		decisionTimer--;
 		if (distanceFromPlayer >= 2f){
 			if (decisionTimer <= 0){
@@ -851,10 +854,10 @@ public class Opponent : MonoBehaviour {
 				animator.SetTrigger("shoryukenInputed");			
 				if (animator.GetBool("isAttacking") == false){
 					character.AttackState();
-					animator.Play("KenShoryukenJab",0);
+					animator.Play("KenShoryukenFierce",0);
 				}
 				animator.SetTrigger("shoryukenInputed");
-				animator.SetInteger("shoryukenPunchType", 0);
+				animator.SetInteger("shoryukenPunchType", 2);
 			}
 		}
 		if (Input.GetKey(KeyCode.L)){

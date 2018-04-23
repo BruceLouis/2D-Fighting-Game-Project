@@ -13,193 +13,193 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 1
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: isCrouching
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: isLiftingOff
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: isAirborne
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: isWalkingForward
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: isWalkingBackward
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: isAttacking
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: isInHitStun
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: isInBlockStun
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: isMidAirRecovering
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: isKnockedDown
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: isCancellable
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: isRolling
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: shoryukenLiftOff
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: hitStunTimer
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: blockStunTimer
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: yVelocity
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: hadoukenOwner
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: hadoukenPunchType
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: hadoukenInputed
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: shoryukenInputed
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: shoryukenPunchType
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: shoryukenActive
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: hurricaneKickActive
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: hurricaneKickType
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: hurricaneKickInputed
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: rollInputed
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: rollKickType
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: isThrown
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: throwTargetAcquired
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: hasntHit
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: isKOed
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -5609,7 +5609,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenJumpForward
+  m_Name: JumpForward
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -5669,7 +5669,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenCrouch
+  m_Name: Crouch
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -5703,7 +5703,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenJumpStrong
+  m_Name: JumpStrong
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -5730,7 +5730,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenMidAirRoll
+  m_Name: MidAirRoll
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -5757,7 +5757,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenJumpRoundhouse
+  m_Name: JumpRoundhouse
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -5784,7 +5784,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenStandFierce
+  m_Name: StandFierce
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -5817,7 +5817,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenWalkForward
+  m_Name: WalkForward
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -5844,7 +5844,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenJumpNeutralShort
+  m_Name: JumpNeutralShort
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -5871,7 +5871,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenHighHit
+  m_Name: HighHit
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -5899,7 +5899,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenCrouchShort
+  m_Name: CrouchShort
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -5932,7 +5932,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenStandBlockStun
+  m_Name: StandBlockStun
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -5960,7 +5960,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenMidAirHit
+  m_Name: MidAirHit
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -5988,7 +5988,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenLanding
+  m_Name: Landing
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -6014,7 +6014,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenLowHit
+  m_Name: LowHit
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -6123,7 +6123,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenJumpNeutralStrong
+  m_Name: JumpNeutralStrong
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -6150,7 +6150,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenJumpForwardAttack
+  m_Name: JumpForwardAttack
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -6203,7 +6203,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenJumpNeutralForward
+  m_Name: JumpNeutralForward
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -6230,7 +6230,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenStandRoundhouse
+  m_Name: StandRoundhouse
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -6257,7 +6257,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenJumpFierce
+  m_Name: JumpFierce
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -6284,7 +6284,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenCrouchJab
+  m_Name: CrouchJab
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -6317,7 +6317,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenStandStrong
+  m_Name: StandStrong
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -6395,7 +6395,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenJumpJab
+  m_Name: JumpJab
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -6422,7 +6422,7 @@ AnimatorState:
   m_ObjectHideFlags: 3
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenKOBlendTree
+  m_Name: KOBlendTree
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -6450,7 +6450,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenKnockDownBlendTree
+  m_Name: KnockDownBlendTree
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -6505,7 +6505,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenJumpNeutral
+  m_Name: JumpNeutral
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -6538,7 +6538,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenCrouchRoundhouse
+  m_Name: CrouchRoundhouse
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -6600,7 +6600,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenStand
+  m_Name: Stand
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -6664,7 +6664,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenCrouchStrong
+  m_Name: CrouchStrong
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -6697,7 +6697,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenThrown
+  m_Name: Thrown
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -6724,7 +6724,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenStandShort
+  m_Name: StandShort
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -6751,7 +6751,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenKO
+  m_Name: KO
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -6776,7 +6776,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenCrouchHit
+  m_Name: CrouchHit
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -6804,7 +6804,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenCrouchForward
+  m_Name: CrouchForward
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -6837,7 +6837,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenCrouchFierce
+  m_Name: CrouchFierce
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -6895,7 +6895,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenCrouchBlockStun
+  m_Name: CrouchBlockStun
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -6923,7 +6923,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenJumpShort
+  m_Name: JumpShort
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -6977,7 +6977,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenJumpNeutralJab
+  m_Name: JumpNeutralJab
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -7029,7 +7029,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenTrip
+  m_Name: Trip
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -7083,7 +7083,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenJumpBackward
+  m_Name: JumpBackward
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -7116,7 +7116,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenStandForward
+  m_Name: StandForward
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -7170,7 +7170,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenWalkBackward
+  m_Name: WalkBackward
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -7222,7 +7222,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenJumpNeutralFierce
+  m_Name: JumpNeutralFierce
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -7249,7 +7249,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenJumpNeutralRoundhouse
+  m_Name: JumpNeutralRoundhouse
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -7276,7 +7276,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenGrounded
+  m_Name: Grounded
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -7304,7 +7304,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: KenStandJab
+  m_Name: StandJab
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
