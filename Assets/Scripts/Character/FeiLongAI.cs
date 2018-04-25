@@ -26,21 +26,21 @@ public class FeiLongAI : MonoBehaviour {
 	
 	public void Behaviors(){
 		decision = Random.Range(0,100); 
-		if (animator.GetBool("isLiftingOff") == false && animator.GetBool("isKnockedDown") == false && animator.GetBool("isThrown") == false 
+		if (animator.GetBool("isLiftingOff") == false && animator.GetBool("isKnockedDown") == false && animator.GetBool("isThrown") == false && animator.GetBool("isMidAirHit") == false
 		 	&& animator.GetBool("isMidAirRecovering") == false && animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false){
 			if (animator.GetBool("rekkaKenActive")){
 				decision = Random.Range(0,200);
 				if (playerCharacter.GetHitStunned() == true){
 					if (decision <= 40){
 						AIRekkaKens();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 				}
 				else{ 
 					if (decision <= 2){
 						AIRekkaKens();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 				}
@@ -48,60 +48,60 @@ public class FeiLongAI : MonoBehaviour {
 			else if (animator.GetBool("isAirborne") == true && animator.GetBool("isLiftingOff") == false){
 				if (decision <= 1){
 					AIcontroller.AIJumpFierce();
-					AIcontroller.CharacterWalkState();
+					AIcontroller.CharacterNeutralState();
 				}
 				else if (decision <= 6 && decision > 1){
 					AIcontroller.AIJumpRoundhouse();
-					AIcontroller.CharacterWalkState();
+					AIcontroller.CharacterNeutralState();
 				}				
 			}
 			else if (AIcontroller.GetDistanceFromPlayer() < 1f){
 				if (playerCharacter.GetHitStunned() == true){
 					if (decision <= 60){
 						AIRekkaKens();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 					else if (decision <= 70 && decision > 60){
 						AIcontroller.AIFierce(10,8);
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 					else {
 						AIShienKyakus();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 				}
 				else if (playerCharacter.GetBlockStunned() == true){
 					if (decision <= 30){
 						AIcontroller.AIJab(8);
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 					else if (decision <= 50 && decision > 30){
 						AIcontroller.AIStrong(2);
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 					else if (decision <= 60 && decision > 50){
 						AIcontroller.AIFierce(10,8);
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 					else if (decision <= 80 && decision > 60){
 						AIRekkaKens();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 					else if (decision <= 85 && decision > 80){
 						AIShortShienKyakus();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 					else {
 						AIRekkaKuns();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 				}
@@ -118,18 +118,18 @@ public class FeiLongAI : MonoBehaviour {
 						character.SetBackPressed(false);
 					}
 					else if (decision <= 75 && decision > 63){
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.AIJump();
 						character.SetBackPressed(false);
 					}
 					else if (decision <= 90 && decision > 75){
 						AIRekkaKuns();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 					else {
 						AIRekkaKens();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 				}
@@ -141,31 +141,31 @@ public class FeiLongAI : MonoBehaviour {
 					}
 					else if (decision <= 13 && decision > 10){
 						AIcontroller.AIFierce(10,8);
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 					else if (decision <= 16 && decision > 13){
 						AIcontroller.AIStrong(2);
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 					else if (decision <= 22 && decision > 16){
 						AIcontroller.AIJab(8);
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 					else if (decision <= 23 && decision > 22){
 						AIcontroller.AIShort();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 					else if (decision <= 25 && decision > 23){
 						AIcontroller.AIForward(2);
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 					else if (decision <= 30 && decision > 25){
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.AIJump();
 						character.SetBackPressed(false);
 					}
@@ -176,32 +176,32 @@ public class FeiLongAI : MonoBehaviour {
 					}
 					else if (decision <= 35 && decision > 32){
 						AIcontroller.AISweep();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}			
 					else if (decision <= 40 && decision > 35){
-						AIThrow();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.AIThrow();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}		
 					else if (decision <= 45 && decision > 40){
 						AIRekkaKens();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 					else if (decision <= 48 && decision > 45){
 						AIShortShienKyakus();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 					else if (decision <= 50 && decision > 48){
 						AIRekkaKuns();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 					else{
 						AIcontroller.AICrouch();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 				}
@@ -221,12 +221,12 @@ public class FeiLongAI : MonoBehaviour {
 					}
 					else if (decision <= 90 && decision > 75){
 						AIRekkaKuns();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 					else {
 						AIRekkaKens();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 				}
@@ -238,22 +238,22 @@ public class FeiLongAI : MonoBehaviour {
 					}			
 					else if (decision <= 34 && decision > 30){
 						AIcontroller.AIFierce(2,0);
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 					else if (decision <= 37 && decision > 34){
 						AIcontroller.AIStrong(2);
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 					else if (decision <= 39 && decision > 37){
 						AIcontroller.AIJab(2);
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 					else if (decision <= 40 && decision > 39){
 						AIcontroller.AIShort();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 					else if (decision <= 50 && decision > 40){
@@ -262,28 +262,28 @@ public class FeiLongAI : MonoBehaviour {
 						character.SetBackPressed(false);
 					}
 					else if (decision <= 55 && decision > 50){
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.AIJump();
 						character.SetBackPressed(false);
 					}
 					else if (decision <= 65 && decision > 55){
 						AIRekkaKens();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 					else if (decision <= 75 && decision > 65){
 						AIRekkaKuns();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 					else if (decision <= 80 && decision > 75){
 						AIcontroller.AIStand();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();		
 					}
 					else{
 						AIcontroller.AICrouch();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 				}
@@ -300,41 +300,28 @@ public class FeiLongAI : MonoBehaviour {
 					character.SetBackPressed(false);
 				}
 				else if (decision <= 70 && decision > 65){
-					AIcontroller.CharacterWalkState();
+					AIcontroller.CharacterNeutralState();
 					AIcontroller.AIJump();
 					character.SetBackPressed(false);
 				}
 				else if (decision <= 85 && decision > 70){
 					AIRekkaKuns();
-					AIcontroller.CharacterWalkState();
+					AIcontroller.CharacterNeutralState();
 					AIcontroller.DoesAIBlock();
 				}
 				else if (decision <= 90 && decision > 85){
 					AIcontroller.AIStand();
-					AIcontroller.CharacterWalkState();
+					AIcontroller.CharacterNeutralState();
 					AIcontroller.DoesAIBlock();		
 				}
 				else{
 					AIcontroller.AICrouch();
-					AIcontroller.CharacterWalkState();
+					AIcontroller.CharacterNeutralState();
 					AIcontroller.DoesAIBlock();
 				}
 			}
-			AIcontroller.CharacterWalkState();
+			AIcontroller.Walk();	
 		}			
-		AIcontroller.Walk();	
-	}
-	
-	void AIThrow(){
-		if (animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false 
-		    && animator.GetBool("isLiftingOff") == false && animator.GetBool("isAirborne") == false 
-		    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isAttacking") == false
-		    && animator.GetBool("isMidAirRecovering") == false && animator.GetBool("isThrown") == false){	
-			AIcontroller.AIStand();
-			character.SetBackPressed(false);
-			character.AttackState();
-			animator.Play("FeiLongThrowStartup");
-		}
 	}
 	
 	void AIRekkaKens(){

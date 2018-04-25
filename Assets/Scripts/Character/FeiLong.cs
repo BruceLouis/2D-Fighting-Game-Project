@@ -50,143 +50,118 @@ public class FeiLong : MonoBehaviour {
 	
 	public void FeiLongShienKyaku(){
 		if (animator.GetBool("isLiftingOff") == false){	
-			if (animator.GetInteger("shienKyakuKickType") == 0){
-				character.MoveProperties(30f, 20f, 5f, 80f, 2, 3);
-			}
-			else if (animator.GetInteger("shienKyakuKickType") == 1){
-				character.MoveProperties(40f, 25f, 7.5f, 85f, 2, 3);
-			}
-			else{
-				character.MoveProperties(60f, 25f, 10f, 90f, 2, 3);
+			switch(animator.GetInteger("shienKyakuKickType")){
+				case 0:
+					character.MoveProperties(30f, 20f, 5f, 80f, 2, 3);
+					break;
+				case 1:
+					character.MoveProperties(40f, 25f, 7.5f, 85f, 2, 3);
+					break;
+				default:
+					character.MoveProperties(60f, 25f, 10f, 90f, 2, 3);
+					break;
 			}
 		}
 	}	
+	
 	public void ShienKyakuLiftOff(){		
-		if (animator.GetInteger("shienKyakuKickType") == 0){
-			physicsbody.velocity = new Vector2(0f, 3f);
-		}
-		else if (animator.GetInteger("shienKyakuKickType") == 1){
-			physicsbody.velocity = new Vector2(0f, 4f);
-		}
-		else{
-			physicsbody.velocity = new Vector2(0f, 4.5f);
+		switch(animator.GetInteger("shienKyakuKickType")){
+			case 0:
+				FeiLongTakeOffVelocity(0f, 3f);
+				break;
+			case 1:
+				FeiLongTakeOffVelocity(0f, 4f);
+				break;
+			default:
+				FeiLongTakeOffVelocity(0f, 4.5f);
+				break;
 		}
 		Vector3 angle = new Vector3(-90f, 0f, 0f); 
 		flameEffect = Instantiate(feiLongFlame, transform.position, Quaternion.Euler(angle)) as GameObject;
 		flameEffect.transform.parent = gameObject.transform;
 		AudioSource.PlayClipAtPoint(character.normalAttackSound,transform.position);
-		animator.SetBool("isAirborne", true);
 	}
 	
 	
 	public void FeiLongRekkaKun(){
 		if (animator.GetBool("isLiftingOff") == false){	
-			if (animator.GetInteger("rekkaKunKickType") == 0){
-				character.MoveProperties(40f, 20f, 10f, 30f, 2, 4);
-			}
-			else if (animator.GetInteger("rekkaKunKickType") == 1){
-				character.MoveProperties(45f, 25f, 10f, 32f, 2, 4);
-			}
-			else{
-				character.MoveProperties(60f, 25f, 10f, 35f, 2, 4);
+			switch(animator.GetInteger("rekkaKunKickType")){
+				case 0:
+					character.MoveProperties(40f, 20f, 10f, 30f, 2, 4);
+					break;
+				case 1:
+					character.MoveProperties(40f, 25f, 10f, 32f, 2, 4);
+					break;
+				default:
+					character.MoveProperties(40f, 25f, 10f, 35f, 2, 4);
+					break;
 			}
 		}
 	}	
 	
 	public void RekkaKunLiftOff(){		
-		if (animator.GetInteger("rekkaKunKickType") == 0){
-			if (character.side == Character.Side.P1){
-				physicsbody.velocity = new Vector2(2.5f, 3f);
-			}
-			else{
-				physicsbody.velocity = new Vector2(-2.5f, 3f);
-			}
-		}
-		else if (animator.GetInteger("rekkaKunKickType") == 1){
-			if (character.side == Character.Side.P1){
-				physicsbody.velocity = new Vector2(3f, 3f);
-			}
-			else{
-				physicsbody.velocity = new Vector2(-3f, 3f);
-			}
-		}
-		else{
-			if (character.side == Character.Side.P1){
-				physicsbody.velocity = new Vector2(3.5f, 3f);
-			}
-			else{
-				physicsbody.velocity = new Vector2(-3.5f, 3f);
-			}
+		switch(animator.GetInteger("rekkaKunKickType")){
+			case 0:
+				FeiLongTakeOffVelocity (2.5f, 3f);
+				break;
+			case 1:
+				FeiLongTakeOffVelocity (3f, 3f);
+				break;
+			default:
+				FeiLongTakeOffVelocity (3.5f, 3f);
+				break;
 		}
 		AudioSource.PlayClipAtPoint(character.normalAttackSound,transform.position);
-		animator.SetBool("isAirborne", true);
 	}
 	
 	public void FeiLongRekkaKen(){
 		if (animator.GetBool("isLiftingOff") == false){	
-			if (animator.GetInteger("rekkaPunchType") == 0){
-				character.MoveProperties(40f, 30f, 15f, 20f, 2, 5);
-				if (character.side == Character.Side.P1){
-					physicsbody.velocity = new Vector2(2f, 0f);
-				}
-				else{
-					physicsbody.velocity = new Vector2(-2f, 0f);
-				}
+			switch(animator.GetInteger("rekkaPunchType")){
+				case 0:
+					character.MoveProperties(40f, 30f, 15f, 20f, 2, 5);
+					FeiLongTakeOffVelocity(2f, 0f);
+					break;
+				case 1:
+					character.MoveProperties(40f, 30f, 15f, 25f, 2, 5);
+					FeiLongTakeOffVelocity(2.5f, 0f);
+					break;
+				default:
+					character.MoveProperties(40f, 30f, 15f, 30f, 2, 5);
+					FeiLongTakeOffVelocity(3f, 0f);
+					break;
 			}
-			else if (animator.GetInteger("rekkaPunchType") == 1){
-				character.MoveProperties(40f, 30f, 15f, 25f, 2, 5);
-				if (character.side == Character.Side.P1){
-					physicsbody.velocity = new Vector2(2.5f, 0f);
-				}
-				else{
-					physicsbody.velocity = new Vector2(-2.5f, 0f);
-				}
-			}
-			else{
-				character.MoveProperties(40f, 30f, 15f, 30f, 2, 5);
-				if (character.side == Character.Side.P1){
-					physicsbody.velocity = new Vector2(3f, 0f);
-				}
-				else{
-					physicsbody.velocity = new Vector2(-3f, 0f);
-				}
-			}
+			AudioSource.PlayClipAtPoint(character.normalAttackSound,transform.position);
 		}
-		AudioSource.PlayClipAtPoint(character.normalAttackSound,transform.position);
 	}	
 	
 	public void FeiLongRekkaKenFinal(){
 		if (animator.GetBool("isLiftingOff") == false){	
-			if (animator.GetInteger("rekkaPunchType") == 0){
-				character.MoveProperties(30f, 20f, 15f, 35f, 2, 2);
-				if (character.side == Character.Side.P1){
-					physicsbody.velocity = new Vector2(2.5f, 0f);
-				}
-				else{
-					physicsbody.velocity = new Vector2(-2.5f, 0f);
-				}
+			switch(animator.GetInteger("rekkaPunchType")){
+			 	case 0:
+					character.MoveProperties(40f, 20f, 15f, 35f, 2, 2);
+					FeiLongTakeOffVelocity(2.5f, 0f);
+					break;
+				case 1:
+					character.MoveProperties(50f, 22.5f, 20f, 40f, 2, 2);
+					FeiLongTakeOffVelocity(3.5f, 0f);
+					break;
+				default:
+					character.MoveProperties(60f, 25f, 20f, 50f, 2, 2);
+					FeiLongTakeOffVelocity(4f, 0f);
+					break;
 			}
-			else if (animator.GetInteger("rekkaPunchType") == 1){
-				character.MoveProperties(40f, 25f, 20f, 40f, 2, 2);
-				if (character.side == Character.Side.P1){
-					physicsbody.velocity = new Vector2(3.5f, 0f);
-				}
-				else{
-					physicsbody.velocity = new Vector2(-3.5f, 0f);
-				}
-			}
-			else{
-				character.MoveProperties(60f, 25f, 20f, 50f, 2, 2);
-				if (character.side == Character.Side.P1){
-					physicsbody.velocity = new Vector2(4f, 0f);
-				}
-				else{
-					physicsbody.velocity = new Vector2(-4f, 0f);
-				}
-			}
+			AudioSource.PlayClipAtPoint(character.normalAttackSound,transform.position);
 		}
-		AudioSource.PlayClipAtPoint(character.normalAttackSound,transform.position);
 	}	
+
+	void FeiLongTakeOffVelocity (float x, float y){
+		if (character.transform.localScale.x == 1) {
+			physicsbody.velocity = new Vector2 (x, y);
+		}
+		else {
+			physicsbody.velocity = new Vector2 (-x, y);
+		}
+	}
 	
 	public void PlayRekkaFirstSound(){
 		AudioSource.PlayClipAtPoint(rekkaFirstSound, transform.position);
@@ -217,23 +192,45 @@ public class FeiLong : MonoBehaviour {
 	}
 	
 	public void FlamePositionFront(){
-		flameEffect.transform.position = new Vector3(transform.position.x + 0.13f, transform.position.y + 0.125f, transform.position.z);
 		flameEffect.transform.rotation = Quaternion.Euler (new Vector3(-90f, 0f, 0f)); 
+		if (character.side == Character.Side.P1){
+			flameEffect.transform.position = new Vector3(transform.position.x + 0.13f, transform.position.y + 0.125f, transform.position.z);
+		}
+		else{
+			flameEffect.transform.position = new Vector3(transform.position.x - 0.13f, transform.position.y + 0.125f, transform.position.z);
+		}
 	}
 	
 	public void FlamePositionBack(){
-		flameEffect.transform.position = new Vector3(transform.position.x - 0.13f, transform.position.y + 0.125f, transform.position.z);
 		flameEffect.transform.rotation = Quaternion.Euler (new Vector3(-90f, 0f, 0f));
+		if (character.side == Character.Side.P2){
+			flameEffect.transform.position = new Vector3(transform.position.x + 0.13f, transform.position.y + 0.125f, transform.position.z);
+		}
+		else{
+			flameEffect.transform.position = new Vector3(transform.position.x - 0.13f, transform.position.y + 0.125f, transform.position.z);
+		}
 	}
 	
 	public void FlamePositionRight(){
-		flameEffect.transform.position = new Vector3(transform.position.x + 0.235f, transform.position.y + 0.125f, transform.position.z);
-		flameEffect.transform.rotation = Quaternion.Euler (new Vector3(-80f, -90f, 90f)); 
+		if (character.side == Character.Side.P1){
+			flameEffect.transform.rotation = Quaternion.Euler (new Vector3(-80f, -90f, 90f)); 
+			flameEffect.transform.position = new Vector3(transform.position.x + 0.235f, transform.position.y + 0.125f, transform.position.z);
+		}
+		else{
+			flameEffect.transform.rotation = Quaternion.Euler (new Vector3(-100f, -90f, 90f)); 
+			flameEffect.transform.position = new Vector3(transform.position.x - 0.235f, transform.position.y + 0.125f, transform.position.z);
+		}
 	}
 	
 	public void FlamePositionLeft(){
-		flameEffect.transform.position = new Vector3(transform.position.x - 0.235f, transform.position.y + 0.125f, transform.position.z);
-		flameEffect.transform.rotation = Quaternion.Euler (new Vector3(-100f, -90f, 90f)); 
+		if (character.side == Character.Side.P2){
+			flameEffect.transform.rotation = Quaternion.Euler (new Vector3(-80f, -90f, 90f)); 
+			flameEffect.transform.position = new Vector3(transform.position.x + 0.235f, transform.position.y + 0.125f, transform.position.z);
+		}
+		else{
+			flameEffect.transform.rotation = Quaternion.Euler (new Vector3(-100f, -90f, 90f)); 
+			flameEffect.transform.position = new Vector3(transform.position.x - 0.235f, transform.position.y + 0.125f, transform.position.z);
+		}
 	}
 		
 	public void FlameIsGone(){

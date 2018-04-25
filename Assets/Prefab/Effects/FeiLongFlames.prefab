@@ -101,7 +101,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -198962716
+  randomSeed: -1492422852
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -661,7 +661,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 100
+      scalar: 150
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -1003,16 +1003,16 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 0.9705882, g: 0.50202835, b: 0, a: 1}
-        key1: {r: 0.8455882, g: 0.7900161, b: 0.34196585, a: 0.3882353}
-        key2: {r: 0, g: 0, b: 0, a: 0}
+        key0: {r: 0.83823526, g: 0, b: 0, a: 1}
+        key1: {r: 1, g: 1, b: 1, a: 0.32156864}
+        key2: {r: 0, g: 0, b: 0, a: 0.3882353}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
         key5: {r: 0, g: 0, b: 0, a: 0}
         key6: {r: 0, g: 0, b: 0, a: 0}
         key7: {r: 0, g: 0, b: 0, a: 0}
         ctime0: 0
-        ctime1: 42020
+        ctime1: 65535
         ctime2: 0
         ctime3: 0
         ctime4: 0
@@ -1020,8 +1020,8 @@ ParticleSystem:
         ctime6: 0
         ctime7: 0
         atime0: 0
-        atime1: 41441
-        atime2: 0
+        atime1: 42020
+        atime2: 53777
         atime3: 0
         atime4: 0
         atime5: 0
@@ -3417,8 +3417,8 @@ ParticleSystemRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_Materials:
-  - {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
-  - {fileID: 0}
+  - {fileID: 2100000, guid: ff8785f0862725d4c9d3ce2a2398ce2a, type: 2}
+  - {fileID: 2100000, guid: ff8785f0862725d4c9d3ce2a2398ce2a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

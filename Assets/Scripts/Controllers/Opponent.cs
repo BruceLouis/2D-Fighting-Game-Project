@@ -8,7 +8,7 @@ public class Opponent : MonoBehaviour {
 	public GameObject mugShotObject;
 	public GameObject[] streetFighterCharacters;
 	public Text nameText;
-	public Sprite kenMugShot, feiLongMugShot;
+	public Sprite kenMugShot, feiLongMugShot, balrogMugShot;
 	public bool isAI;
 	
 	private TimeControl timeControl;
@@ -20,19 +20,19 @@ public class Opponent : MonoBehaviour {
 	private HealthBarP2 healthBar;
 	private FeiLong feiLong;
 	private Image mugShot;
+	private GameObject projectileP2Parent;
 	
 	private KenAI kenAI;
 	private FeiLongAI feiLongAI;
+	private BalrogAI balrogAI;
 	
-	private bool pressedForward, pressedBackward;
+	private bool pressedForward, pressedBackward, pressedCrouch;
 	private float distance, distanceFromPlayer;
 		
 	void Awake () {
-		int randChar = Random.Range (0, streetFighterCharacters.Length);
-		
-		GameObject streetFighterCharacter = Instantiate(streetFighterCharacters[randChar]);
-		streetFighterCharacter.transform.parent = gameObject.transform;
-		streetFighterCharacter.transform.position = gameObject.transform.position;
+	
+		InitiateCharacter();
+				
 		gameObject.layer = LayerMask.NameToLayer("Player2");
 		gameObject.tag = "Player2";
 		foreach(Transform character in gameObject.transform){
@@ -63,7 +63,15 @@ public class Opponent : MonoBehaviour {
 			mugShot.sprite = kenMugShot;
 			nameText.text = "Ken";
 		}		
-		
+		else if (character.GetComponent<Balrog>() != null){
+			balrogAI = GetComponent<BalrogAI>();
+			mugShot.sprite = balrogMugShot;
+			nameText.text = "Balrog";
+		}		
+		projectileP2Parent = GameObject.Find("ProjectileP2Parent");
+		if (projectileP2Parent == null){
+			projectileP2Parent = new GameObject("ProjectileP2Parent");
+		}
 	}
 	
 	// Update is called once per frame
@@ -85,13 +93,16 @@ public class Opponent : MonoBehaviour {
 				else if (character.GetComponent<FeiLong>() != null){
 					feiLongAI.Behaviors();
 				}
+				else if (character.GetComponent<Balrog>() != null){
+					balrogAI.Behaviors();
+				}
 			}
 		}
 		else{
 			if (TimeControl.roundOver == false){
 				TimeControl.slowDown = true;
 				if (animator.GetBool("isKOed") == true){
-					character.KO();
+					character.KOSound();
 					TimeControl.roundOver = true;
 				}					
 			}				
@@ -107,6 +118,19 @@ public class Opponent : MonoBehaviour {
 		DetermineSide();
 		healthBar.SetHealth(character.GetHealth());
 	}			
+	
+	
+	public void AIThrow(){
+		if (animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false 
+		    && animator.GetBool("isLiftingOff") == false && animator.GetBool("isAirborne") == false 
+		    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isAttacking") == false
+		    && animator.GetBool("isMidAirRecovering") == false && animator.GetBool("isThrown") == false){	
+			AIStand();
+			character.SetBackPressed(false);
+			character.AttackState();
+			animator.Play("ThrowStartup");
+		}
+	}
 	
 	public void AIJab(int maxNum){
 		int crouchOrStand = Random.Range(0, maxNum);
@@ -298,11 +322,13 @@ public class Opponent : MonoBehaviour {
 	public void AIStand(){
 		animator.SetBool("isStanding", true);
 		animator.SetBool("isCrouching", false);
+		pressedCrouch = false;
 	}	
 	
 	public void AICrouch(){
 		animator.SetBool("isStanding", false);
 		animator.SetBool("isCrouching", true);
+		pressedCrouch = true;
 	}
 	
 	public void AIPressedForward(){
@@ -320,25 +346,25 @@ public class Opponent : MonoBehaviour {
 		    && animator.GetBool("isInBlockStun") == false && animator.GetBool("isLiftingOff") == false
 		    && animator.GetBool("isStanding") == true && animator.GetBool("isAirborne") == false
 		    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isMidAirRecovering") == false
-		    && animator.GetBool("isThrown") == false){
-			AIStand();	
+		    && animator.GetBool("isThrown") == false && animator.GetBool("isCrouching") == false){
 			if (pressedForward == true && animator.GetBool("isWalkingBackward") == false){
 				animator.SetBool("isWalkingForward", true);	
+				
 				if (character.side == Character.Side.P1){
-					character.transform.Translate(Vector3.right * character.walkSpeed * Time.deltaTime);		
+					character.transform.Translate(Vector3.right * character.walkSpeed * Time.deltaTime);	
 				}
 				else{
-					character.transform.Translate(Vector3.left * character.walkSpeed * Time.deltaTime);		
+					character.transform.Translate(Vector3.left * character.walkSpeed * Time.deltaTime);	
 				}
 			}
 			else if (pressedBackward == true && animator.GetBool("isWalkingForward") == false){
 				animator.SetBool("isWalkingBackward", true);				
 				if (character.side == Character.Side.P2){
-					character.transform.Translate(Vector3.right * character.walkSpeed * Time.deltaTime);		
+					character.transform.Translate(Vector3.right * character.walkSpeed * Time.deltaTime);	
 				}
 				else{
-					character.transform.Translate(Vector3.left * character.walkSpeed * Time.deltaTime);		
-				}		
+					character.transform.Translate(Vector3.left * character.walkSpeed * Time.deltaTime);	
+				}
 			}	
 		}
 		if (pressedForward == false){
@@ -349,23 +375,39 @@ public class Opponent : MonoBehaviour {
 		}
 	}
 		
-	public void CharacterWalkState(){
+	public void CharacterNeutralState(){
 		pressedForward = false;
 		pressedBackward = false;
+	}	
+	
+	public void AICharges(){
+		pressedForward = false;
+		pressedBackward = true;
+	}
+
+	void InitiateCharacter (){
+		int randChar = Random.Range (0, streetFighterCharacters.Length);
+		GameObject streetFighterCharacter = Instantiate (streetFighterCharacters [randChar]);
+		streetFighterCharacter.transform.parent = gameObject.transform;
+		streetFighterCharacter.transform.position = gameObject.transform.position;
 	}
 	
-	void SideSwitch(){			
+	void SideSwitch(){		
 		if (animator.GetBool("isAttacking") == false){
 			if (distance < 0 && character.side == Character.Side.P1){			
 				character.side = Character.Side.P2;
-				character.SideSwitch();
-				CharacterWalkState();
+				CharacterNeutralState();
 			}
 			else if (distance >= 0 && character.side == Character.Side.P2){
 				character.side = Character.Side.P1;
-				character.SideSwitch();
-				CharacterWalkState();
+				CharacterNeutralState();
 			}
+		}
+		if (animator.GetBool ("isAirborne") == false && animator.GetBool ("isThrown") == false && animator.GetBool ("isWalkingForward") == false
+		    && animator.GetBool ("throwTargetAcquired") == false && animator.GetBool ("isLiftingOff") == false && animator.GetBool ("isWalkingBackward") == false				    
+		    && animator.GetBool ("isInHitStun") == false && animator.GetBool ("isInBlockStun") == false && animator.GetBool("isKnockedDown") == false) {
+			
+			character.SideSwitch();
 		}
 	}
 	
@@ -387,19 +429,39 @@ public class Opponent : MonoBehaviour {
 					character.transform.position = new Vector3(playerCharacter.transform.position.x - 0.5f, playerCharacter.transform.position.y, 0f);
 				}		
 			}	
+			else if (playerCharacter.GetComponent<Balrog>() != null){
+				if (character.side == Character.Side.P2){
+					character.transform.position = new Vector3(playerCharacter.transform.position.x + 0.3f, playerCharacter.transform.position.y, 0f);
+				}
+				else{
+					character.transform.position = new Vector3(playerCharacter.transform.position.x - 0.3f, playerCharacter.transform.position.y, 0f);
+				}		
+			}	
 		}
 	}
 		
 	void DetermineSide(){
-		distanceFromPlayer = Mathf.Abs(playerCharacter.transform.position.x -  character.transform.position.x);
 		distance = playerCharacter.transform.position.x - character.transform.position.x;	
-		if (animator.GetBool("isAirborne") == false && animator.GetBool("isKnockedDown") == false
-		    && animator.GetBool("isThrown") == false && animator.GetBool("throwTargetAcquired") == false
-		    && animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false){
-			//determine which side
-			SideSwitch();
-		}
+		distanceFromPlayer = Mathf.Abs(playerCharacter.transform.position.x -  character.transform.position.x);
+		SideSwitch();
 	}
+	
+	public GameObject GetProjectileP2Parent(){
+		return projectileP2Parent;
+	}
+	
+	public bool GetBackPressed(){
+		return pressedBackward;
+	}	
+	
+	public bool GetDownPressed(){
+		return pressedCrouch;
+	}	
+	
+	public bool GetForwardPressed(){
+		return pressedForward;
+	}	
+	
 	public float GetDistanceFromPlayer(){
 		return distanceFromPlayer;
 	}
@@ -483,8 +545,12 @@ public class Opponent : MonoBehaviour {
 			}				
 			if (Input.GetKeyDown(KeyCode.G)){
 				character.AttackState();
-				animator.Play("KenThrowStartup");
+				animator.Play("ThrowStartup");
 			}
+			if (Input.GetKeyDown(KeyCode.H)){
+				character.AttackState();
+				character.CharacterStrong();
+			}				
 			
 		}
 		if (Input.GetKeyDown(KeyCode.Alpha3)){
@@ -497,12 +563,22 @@ public class Opponent : MonoBehaviour {
 			animator.SetTrigger("hadoukenInputed");
 		}	
 		if (Input.GetKeyDown(KeyCode.Alpha4)){
-			if (animator.GetBool("isAttacking") == false && animator.GetBool("isAirborne") == false){
-				animator.Play("KenHurricaneKickLiftOff",0);
-				character.AttackState();
+			if (character.GetComponent<Ken>() != null){
+				if (animator.GetBool("isAttacking") == false && animator.GetBool("isAirborne") == false){
+					animator.Play("KenHurricaneKickLiftOff",0);
+					character.AttackState();
+				}
+				animator.SetTrigger("hurricaneKickInputed");
+				animator.SetInteger("hurricaneKickType", 2);
 			}
-			animator.SetTrigger("hurricaneKickInputed");
-			animator.SetInteger("hurricaneKickType", 2);
+			else if (character.GetComponent<FeiLong>() != null){
+				if (animator.GetBool("isAttacking") == false){
+					character.AttackState();
+					animator.Play("FeiLongRekkaKun",0);
+				}
+				animator.SetTrigger("shoryukenInputed");
+				animator.SetInteger("rekkaKunKickType", 2);
+			}
 		}	
 		if (Input.GetKey (KeyCode.Q)){	
 			

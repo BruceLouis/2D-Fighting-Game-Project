@@ -38,6 +38,9 @@ public class ThrowBox : MonoBehaviour {
 				else if (throwingCharacter.GetComponent<FeiLong>() != null){
 					animator.Play("ThrownByFeiLong");
 				}
+				else if (throwingCharacter.GetComponent<Balrog>() != null){
+					animator.Play("ThrownByBalrog");
+				}
 			}
 		}
 	}

@@ -47,10 +47,12 @@ public class Ken : MonoBehaviour {
 		if (animator.GetInteger("hadoukenOwner") == 1){
 			hadouken.gameObject.layer = LayerMask.NameToLayer("ProjectileP1");
 			hadouken.gameObject.tag = "Player1";
+			hadouken.transform.parent = GameObject.Find("ProjectileP1Parent").transform;
 		}
 		else{
 			hadouken.gameObject.layer = LayerMask.NameToLayer("ProjectileP2");
 			hadouken.gameObject.tag = "Player2";
+			hadouken.transform.parent = GameObject.Find("ProjectileP2Parent").transform;
 		} 
 		if (character.side == Character.Side.P1){
 			hadouken.transform.position = transform.position + offset;
@@ -58,106 +60,96 @@ public class Ken : MonoBehaviour {
 		else{
 			hadouken.transform.position = transform.position - offset;
 		}
-		if (animator.GetInteger("hadoukenPunchType") == 0){
-			if (character.side == Character.Side.P1){
-				rigidbody.velocity = new Vector2(3f, 0f);
-			}
-			else {
-				rigidbody.velocity = new Vector2(-3f, 0f);	
-				hadoukenSprite.flipX = true;
-			}
-		}
-		else if (animator.GetInteger("hadoukenPunchType") == 1){
-			if (character.side == Character.Side.P1){
-				rigidbody.velocity = new Vector2(3.5f, 0f);
-			}
-			else {
-				rigidbody.velocity = new Vector2(-3.5f, 0f);	
-				hadoukenSprite.flipX = true;
-			}
-		}
-		else{
-			if (character.side == Character.Side.P1){
-				rigidbody.velocity = new Vector2(4f, 0f);
-			}
-			else {
-				rigidbody.velocity = new Vector2(-4f, 0f);	
-				hadoukenSprite.flipX = true;
-			}
+		switch(animator.GetInteger("hadoukenPunchType")){
+			case 0:
+				if (character.side == Character.Side.P1){
+					rigidbody.velocity = new Vector2(2f, 0f);
+				}
+				else {
+					rigidbody.velocity = new Vector2(-2f, 0f);	
+					hadoukenSprite.flipX = true;
+				}
+				break;
+		
+			case 1:
+				if (character.side == Character.Side.P1){
+					rigidbody.velocity = new Vector2(2.5f, 0f);
+				}
+				else {
+					rigidbody.velocity = new Vector2(-2.5f, 0f);	
+					hadoukenSprite.flipX = true;
+				}
+				break;
+		
+			default:
+				if (character.side == Character.Side.P1){
+					rigidbody.velocity = new Vector2(3f, 0f);
+				}
+				else {
+					rigidbody.velocity = new Vector2(-3f, 0f);	
+					hadoukenSprite.flipX = true;
+				}
+				break;
 		}
 		
 	}
 	
 	public void KenShoryuken(){
 		shoryukenType = animator.GetInteger("shoryukenPunchType");
-		if (animator.GetBool("isLiftingOff") == false){	
-			if (animator.GetInteger("shoryukenPunchType") == 0){
-				character.MoveProperties(30f, 20f, 5f, 80f, 2, 3);
-			}
-			else if (animator.GetInteger("shoryukenPunchType") == 1){
-				character.MoveProperties(40f, 25f, 7.5f, 85f, 2, 3);
-			}
-			else{
-				character.MoveProperties(60f, 25f, 10f, 90f, 2, 3);
+		if (animator.GetBool("isLiftingOff") == false){				
+			switch(animator.GetInteger("shoryukenPunchType")){
+				case 0:
+					character.MoveProperties(30f, 20f, 5f, 80f, 2, 3);
+					break;
+				case 1:
+					character.MoveProperties(40f, 25f, 7.5f, 85f, 2, 3);
+					break;
+				default:
+					character.MoveProperties(60f, 25f, 10f, 90f, 2, 3);
+					break;
 			}
 		}
 	}	
 	public void ShoryukenLiftOff(){		
-		if (animator.GetInteger("shoryukenPunchType") == 0){
-			if (character.side == Character.Side.P1){
-				physicsbody.velocity = new Vector2(1f, 3f);
-			}
-			else{
-				physicsbody.velocity = new Vector2(-1f, 3f);
-			}
-		}
-		else if (animator.GetInteger("shoryukenPunchType") == 1){
-			if (character.side == Character.Side.P1){
-				physicsbody.velocity = new Vector2(1.5f, 4f);
-			}
-			else{
-				physicsbody.velocity = new Vector2(-1.5f, 4f);
-			}
-		}
-		else{
-			if (character.side == Character.Side.P1){
-				physicsbody.velocity = new Vector2(2f, 5f);
-			}
-			else{
-				physicsbody.velocity = new Vector2(-2f, 5f);
-			}
-		}
+		switch(animator.GetInteger("shoryukenPunchType")){
+			case 0:
+				KenTakeOffVelocity(1f, 3f);
+				break;
+				
+			case 1:			
+				KenTakeOffVelocity(1.5f, 4f);
+				break;
+				
+			default:	
+				KenTakeOffVelocity(2f, 5f);			
+				break;	
+		}				
 		AudioSource.PlayClipAtPoint(character.normalAttackSound,transform.position);
-		animator.SetBool("isAirborne", true);
 	}
 	
 	public void KenRoll(){
 		if (animator.GetBool("isLiftingOff") == false){	
-			if (animator.GetInteger("rollKickType") == 0){
-				if (character.side == Character.Side.P1){
-					physicsbody.velocity = new Vector2(2f, 0f);
-				}
-				else{
-					physicsbody.velocity = new Vector2(-2f, 0f);
-				}				
-			}
-			else if (animator.GetInteger("rollKickType") == 1){
-				if (character.side == Character.Side.P1){
-					physicsbody.velocity = new Vector2(2.5f, 0f);
-				}
-				else{
-					physicsbody.velocity = new Vector2(-2.5f, 0f);
-				}				
-			}
-			else{
-				if (character.side == Character.Side.P1){
-					physicsbody.velocity = new Vector2(3f, 0f);
-				}
-				else{
-					physicsbody.velocity = new Vector2(-3f, 0f);
-				}				
+			switch(animator.GetInteger("rollKickType")){
+				case 0:
+					KenTakeOffVelocity (2f, 0f);				
+					break;
+				case 1:
+					KenTakeOffVelocity (2.5f, 0f);				
+					break;
+				default: 
+					KenTakeOffVelocity (3f, 0f);							
+					break;
 			}
 			animator.SetBool("isRolling", true);
+		}
+	}
+
+	void KenTakeOffVelocity (float x, float y){
+		if (character.transform.localScale.x == 1) {
+			physicsbody.velocity = new Vector2 (x, y);
+		}
+		else {
+			physicsbody.velocity = new Vector2 (-x, y);
 		}
 	}
 	
@@ -168,12 +160,7 @@ public class Ken : MonoBehaviour {
 	public void KenHurricaneKick(){		
 		if (animator.GetBool("isLiftingOff") == false){	
 			transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, 0.5f, transform.position.z), 15f * Time.deltaTime);
-			if (character.side == Character.Side.P1){				
-				physicsbody.velocity = new Vector2 (1f, 0f);
-			}
-			else{
-				physicsbody.velocity = new Vector2 (-1f, 0f);
-			}			
+			KenTakeOffVelocity(1f, 0f);
 			character.MoveProperties(45f, 20f, 10f, 17f, 2, 4);
 			animator.SetBool("isAirborne", true);
 		}

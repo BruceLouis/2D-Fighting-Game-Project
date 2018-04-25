@@ -305,7 +305,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!61 &61320376343396128
 BoxCollider2D:
@@ -521,6 +521,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 1.5
   health: 1000
+  landingDust: {fileID: 1229361437117194, guid: dd02c7bc3b3a1e247a245fc24dd5b1a9,
+    type: 2}
   side: 0
   moveType: 0
   hitType: 0
@@ -528,6 +530,7 @@ MonoBehaviour:
   KOsound: {fileID: 8300000, guid: 32c564ed913afa347a6622a0f4899244, type: 3}
   fellSound: {fileID: 8300000, guid: 44d2a74b3d0ed2746ba8492917f7564b, type: 3}
   flameSound: {fileID: 8300000, guid: e5cb133c672b808489f4ae12d3881e33, type: 3}
+  balrogHeadButtSound: {fileID: 8300000, guid: 9d87675e2db1f7b439e091c46f176d09, type: 3}
 --- !u!114 &114931195424782174
 MonoBehaviour:
   m_ObjectHideFlags: 1

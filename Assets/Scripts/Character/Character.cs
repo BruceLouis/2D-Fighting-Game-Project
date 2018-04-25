@@ -6,6 +6,7 @@ public class Character : MonoBehaviour {
 	
 	public float walkSpeed;
 	public float health;
+	public GameObject landingDust;
 	
 	public enum Side {P1, P2};
 	public Side side;
@@ -13,10 +14,10 @@ public class Character : MonoBehaviour {
 	public enum MoveType {low, mid, high};
 	public MoveType moveType;
 	
-	public enum HitType {normal, sweep, rekkaKnockdown, shoryuken, hurricaneKick, rekka};
+	public enum HitType {normal, sweep, rekkaKnockdown, shoryuken, hurricaneKick, rekka, dashLow};
 	public HitType hitType;
 	
-	public AudioClip normalAttackSound, KOsound, fellSound, flameSound;
+	public AudioClip normalAttackSound, KOsound, fellSound, flameSound, balrogHeadButtSound;
 	
 	private Rigidbody2D physicsbody;
 	private Animator animator;
@@ -144,7 +145,12 @@ public class Character : MonoBehaviour {
 			AudioSource.PlayClipAtPoint(normalAttackSound, transform.position);
 			if (animator.GetBool("isStanding")){
 				animator.Play("StandShort",0);
-				MoveProperties(15f, 15f, 7.5f, 20f, 0, 0);
+				if (GetComponent<Balrog>() != null){
+					MoveProperties(15f, 15f, 7.5f, 20f, 2, 0);
+				}
+				else{					
+					MoveProperties(15f, 15f, 7.5f, 20f, 0, 0);
+				}
 			}
 			else if (animator.GetBool("isCrouching")){
 				animator.Play("CrouchShort",0);
@@ -271,6 +277,7 @@ public class Character : MonoBehaviour {
 		SetDamage(60f);
 		if (GetHealth() <= 0){
 			animator.Play("KOBlendTree",0);
+			TimeControl.slowDownTimer = 100;	
 		}
 		if (side == Side.P2){
 			physicsbody.velocity = new Vector2(-3f, 4f);
@@ -285,12 +292,28 @@ public class Character : MonoBehaviour {
 		SetDamage(60f);
 		if (GetHealth() <= 0){
 			animator.Play("KOBlendTree",0);
+			TimeControl.slowDownTimer = 100;	
 		}
 		if (side == Side.P2){
 			physicsbody.velocity = new Vector2(3f, 4f);
 		}
 		else{
 			physicsbody.velocity = new Vector2(-3f, 4f);
+		}
+		animator.SetBool("isAirborne", true);
+	}
+		
+	public void HeadButtedByBalrog(){
+		SetDamage(20f);
+		if (GetHealth() <= 0){
+			animator.Play("KOBlendTree",0);
+			TimeControl.slowDownTimer = 100;	
+		}
+		if (side == Side.P2){
+			physicsbody.velocity = new Vector2(2f, 4f);
+		}
+		else{
+			physicsbody.velocity = new Vector2(-2f, 4f);
 		}
 		animator.SetBool("isAirborne", true);
 	}
@@ -301,33 +324,40 @@ public class Character : MonoBehaviour {
 		enforcePushBack = pushback;
 		enforceDamage = damage;
 		
-		if (moveTypeInt == 0){
-			moveType = MoveType.low;
-		}
-		else if (moveTypeInt == 1){
-			moveType = MoveType.mid;
-		}
-		else{
-			moveType = MoveType.high;
+		switch(moveTypeInt){
+			case 0:
+				moveType = MoveType.low;
+				break;
+			case 1:
+				moveType = MoveType.mid;
+				break;
+			default:
+				moveType = MoveType.high;
+				break;
 		}
 		
-		if (hitTypeInt == 0){
-			hitType = HitType.normal;
-		}
-		else if (hitTypeInt == 1){
-			hitType = HitType.sweep;
-		}
-		else if (hitTypeInt == 2){
-			hitType = HitType.rekkaKnockdown;
-		}
-		else if (hitTypeInt == 3){
-			hitType = HitType.shoryuken;
-		}
-		else if (hitTypeInt == 4){
-			hitType = HitType.hurricaneKick;
-		}
-		else{
-			hitType = HitType.rekka;
+		switch(hitTypeInt){
+			case 0:
+				hitType = HitType.normal;
+				break;
+			case 1:
+				hitType = HitType.sweep;
+				break;
+			case 2:
+				hitType = HitType.rekkaKnockdown;
+				break;
+			case 3:
+				hitType = HitType.shoryuken;
+				break;
+			case 4:
+				hitType = HitType.hurricaneKick;
+				break;
+			case 5:
+				hitType = HitType.rekka;
+				break;
+			default:
+				hitType = HitType.dashLow;
+				break;
 		}
 	}
 	
@@ -340,15 +370,13 @@ public class Character : MonoBehaviour {
 		}
 	}
 	
-	public void KO(){
-		if (side == Side.P1){
-			physicsbody.velocity = new Vector2(-2f, 4f);
-		}
-		else{
-			physicsbody.velocity = new Vector2(2f, 4f);
-		}
-		animator.SetBool("isAirborne", true);
-		animator.Play ("KOBlendTree",0);
+	public void KnockedDownDust(){
+		Vector3 offset = new Vector3(0f, -0.4f, 0f);
+		Instantiate(landingDust, transform.position + offset, Quaternion.Euler(new Vector3(-90f, 0f, 0f)));
+	}
+		
+	
+	public void KOSound(){
 		AudioSource.PlayClipAtPoint(KOsound, transform.position);		
 	}
 		
@@ -359,6 +387,10 @@ public class Character : MonoBehaviour {
 	public void PlayFellSound(){
 		AudioSource.PlayClipAtPoint(fellSound, transform.position);
 	}	
+	
+	public void PlayBalrogHeadButtSound(){
+		AudioSource.PlayClipAtPoint(balrogHeadButtSound, transform.position);
+	}
 	
 	public void WinPoseForOtherGuySoon(){
 		TimeControl.victoryPose = true;
@@ -444,16 +476,18 @@ public class Character : MonoBehaviour {
 	}
 			
 	void OnCollisionEnter2D(Collision2D collision){
-		if (collision.gameObject.GetComponent<Ground>() && animator.GetFloat("yVelocity") <= 0 
-			&& animator.GetBool("isMidAirHit") == false){
+		if (collision.gameObject.GetComponent<Ground>()	&& animator.GetBool("isMidAirHit") == false && animator.GetFloat("yVelocity") <= 0){
 			animator.SetBool("isAirborne", false);
-			physicsbody.velocity = new Vector2(0f, 0f);
+			physicsbody.velocity = new Vector2(0f, physicsbody.velocity.y);
 			if (gameObject.GetComponent<Ken>() != null){
 				animator.SetBool("shoryukenActive", false);
 			}
 			else if (gameObject.GetComponent<FeiLong>() != null){
 				animator.SetBool("shienKyakuActive", false);
 				animator.SetBool("rekkaKunActive", false);
+			}				
+			else if (gameObject.GetComponent<Balrog>() != null){	
+				animator.SetBool("isHeadButting", false);
 			}				
 		}
 	}

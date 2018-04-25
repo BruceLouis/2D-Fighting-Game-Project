@@ -39,6 +39,17 @@ public class Hadouken : MonoBehaviour {
 			rigid.velocity = new Vector2(-pushBack * 0.2f, 0f);				
 		}
 	}
+	
+	void CharacterKOed(Character receiver, Rigidbody2D recRigid, Animator recAnim){
+		TimeControl.slowDownTimer = 100;				
+		recAnim.Play("KOBlendTree",0);
+		if (receiver.side == Character.Side.P1){
+			recRigid.velocity = new Vector2(-2f, 4f);
+		}
+		else{
+			recRigid.velocity = new Vector2(2f, 4f);
+		}
+	}
 		
 	void OnTriggerEnter2D(Collider2D collider){
 		HurtBox hurtBox = collider.gameObject.GetComponentInParent<HurtBox>();	
@@ -54,6 +65,7 @@ public class Hadouken : MonoBehaviour {
 			    && hurtCharAnimator.GetBool("isLiftingOff") == false && hurtCharAnimator.GetBool("isAirborne") == false
 			    && hurtCharAnimator.GetBool("isInHitStun") == false){
 				
+				//if attack is blocked
 				AudioSource.PlayClipAtPoint(blockedSound, transform.position);
 				timer = blockStun;
 				hurtCharAnimator.SetBool("isInBlockStun", true);
@@ -73,14 +85,7 @@ public class Hadouken : MonoBehaviour {
 				AudioSource.PlayClipAtPoint(connectedSound, transform.position);
 				hurtCharacter.SetDamage(damage);
 				if (hurtCharacter.GetHealth () <= 0){	
-					TimeControl.slowDownTimer = 100;				
-					hurtCharAnimator.Play("KOBlendTree",0);
-					if (hurtCharacter.side == Character.Side.P1){
-						hurtPhysicsbody.velocity = new Vector2(-2f, 4f);
-					}
-					else{
-						hurtPhysicsbody.velocity = new Vector2(2f, 4f);
-					}
+					CharacterKOed(hurtCharacter, hurtPhysicsbody, hurtCharAnimator);
 				}		    
 				else{
 					TimeControl.slowDownTimer = 30;

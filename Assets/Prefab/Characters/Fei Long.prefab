@@ -335,7 +335,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!61 &61031378334691824
 BoxCollider2D:
@@ -528,6 +528,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 2
   health: 1000
+  landingDust: {fileID: 1229361437117194, guid: dd02c7bc3b3a1e247a245fc24dd5b1a9,
+    type: 2}
   side: 0
   moveType: 0
   hitType: 0
@@ -535,6 +537,7 @@ MonoBehaviour:
   KOsound: {fileID: 8300000, guid: 87afdf97f3d6542499cc6daa86a412bf, type: 3}
   fellSound: {fileID: 8300000, guid: 44d2a74b3d0ed2746ba8492917f7564b, type: 3}
   flameSound: {fileID: 8300000, guid: e5cb133c672b808489f4ae12d3881e33, type: 3}
+  balrogHeadButtSound: {fileID: 8300000, guid: 9d87675e2db1f7b439e091c46f176d09, type: 3}
 --- !u!114 &114236150754639032
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -637,8 +640,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1330514433
-  m_SortingLayer: 3
+  m_SortingLayerID: 328138293
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: b13e49f4bd9bd7a4d92683c57f4a8883, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

@@ -21,6 +21,11 @@ public class KnockDown : StateMachineBehaviour {
 		animator.ResetTrigger("hadoukenInputed");
 		animator.ResetTrigger("hurricaneKickInputed");
 		animator.ResetTrigger("rollInputed");
+		animator.ResetTrigger("dashStraightInputed");
+		animator.ResetTrigger("dashLowInputed");
+		animator.ResetTrigger("kickRushInputed");
+		animator.ResetTrigger("turnPunchInputed");
+		animator.ResetTrigger("headButtInputed");
 	}
 
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

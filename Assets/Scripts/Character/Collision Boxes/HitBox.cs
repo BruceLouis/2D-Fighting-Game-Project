@@ -16,7 +16,8 @@ public class HitBox : MonoBehaviour {
 	
 	void OnTriggerStay2D(Collider2D collider){
 		HurtBox hurtBox = collider.gameObject.GetComponentInParent<HurtBox>();
-		Animator animator = collider.gameObject.GetComponentInParent<Animator>();
+		Animator hurtCharAnim = collider.gameObject.GetComponentInParent<Animator>();
+//		Vector2 hitLocaterStart, hitLocaterEnd;
 		
 		if (hurtBox && !hurtBox.GetHurtBoxCollided()){
 			
@@ -36,8 +37,17 @@ public class HitBox : MonoBehaviour {
 			BoxCollider2D hitCollider = gameObject.GetComponent<BoxCollider2D>();
 			
 			//find center
-			Vector2 hitLocaterStart = new Vector2(hurtCollider.bounds.center.x, hurtCollider.bounds.center.y);			
-			Vector2 hitLocaterEnd = new Vector2(hitCollider.bounds.center.x, hitCollider.bounds.center.y);
+//			if (hitCharacter.side == Character.Side.P1){
+//				hitLocaterStart = new Vector2(hurtCollider.bounds.min.x, hurtCollider.bounds.min.y);			
+//				hitLocaterEnd = new Vector2(hitCollider.bounds.max.x, hitCollider.bounds.max.y);
+//			}
+//			else{
+//				hitLocaterStart = new Vector2(hurtCollider.bounds.max.x, hurtCollider.bounds.max.y);			
+//				hitLocaterEnd = new Vector2(hitCollider.bounds.min.x, hitCollider.bounds.min.y);
+//			}
+
+			Vector2 hitLocaterStart = new Vector2(hurtBox.transform.position.x, hurtBox.transform.position.y);			
+			Vector2 hitLocaterEnd = new Vector2(transform.position.x, transform.position.y);
 			
 			//cast a raycast line that locates the spark effect
 			RaycastHit2D sparkLocation = Physics2D.Raycast(hitLocaterStart, hitLocaterEnd);
@@ -48,33 +58,32 @@ public class HitBox : MonoBehaviour {
 			distance = hurtCharacter.transform.position.x - hitCharacter.transform.position.x;	 
 						
 			if (hitCharacter.GetHasntHit() == true){
-				if (animator.GetBool("isAirborne") == false){
-					if (hurtCharacter.GetBackPressed() == true && animator.GetBool("isAttacking") == false
-					    && animator.GetBool("isLiftingOff") == false && animator.GetBool("isInHitStun") == false
-					    && animator.GetBool("isKnockedDown") == false){
+				if (hurtCharAnim.GetBool("isAirborne") == false){
+					if (hurtCharacter.GetBackPressed() == true && hurtCharAnim.GetBool("isAttacking") == false
+					    && hurtCharAnim.GetBool("isLiftingOff") == false && hurtCharAnim.GetBool("isInHitStun") == false
+					    && hurtCharAnim.GetBool("isKnockedDown") == false){
 					    
 					    	
-						if ((hitCharacter.GetMoveType() == Character.MoveType.low && animator.GetBool("isCrouching") == false) 
-						    || (hitCharacter.GetMoveType() == Character.MoveType.mid && animator.GetBool("isStanding") == false)){
+						if ((hitCharacter.GetMoveType() == Character.MoveType.low && hurtCharAnim.GetBool("isCrouching") == false) 
+						    || (hitCharacter.GetMoveType() == Character.MoveType.mid && hurtCharAnim.GetBool("isStanding") == false)){
 						    					    					
-							InHitStun(timer, hitCharacter, hurtCharacter, animator, hitCharAnim, sparkEffect, hurtPhysicsbody, hitPhysicsbody);						
+						    //if blocked high, but got hit by a low attack
+						    //or if blocked low, but got hit by an overhead(jumping attacks only)
+							InHitStun(timer, hitCharacter, hurtCharacter, hurtCharAnim, hitCharAnim, sparkEffect, hurtPhysicsbody, hitPhysicsbody);						
 				    	}
 						else{
-							InBlockStun(timer, hitCharacter, animator, hurtPhysicsbody, hitPhysicsbody, sparkEffect);		
+							//successful block
+							InBlockStun(timer, hitCharacter, hurtCharAnim, hurtPhysicsbody, hitPhysicsbody, sparkEffect);		
 						}			
 					}
 					else{
-						InHitStun(timer, hitCharacter, hurtCharacter, animator, hitCharAnim, sparkEffect, hurtPhysicsbody, hitPhysicsbody);				
+						//hit everytime with no block attempt
+						InHitStun(timer, hitCharacter, hurtCharacter, hurtCharAnim, hitCharAnim, sparkEffect, hurtPhysicsbody, hitPhysicsbody);				
 					}	
 				}		
-				else{				
-					if (hitCharacter.GetHitType() != Character.HitType.normal && hitCharacter.GetHitType() != Character.HitType.hurricaneKick && hitCharacter.GetHitType() != Character.HitType.rekka){
-						hurtCharacter.SetDamage(hitCharacter.GetDamage()); 
-						OtherHitStunProperties(hitCharacter, hurtCharacter, animator, hitCharAnim, sparkEffect, hurtPhysicsbody);
-					}
-					else{
-						InHitStun(timer, hitCharacter, hurtCharacter, animator, hitCharAnim, sparkEffect, hurtPhysicsbody, hitPhysicsbody);	
-					}					
+				else{							
+					//there's no blocking in this game when you're airborne like in normal street fighter alphas, because i said so
+					InHitStun(timer, hitCharacter, hurtCharacter, hurtCharAnim, hitCharAnim, sparkEffect, hurtPhysicsbody, hitPhysicsbody);					
 				}	
 				hitCharAnim.SetBool("hasntHit", false);
 			}	
@@ -140,31 +149,33 @@ public class HitBox : MonoBehaviour {
 				if (receiver.GetHealth () <= 0){				
 					GotKOed (receiver, anim, receiverRigid);
 				}
-				else if (anim.GetBool("isCrouching") == true){
-					anim.Play("CrouchHit",0,0f);
-					TimeControl.slowDownTimer = 20;
-				}
 				else{
-					if (attacker.GetMoveType() == Character.MoveType.low){
-						anim.Play("LowHit",0,0f);
+					if (anim.GetBool("isCrouching") == true){
+						anim.Play("CrouchHit",0,0f);
+						TimeControl.slowDownTimer = 20;
 					}
 					else{
-						anim.Play("HighHit",0,0f);
+						if (attacker.GetMoveType() == Character.MoveType.low){
+							anim.Play("LowHit",0,0f);
+						}
+						else{
+							anim.Play("HighHit",0,0f);
+						}
+						TimeControl.slowDownTimer = 20;
 					}
-					TimeControl.slowDownTimer = 20;
+					PushBack(attacker, receiverRigid, attackerRigid);
 				}
-				PushBack(attacker, receiverRigid, attackerRigid);
 				Instantiate(hitSpark, sparkPlace, Quaternion.identity);
 			} 
 			anim.SetFloat ("hitStunTimer", timerArg);	
 		}
 	}
 	
-	void OtherHitStunProperties(Character attacker, Character receiver, Animator anim, Animator attAnim, Vector3 sparkPlace, Rigidbody2D rigid){
+	void OtherHitStunProperties(Character attacker, Character receiver, Animator recAnim, Animator attAnim, Vector3 sparkPlace, Rigidbody2D receiverRigid){		
 		AudioSource.PlayClipAtPoint(bigHit, transform.position);
 		Rigidbody2D attPhysicsbody = attacker.GetComponent<Rigidbody2D>();
-		if (attacker.GetHitType() == Character.HitType.sweep){
-			if (distance > 0){
+		if (attacker.GetHitType() == Character.HitType.sweep || attacker.GetHitType() == Character.HitType.dashLow){
+			if (attacker.side == Character.Side.P1){
 				receiver.side = Character.Side.P2;
 				receiver.SideSwitch();
 			}
@@ -173,132 +184,95 @@ public class HitBox : MonoBehaviour {
 				receiver.SideSwitch();
 			}
 			if (receiver.GetHealth () <= 0){				
-				GotKOed (receiver, anim, rigid);
+				GotKOed (receiver, recAnim, receiverRigid);
 			}
 			else{
 				TimeControl.slowDownTimer = 30;
-				anim.Play("Trip",0,0f);
+				recAnim.Play("Trip",0,0f);
 			}
 		}
 		else if (attacker.GetHitType() == Character.HitType.rekkaKnockdown){
-			if (attacker.GetComponent<FeiLong>() != null){			
-				if (receiver.GetHealth () <= 0){	
-					TimeControl.slowDownTimer = 100;					
-					anim.Play("KOBlendTree",0,0f);
-				}
-				else{		
-					TimeControl.slowDownTimer = 30;
-					anim.Play("KnockDownBlendTree",0,0f);
-				}
-				if (distance > 0){
-					receiver.side = Character.Side.P2;
-					receiver.SideSwitch();
-					
-					if (attAnim.GetInteger("rekkaPunchType") == 0){
-						GotKnockedDown(anim, rigid, 2f, 4f);					
-					}
-					else if (attAnim.GetInteger("rekkaPunchType") == 1){
-						GotKnockedDown(anim, rigid, 2.5f, 4f);	
-					}
-					else{
-						GotKnockedDown(anim, rigid, 3f, 4f);	
-					}
-				}
-				else{
-					receiver.side = Character.Side.P1;
-					receiver.SideSwitch();
-					if (attAnim.GetInteger("rekkaPunchType") == 0){
-						GotKnockedDown(anim, rigid, -2f, 4f);					
-					}
-					else if (attAnim.GetInteger("rekkaPunchType") == 1){
-						GotKnockedDown(anim, rigid, -2.5f, 4f);	
-					}
-					else{
-						GotKnockedDown(anim, rigid, -3f, 4f);	
-					}
-				}
+			if (receiver.GetHealth () <= 0){	
+				TimeControl.slowDownTimer = 100;					
+				recAnim.Play("KOBlendTree",0,0f);
+			}
+			else{		
+				TimeControl.slowDownTimer = 30;
+				recAnim.Play("KnockDownBlendTree",0,0f);
+			}
+			if (attacker.GetComponent<FeiLong>() != null){		
+				switch(attAnim.GetInteger("rekkaPunchType")){
+					case 0:
+						GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 2f, 4f);
+						break;
+					case 1:
+						GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 2.5f, 4f);
+						break;		
+					default:
+						GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 3f, 4f);
+						break;										
+				}		
 				attPhysicsbody.velocity *= 0.6f;
 			}
+			else if (attacker.GetComponent<Balrog>() != null){	
+				switch(attAnim.GetInteger("dashRushPunchType")){
+					case 0:
+						GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 2f, 4f);
+						break;
+					case 1:
+						GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 2.5f, 4f);
+						break;		
+					default:
+						GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 3f, 4f);
+						break;										
+				}		
+			}		
 		}
 		else if (attacker.GetHitType() == Character.HitType.shoryuken){
+			if (receiver.GetHealth () <= 0){	
+				TimeControl.slowDownTimer = 100;					
+				recAnim.Play("KOBlendTree",0,0f);
+			}
+			else{		
+				TimeControl.slowDownTimer = 30;
+				recAnim.Play("KnockDownBlendTree",0,0f);
+			}
 			if (attacker.GetComponent<Ken>() != null){
-				if (receiver.GetHealth () <= 0){	
-					TimeControl.slowDownTimer = 100;					
-					anim.Play("KOBlendTree",0,0f);
-				}
-				else{		
-					TimeControl.slowDownTimer = 30;
-					anim.Play("KnockDownBlendTree",0,0f);
-				}
-				if (distance > 0){
-					receiver.side = Character.Side.P2;
-					receiver.SideSwitch();
-					if (attAnim.GetInteger("shoryukenPunchType") == 0){
-						GotShoryukened(anim, rigid, 1f, 3f, 4f);					
-					}
-					else if (attAnim.GetInteger("shoryukenPunchType") == 1){
-						GotShoryukened(anim, rigid, 1.5f, 3f, 4f);	
-					}
-					else{
-						GotShoryukened(anim, rigid, 2f, 4.5f, 5.5f);	
-					}
-				}
-				else{
-					receiver.side = Character.Side.P1;
-					receiver.SideSwitch();
-					if (attAnim.GetInteger("shoryukenPunchType") == 0){
-						GotShoryukened(anim, rigid, -1f, 3f, 4f);	
-					}
-					else if (attAnim.GetInteger("shoryukenPunchType") == 1){
-						GotShoryukened(anim, rigid, -1.5f, 3f, 4f);	
-					}
-					else{
-						GotShoryukened(anim, rigid, -2f, 4.5f, 5.5f);	
-					}
-				}
+				switch(attAnim.GetInteger("shoryukenPunchType")){
+				case 0:
+					GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 1f, 4f);
+					break;
+				case 1:
+					GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 1.5f, 4.5f);
+					break;		
+				default:
+					GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 2f, 5.5f);
+					break;										
+				}		
 			}			
-			else if (attacker.GetComponent<FeiLong>() != null){
-				if (receiver.GetHealth () <= 0){	
-					TimeControl.slowDownTimer = 100;					
-					anim.Play("KOBlendTree",0,0f);
-				}
-				else{		
-					TimeControl.slowDownTimer = 30;
-					anim.Play("KnockDownBlendTree",0,0f);
-				}
-				if (distance > 0){
-					receiver.side = Character.Side.P2;
-					receiver.SideSwitch();
-					if (attAnim.GetInteger("shienKyakuKickType") == 0){
-						GotShoryukened(anim, rigid, 0.25f, 3.5f, 4f);					
-					}
-					else if (attAnim.GetInteger("shienKyakuKickType") == 1){
-						GotShoryukened(anim, rigid, 0.5f, 4f, 4.5f);	
-					}
-					else{
-						GotShoryukened(anim, rigid, 0.75f, 4.5f, 5f);	
-					}
-				}
-				else{
-					receiver.side = Character.Side.P1;
-					receiver.SideSwitch();
-					if (attAnim.GetInteger("shienKyakuKickType") == 0){
-						GotShoryukened(anim, rigid, -0.25f, 3.5f, 4f);	
-					}
-					else if (attAnim.GetInteger("shienKyakuKickType") == 1){
-						GotShoryukened(anim, rigid, -0.5f, 4f, 4.5f);	
-					}
-					else{
-						GotShoryukened(anim, rigid, -0.75f, 4.5f, 5f);	
-					}
-				}
+			else if (attacker.GetComponent<FeiLong>() != null){				
+				switch(attAnim.GetInteger("shienKyakuKickType")){
+				case 0:
+					GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 0.5f, 4f);
+					break;
+				case 1:
+					GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 0.625f, 4.5f);
+					break;		
+				default:
+					GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 0.75f, 5f);
+					break;										
+				}		
+			}
+			else if (attacker.GetComponent<Balrog>() != null){
+				GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 2f, 3f);
 			}
 		}
 		Instantiate(shoryukenSpark, sparkPlace, Quaternion.identity);
 	}
 	
-	void PushBack(Character attacker, Rigidbody2D receiverRigid, Rigidbody2D attackerRigid){							
-		if (attacker.GetHitType() != Character.HitType.hurricaneKick && attacker.GetHitType() != Character.HitType.rekka && attacker.GetHitType() != Character.HitType.rekkaKnockdown){
+	void PushBack(Character attacker, Rigidbody2D receiverRigid, Rigidbody2D attackerRigid){						
+		if (attacker.GetHitType() != Character.HitType.hurricaneKick && attacker.GetHitType() != Character.HitType.rekka 
+			&& attacker.GetHitType() != Character.HitType.rekkaKnockdown && attacker.GetHitType() != Character.HitType.dashLow){
 			if (attacker.side == Character.Side.P1){
 				if (rightEdgeDistance > 0.25f){
 					// if close to the wall, pushback enforced on attacking character instead
@@ -331,7 +305,7 @@ public class HitBox : MonoBehaviour {
 			}
 		}
 	}
-		
+
 	void GotKOed (Character receiver, Animator anim, Rigidbody2D rigid){
 		TimeControl.slowDownTimer = 100;	
 		AudioSource.PlayClipAtPoint(bigHit, transform.position);
@@ -343,18 +317,17 @@ public class HitBox : MonoBehaviour {
 			rigid.velocity = new Vector2 (2f, 4f);
 		}
 	}
-
-	void GotShoryukened (Animator anim, Rigidbody2D rigid, float x, float airborneY, float groundedY){
-		if (anim.GetBool ("isAirborne") == false) {
-			rigid.velocity = new Vector2 (x, groundedY);
-		}
-		else {
-			rigid.velocity = new Vector2 (x, airborneY);
-		}
-	}
 	
-	void GotKnockedDown (Animator anim, Rigidbody2D rigid, float x, float y){
-		rigid.velocity = new Vector2 (x, y);
+	void GotKnockedUp (Character attacker, Character receiver, Animator attAnim, Animator recAnim, Rigidbody2D hurtRigid, float x, float y){				
+		if (attacker.transform.localScale.x == 1){
+			//if attacking sprite is facing p1 side
+			receiver.side = Character.Side.P2;
+			hurtRigid.velocity = new Vector2 (x, y);				
+		}
+		else{
+			receiver.side = Character.Side.P1;
+			hurtRigid.velocity = new Vector2 (-x, y);		
+		}	
 	}
 	
 	public bool GetCancellabe(){

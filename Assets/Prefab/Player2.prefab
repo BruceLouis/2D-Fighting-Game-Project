@@ -20,8 +20,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4967419636517302}
   - component: {fileID: 114767642615908654}
+  - component: {fileID: 114798463087345360}
   - component: {fileID: 114646649687435794}
   - component: {fileID: 114184718440583772}
+  - component: {fileID: 114869675496703184}
   m_Layer: 9
   m_Name: Player2
   m_TagString: Untagged
@@ -76,10 +78,42 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mugShotObject: {fileID: 0}
-  nameText: {fileID: 0}
-  kenMugShot: {fileID: 21300000, guid: 57b925a7041ae334ba11c7e6239d2d67, type: 3}
-  feiLongMugShot: {fileID: 21300000, guid: e7cb0cb8d48489b4ebe6f7e8488ea3a8, type: 3}
-  isAI: 1
   streetFighterCharacters:
   - {fileID: 1311962846860956, guid: a54394606edf4464e9da4297728e604a, type: 2}
   - {fileID: 1313107464066380, guid: e03ec49ecee8e8b4cac1c2deb0233a40, type: 2}
+  - {fileID: 1647165389008910, guid: 58480a3eded57ba49861dd4628e30675, type: 2}
+  nameText: {fileID: 0}
+  kenMugShot: {fileID: 21300000, guid: 57b925a7041ae334ba11c7e6239d2d67, type: 3}
+  feiLongMugShot: {fileID: 21300000, guid: e7cb0cb8d48489b4ebe6f7e8488ea3a8, type: 3}
+  balrogMugShot: {fileID: 21300000, guid: 2fe8d91dae7c87c4f89b08700ea83ac0, type: 3}
+  isAI: 1
+--- !u!114 &114798463087345360
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1363846520447960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f713ae485db8c5c40bac930f14a10e3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  backChargeReached: 60
+  backChargedWindow: 30
+  downChargeReached: 60
+  downChargedWindow: 30
+--- !u!114 &114869675496703184
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1363846520447960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3eba1597409d424782c24b46c10d666, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  decisionTimer: 40
+  one: {fileID: 8300000, guid: 49def70fb4059a6469d26c3d20f4a357, type: 3}
+  two: {fileID: 8300000, guid: 912c982748df2b042be3fe2ae90f2def, type: 3}
+  three: {fileID: 8300000, guid: c89fc6b4e44209c47a1f61e335934e36, type: 3}

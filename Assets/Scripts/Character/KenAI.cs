@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,17 +23,17 @@ public class KenAI : MonoBehaviour {
 	
 	public void Behaviors(){
 		decision = Random.Range(0,100);
-		if (animator.GetBool("isLiftingOff") == false && animator.GetBool("isKnockedDown") == false && animator.GetBool("isThrown") == false 
+		if (animator.GetBool("isLiftingOff") == false && animator.GetBool("isKnockedDown") == false && animator.GetBool("isThrown") == false && animator.GetBool("isMidAirHit") == false
 		    && animator.GetBool("isMidAirRecovering") == false && animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false){
 			if (animator.GetBool("isAirborne") == true && animator.GetBool("isLiftingOff") == false){
 				decision = Random.Range(0,100);
 				if (decision <= 3){
 					AIcontroller.AIJumpFierce();
-					AIcontroller.CharacterWalkState();
+					AIcontroller.CharacterNeutralState();
 				}
 				else if (decision <= 6 && decision > 3){
 					AIcontroller.AIJumpRoundhouse();
-					AIcontroller.CharacterWalkState();
+					AIcontroller.CharacterNeutralState();
 				}				
 			}
 			else if (AIcontroller.GetDistanceFromPlayer() >= 2f){
@@ -47,18 +47,25 @@ public class KenAI : MonoBehaviour {
 					character.SetBackPressed(true);
 				}
 				else if (decision <= 65 && decision > 35){
-					AIHadoukens();
-					AIcontroller.CharacterWalkState();
-					AIcontroller.DoesAIBlock();
+					if (AIcontroller.GetProjectileP2Parent().transform.childCount <= 0){
+						AIHadoukens();
+						AIcontroller.CharacterNeutralState();
+						AIcontroller.DoesAIBlock();
+					}
+					else{
+						AIcontroller.AIPressedForward();
+						character.SetBackPressed(false);
+					}
+					
 				}
 				else if (decision <= 68 && decision > 65){
 					AIcontroller.AIShort();
-					AIcontroller.CharacterWalkState();
+					AIcontroller.CharacterNeutralState();
 					AIcontroller.DoesAIBlock();
 				}
 				else if (decision <= 71 && decision > 68){
 					AIcontroller.AIJab(2);
-					AIcontroller.CharacterWalkState();
+					AIcontroller.CharacterNeutralState();
 					AIcontroller.DoesAIBlock();
 				}
 				else if (decision <= 75 && decision > 71){
@@ -71,116 +78,127 @@ public class KenAI : MonoBehaviour {
 					character.SetBackPressed(false);
 				}
 				else{
-					AIcontroller.CharacterWalkState();
+					AIcontroller.CharacterNeutralState();
 					character.SetBackPressed(false);
 				}
 			}
-			else if (AIcontroller.GetDistanceFromPlayer() < 2f && AIcontroller.GetDistanceFromPlayer() >= 0.75f){	
+			else if (AIcontroller.GetDistanceFromPlayer() < 2f && AIcontroller.GetDistanceFromPlayer() >= 1f){	
 			
 				if (playerCharacter.GetBlockStunned() == true){
 					if (decision <= 30){
-						AIHadoukens();
-						AIcontroller.CharacterWalkState();
-						AIcontroller.DoesAIBlock();
+						if (AIcontroller.GetProjectileP2Parent().transform.childCount <= 0){
+							AIHadoukens();
+							AIcontroller.CharacterNeutralState();
+							AIcontroller.DoesAIBlock();
+						}
+						else{
+							AIcontroller.AILowForward();
+							AIcontroller.CharacterNeutralState();
+							AIcontroller.DoesAIBlock();
+						}
+							
 					}
 					else if (decision <= 40 && decision > 30){
 						AIcontroller.AILowForward();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 					else if (decision <= 45 && decision > 40){
 						AIcontroller.AIStrong(10);
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 					else if (decision <= 50 && decision > 45){
 						AIcontroller.AIJab(2);
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}					
 					else if (decision <= 55 && decision > 50){
 						AIcontroller.AIShort();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}			
 					else if (decision <= 65 && decision > 55){
 						AIcontroller.AISweep();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}			
 					else{
 						AIcontroller.AICrouch();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						character.SetBackPressed(true);
 					}
 				}
 				else{
-					if (decision <= 20){
+					if (decision <= 40){
 						AIcontroller.AIPressedForward();
 						character.SetBackPressed(false);			
 					}
-					else if(decision <= 35 && decision > 20){
-						AIHadoukens();
-						AIcontroller.CharacterWalkState();
-						AIcontroller.DoesAIBlock();
+					else if(decision <= 55 && decision > 40){
+						if (AIcontroller.GetProjectileP2Parent().transform.childCount <= 0){
+							AIHadoukens();
+							AIcontroller.CharacterNeutralState();
+							AIcontroller.DoesAIBlock();
+						}
+						else{
+							AIcontroller.AILowForward();
+							AIcontroller.CharacterNeutralState();
+							AIcontroller.DoesAIBlock();
+						}
 					}
-					else if(decision <= 37 && decision > 35){
+					else if(decision <= 57 && decision > 55){
 						AIcontroller.AIForward(10);
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
-					else if(decision <= 42 && decision > 37){
+					else if(decision <= 59 && decision > 57){
 						AIcontroller.AIStrong(10);
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
-					else if(decision <= 52 && decision > 42){
+					else if(decision <= 70 && decision > 59){
 						AIcontroller.AICrouch();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
-					else if(decision <= 57 && decision > 52){
+					else if(decision <= 75 && decision > 70){
 						AIcontroller.AIStand();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						character.SetBackPressed(false);
 					}
-					else if(decision <= 67 && decision > 57){
+					else if(decision <= 85 && decision > 75){
 						AIcontroller.AIPressedForward();
 						AIcontroller.AIJump();
 						character.SetBackPressed(false);
 					}
-					else if(decision <= 70 && decision > 67){
+					else if(decision <= 88 && decision > 85){
 						AIcontroller.AIJump();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
-					else if(decision <= 73 && decision > 70){
+					else if(decision <= 89 && decision > 88){
 						AIRolls();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
-					else if(decision <= 75 && decision > 73){
+					else if(decision <= 91 && decision > 89){
 						AIHurricaneKicks();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
-					else if(decision <= 80 && decision > 75){
-						AIFootsieLowForward();
-						character.SetBackPressed(false);
-					}
-					else if(decision <= 85 && decision > 80){
+					else if(decision <= 93 && decision > 91){
 						AIcontroller.AISweep();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
-					else if(decision <= 90 && decision > 85){
+					else if(decision <= 94 && decision > 93){
 						AIcontroller.AIShort();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
-					else if(decision <= 95 && decision > 90){
+					else if(decision <= 95 && decision > 94){
 						AIcontroller.AIJab(2);
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 					else{
@@ -194,47 +212,47 @@ public class KenAI : MonoBehaviour {
 				if (playerCharacter.GetAirborne() == true && playerCharacter.GetKnockDown() == false){
 					if (decision <= 60){
 						AIShoryukens();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 					else{
 						AIcontroller.AIFierce(2,0);
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 				}
 				else if (playerCharacter.GetHitStunned() == true){
 					if (decision <= 40){
 						AIShoryukens();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 					}
 					else if (decision <= 70 && decision > 40){
 						AIHurricaneKicks();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 					}
 					else if (decision <= 85 && decision > 70){
 						AIcontroller.AIFierce(2,0);
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 					}
 					else{
 						AIcontroller.AISweep();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 					}
 				}
 				else if (playerCharacter.GetKnockDown() == true && playerCharacter.GetAirborne() == false){
 					if (decision <= 60){
 						AIcontroller.AICrouch();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						character.SetBackPressed(true);
 					}
 					else if (decision <= 70 && decision > 60){
 						AIcontroller.AIJab(2);
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}					
 					else if (decision <= 75 && decision > 70){
 						AIcontroller.AIShort();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}					
 					else if (decision <= 80 && decision > 75){
@@ -247,12 +265,12 @@ public class KenAI : MonoBehaviour {
 					}				
 					else if (decision <= 90 && decision > 85){
 						AIJabShoryuken();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}				
 					else{
 						AIRolls();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 				}
@@ -260,33 +278,40 @@ public class KenAI : MonoBehaviour {
 				
 				else if (playerCharacter.GetBlockStunned() == true){
 					if (decision <= 30){
-						AIHadoukens();
-						AIcontroller.CharacterWalkState();
-						AIcontroller.DoesAIBlock();
+						if (AIcontroller.GetProjectileP2Parent().transform.childCount <= 0){
+							AIHadoukens();
+							AIcontroller.CharacterNeutralState();
+							AIcontroller.DoesAIBlock();
+						}
+						else{							
+							AIcontroller.AILowForward();
+							AIcontroller.CharacterNeutralState();
+							AIcontroller.DoesAIBlock();
+						}
 					}
 					else if (decision <= 45 && decision > 30){
 						AIcontroller.AILowForward();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 					else if (decision <= 55 && decision > 45){
 						AIcontroller.AIStrong(10);
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 					else if (decision <= 65 && decision > 55){
 						AIcontroller.AIJab(2);
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}					
 					else if (decision <= 75 && decision > 65){
 						AIcontroller.AIShort();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}			
 					else{
 						AIcontroller.AICrouch();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						character.SetBackPressed(true);
 					}
 				}
@@ -294,43 +319,50 @@ public class KenAI : MonoBehaviour {
 				else{
 					if (decision <= 50){
 						AIcontroller.AICrouch();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						character.SetBackPressed(true);
 					}
 					else if (decision <= 55 && decision > 50){
 						AIcontroller.AILowForward();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 					else if (decision <= 60 && decision > 55){
 						AIcontroller.AIStrong(10);
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 					else if (decision <= 65 && decision > 60){
 						AIcontroller.AIJab(2);
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}					
 					else if (decision <= 70 && decision > 65){
 						AIcontroller.AIShort();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 					else if (decision <= 73 && decision > 70){
 						AIJabShoryuken();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 					else if (decision <= 78 && decision > 73){
-						AIThrow();
-						AIcontroller.CharacterWalkState();
+						AIcontroller.AIThrow();
+						AIcontroller.CharacterNeutralState();
 						AIcontroller.DoesAIBlock();
 					}
 					else if (decision <= 82 && decision > 78){
-						AIHadoukens();
-						AIcontroller.CharacterWalkState();
-						AIcontroller.DoesAIBlock();
+						if (AIcontroller.GetProjectileP2Parent().transform.childCount <= 0){
+							AIHadoukens();
+							AIcontroller.CharacterNeutralState();
+							AIcontroller.DoesAIBlock();
+						}
+						else{
+							AIcontroller.AIShort();
+							AIcontroller.CharacterNeutralState();
+							AIcontroller.DoesAIBlock();
+						}
 					}				
 					else if (decision <= 90 && decision > 82){
 						AIcontroller.AIPressedForward();
@@ -340,44 +372,11 @@ public class KenAI : MonoBehaviour {
 						AIcontroller.AIPressedBackward();
 						character.SetBackPressed(true);
 					}
-				}
-				AIcontroller.CharacterWalkState();
+    			}
 			}
 			AIcontroller.Walk();	
 		}			
 	}
-	
-	
-	void AIThrow(){
-		if (animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false 
-		    && animator.GetBool("isLiftingOff") == false && animator.GetBool("isAirborne") == false 
-		    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isAttacking") == false
-		    && animator.GetBool("isMidAirRecovering") == false && animator.GetBool("isThrown") == false){	
-			AIcontroller.AIStand();
-			character.SetBackPressed(false);
-			character.AttackState();
-			animator.Play("KenThrowStartup");
-		}
-	}
-	
-	
-	void AIFootsieLowForward(){
-		int distance = Random.Range(0, 30);
-		distance--;
-		if (animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false 
-		    && animator.GetBool("isLiftingOff") == false && animator.GetBool("isAirborne") == false 
-		    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isAttacking") == false
-		    && animator.GetBool("isMidAirRecovering") == false && animator.GetBool("isThrown") == false){	
-			AIcontroller.AIPressedForward();
-			character.SetBackPressed(false);
-			if (distance <= 0){		
-				character.AttackState();
-				AIcontroller.AICrouch();
-				character.CharacterForward();
-				AIcontroller.AIStand ();
-			}
-		}
-	}	
 	
 	void AIJabShoryuken(){
 		if (animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false 

@@ -7,7 +7,6 @@ public class MidAirRecovery : StateMachineBehaviour {
 	 // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
 	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {		
 		animator.SetBool("isMidAirRecovering", true);
-		animator.SetBool("isInHitStun", false);
 		animator.SetBool("isMidAirHit", false);
 		animator.SetFloat("hitStunTimer", 0.0f);
 	}
@@ -20,6 +19,7 @@ public class MidAirRecovery : StateMachineBehaviour {
 	// OnStateExit is called when a transition ends and the state machine finishes evaluating this state
 	override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {		
 		animator.SetBool("isMidAirRecovering", false);
+		animator.SetBool("isInHitStun", false);
 	}
 
 	// OnStateMove is called right after Animator.OnAnimatorMove(). Code that processes and affects root motion should be implemented here

@@ -16,9 +16,7 @@ public class PushBox : MonoBehaviour {
 		if (gameObject.tag == "Player1"){
 			
 			if (animator.GetBool("isAirborne") == true || animator.GetBool("isLiftingOff") == true || animator.GetBool("isRolling") == true){
-				if (animator.GetBool("hurricaneKickActive") == false){
-					gameObject.layer = LayerMask.NameToLayer("IgnorePlayer2");
-				}
+				gameObject.layer = LayerMask.NameToLayer("IgnorePlayer2");
 			}
 			else{
 				gameObject.layer = LayerMask.NameToLayer("PushBoxP1");
@@ -26,10 +24,8 @@ public class PushBox : MonoBehaviour {
 		}
 		else if (gameObject.tag == "Player2"){
 			
-			if (animator.GetBool("isAirborne") == true || animator.GetBool("isLiftingOff") == true){
-				if (animator.GetBool("hurricaneKickActive") == false){
-					gameObject.layer = LayerMask.NameToLayer("IgnorePlayer1");
-				}
+			if (animator.GetBool("isAirborne") == true || animator.GetBool("isLiftingOff") == true || animator.GetBool("isRolling") == true){
+				gameObject.layer = LayerMask.NameToLayer("IgnorePlayer1");
 			}
 			else{
 				gameObject.layer = LayerMask.NameToLayer("PushBoxP2");	
