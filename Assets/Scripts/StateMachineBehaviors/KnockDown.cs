@@ -16,6 +16,7 @@ public class KnockDown : StateMachineBehaviour {
 		animator.SetBool("isWalkingForward", false);
 		animator.SetBool("isMidAirHit", false);		
 		animator.SetFloat("hitStunTimer", 0.0f);
+		animator.SetInteger("hyakkishuAttackType", 0);
 		animator.ResetTrigger("shoryukenInputed");	
 		animator.ResetTrigger("reverseShoryukenInputed");	
 		animator.ResetTrigger("hadoukenInputed");
@@ -26,6 +27,7 @@ public class KnockDown : StateMachineBehaviour {
 		animator.ResetTrigger("kickRushInputed");
 		animator.ResetTrigger("turnPunchInputed");
 		animator.ResetTrigger("headButtInputed");
+		animator.ResetTrigger ("hyakkishuInputed");
 	}
 
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

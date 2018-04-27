@@ -14,6 +14,7 @@ public class Thrown : StateMachineBehaviour {
 		animator.SetBool("isRolling", false);
 		animator.SetBool("isMidAirHit", false);		
 		animator.SetBool("isThrown", true);
+		animator.SetInteger("hyakkishuAttackType", 0);
 		animator.ResetTrigger("shoryukenInputed");	
 		animator.ResetTrigger("reverseShoryukenInputed");	
 		animator.ResetTrigger("hadoukenInputed");
@@ -24,6 +25,7 @@ public class Thrown : StateMachineBehaviour {
 		animator.ResetTrigger("kickRushInputed");
 		animator.ResetTrigger("turnPunchInputed");
 		animator.ResetTrigger("headButtInputed");
+		animator.ResetTrigger ("hyakkishuInputed");
 	}
 
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

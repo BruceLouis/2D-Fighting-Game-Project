@@ -40,6 +40,7 @@ GameObject:
   - component: {fileID: 95917336365809452}
   - component: {fileID: 114231629194966156}
   - component: {fileID: 114236150754639032}
+  - component: {fileID: 114220887570951096}
   m_Layer: 8
   m_Name: Fei Long
   m_TagString: Untagged
@@ -515,6 +516,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60825f62cf533044b84564c909c1392f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114220887570951096
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1313107464066380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2273c6eadc3446f429fa331fea095616, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  decisionTimer: 25
 --- !u!114 &114231629194966156
 MonoBehaviour:
   m_ObjectHideFlags: 1

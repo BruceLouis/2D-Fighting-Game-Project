@@ -42,10 +42,9 @@ public class ChargeSystem : MonoBehaviour {
 		DownCharging ();
 	}
 
-	void BackCharging ()
-	{
+	void BackCharging (){
 		if (player != null){			
-			if (player.GetBackPressed ()) {
+			if (player.GetBackPressed) {
 				backCharging++;
 			}
 			else {
@@ -53,7 +52,7 @@ public class ChargeSystem : MonoBehaviour {
 			}
 		}
 		else if (opponent != null){
-			if (opponent.GetBackPressed ()) {
+			if (opponent.GetBackPressed) {
 				backCharging++;
 			}
 			else {
@@ -72,10 +71,9 @@ public class ChargeSystem : MonoBehaviour {
 		}
 	}
 	
-	void DownCharging ()
-	{
+	void DownCharging (){
 		if (player != null){
-			if (player.GetDownPressed ()) {
+			if (player.GetDownPressed) {
 				downCharging++;
 			}
 			else {
@@ -86,7 +84,7 @@ public class ChargeSystem : MonoBehaviour {
 			}
 		}
 		else if (opponent != null){
-			if (opponent.GetDownPressed ()) {
+			if (opponent.GetDownPressed) {
 				downCharging++;
 			}
 			else {
@@ -157,6 +155,10 @@ public class ChargeSystem : MonoBehaviour {
 	
 	public bool GetDownCharged(){
 		return downCharged;
+	}
+	
+	public float GetDownChargedWindowInput(){
+		return downChargedWindowInput;
 	}
 	
 	public int GetTurnPunchCharge(){

@@ -73,8 +73,6 @@ AnimationClip:
       value: {fileID: 21300004, guid: 41129c8992d9b2649986996a348f908a, type: 3}
     - time: 0.23333333
       value: {fileID: 21300020, guid: c6e4c8ef200ab30448a3d974d4b353f1, type: 3}
-    - time: 0.6666667
-      value: {fileID: 21300020, guid: c6e4c8ef200ab30448a3d974d4b353f1, type: 3}
     attribute: m_Sprite
     path: Body
     classID: 212
@@ -112,13 +110,12 @@ AnimationClip:
     - {fileID: 21300002, guid: 41129c8992d9b2649986996a348f908a, type: 3}
     - {fileID: 21300004, guid: 41129c8992d9b2649986996a348f908a, type: 3}
     - {fileID: 21300020, guid: c6e4c8ef200ab30448a3d974d4b353f1, type: 3}
-    - {fileID: 21300020, guid: c6e4c8ef200ab30448a3d974d4b353f1, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.70000005
+    m_StopTime: 0.26666668
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -273,13 +270,6 @@ AnimationClip:
     messageOptions: 0
   - time: 0.23333333
     functionName: KnockedDownDust
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.6666667
-    functionName: WinPoseForOtherGuySoon
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

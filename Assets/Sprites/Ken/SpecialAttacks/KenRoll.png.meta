@@ -103,12 +103,12 @@ TextureImporter:
       name: KenRoll_0
       rect:
         serializedVersion: 2
-        x: 1
+        x: 2
         y: 0
         width: 89
         height: 98
       alignment: 9
-      pivot: {x: 0.5, y: 0.55}
+      pivot: {x: 0.495, y: 0.54999995}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

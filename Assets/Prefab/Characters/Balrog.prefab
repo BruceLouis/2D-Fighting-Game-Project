@@ -89,6 +89,7 @@ GameObject:
   - component: {fileID: 95007891196705630}
   - component: {fileID: 114258196917489380}
   - component: {fileID: 114493104235538422}
+  - component: {fileID: 114805233488368042}
   m_Layer: 8
   m_Name: Balrog
   m_TagString: Untagged
@@ -581,6 +582,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60825f62cf533044b84564c909c1392f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114805233488368042
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1647165389008910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3eba1597409d424782c24b46c10d666, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  decisionTimer: 40
+  one: {fileID: 8300000, guid: 49def70fb4059a6469d26c3d20f4a357, type: 3}
+  two: {fileID: 8300000, guid: 912c982748df2b042be3fe2ae90f2def, type: 3}
+  three: {fileID: 8300000, guid: c89fc6b4e44209c47a1f61e335934e36, type: 3}
 --- !u!114 &114937258699382090
 MonoBehaviour:
   m_ObjectHideFlags: 1

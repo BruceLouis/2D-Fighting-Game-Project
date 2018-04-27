@@ -69,8 +69,10 @@ AnimationClip:
       value: {fileID: 21300006, guid: 02f2b6a187369ee4a9efa6fb4c653799, type: 3}
     - time: 0.7
       value: {fileID: 21300008, guid: 02f2b6a187369ee4a9efa6fb4c653799, type: 3}
-    - time: 0.8333333
+    - time: 0.76666665
       value: {fileID: 21300010, guid: 02f2b6a187369ee4a9efa6fb4c653799, type: 3}
+    - time: 0.8333333
+      value: {fileID: 21300000, guid: ba15cd583e1346d4b9efda085ef62618, type: 3}
     attribute: m_Sprite
     path: Body
     classID: 212
@@ -110,6 +112,7 @@ AnimationClip:
     - {fileID: 21300006, guid: 02f2b6a187369ee4a9efa6fb4c653799, type: 3}
     - {fileID: 21300008, guid: 02f2b6a187369ee4a9efa6fb4c653799, type: 3}
     - {fileID: 21300010, guid: 02f2b6a187369ee4a9efa6fb4c653799, type: 3}
+    - {fileID: 21300000, guid: ba15cd583e1346d4b9efda085ef62618, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
@@ -252,6 +255,13 @@ AnimationClip:
     messageOptions: 0
   - time: 0.2
     functionName: KnockedDownDust
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.8333333
+    functionName: SideSwitch
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
