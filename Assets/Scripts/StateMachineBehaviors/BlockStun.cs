@@ -15,7 +15,8 @@ public class BlockStun : StateMachineBehaviour {
 	
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
 	override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-		timer--;
+		//decrement timer, then set it to the timer parameter in the animator
+		timer -= Time.deltaTime * 15f; //15f is to make the timer go faster so characters don't get stuck in blockstun forever
 		animator.SetFloat("blockStunTimer", timer);		
 	}
 

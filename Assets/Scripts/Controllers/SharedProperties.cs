@@ -3,13 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SharedProperties : MonoBehaviour {
+
+	//as the name implies, this is the script that controls properties, methods, and any items that both players share
+	
+	public delegate void RegularDecisions();
+	public delegate void AIAntiAirs();
 	
 	private Player player;
 	private Opponent opponent;
 	private Animator animator;
 	private Character character;
 	private TimeControl timeControl;
-	private bool isKOSoundPlayed;
+	private bool isKOSoundPlayed, pressedForward, pressedBackward, pressedCrouch; 	
 	
 	void Start(){
 		timeControl = FindObjectOfType<TimeControl>();
@@ -40,43 +45,71 @@ public class SharedProperties : MonoBehaviour {
 	
 
 	public void CharacterNeutralState(){
-		if (player != null){
-			player.GetForwardPressed = false;
-			player.GetBackPressed = false;
-		}
-		else if (opponent != null){
-			opponent.GetForwardPressed = false;
-			opponent.GetBackPressed = false;
-		}
+		GetForwardPressed = false;
+		GetBackPressed = false;
 	}
 	
 	public void IsThrown(Animator thrownAnim, Character throwingCharacter, Character thrownCharacter){
 		if (thrownAnim.GetBool("isThrown") == true){
 			if (throwingCharacter.GetComponent<Ken>() != null){
-				if (thrownCharacter.side == Character.Side.P2){
-					thrownCharacter.transform.position = new Vector3(throwingCharacter.transform.position.x + 0.25f, throwingCharacter.transform.position.y, 0f);
-				}
-				else{
-					thrownCharacter.transform.position = new Vector3(throwingCharacter.transform.position.x - 0.25f, throwingCharacter.transform.position.y, 0f);
-				}		
+				ThrowSnapPoint (throwingCharacter, thrownCharacter, 0.25f);		
 			}
 			else if (throwingCharacter.GetComponent<FeiLong>() != null){
-				if (thrownCharacter.side == Character.Side.P2){
-					thrownCharacter.transform.position = new Vector3(throwingCharacter.transform.position.x + 0.5f, throwingCharacter.transform.position.y, 0f);
-				}
-				else{
-					thrownCharacter.transform.position = new Vector3(throwingCharacter.transform.position.x - 0.5f, throwingCharacter.transform.position.y, 0f);
-				}		
+				ThrowSnapPoint (throwingCharacter, thrownCharacter, 0.5f);	
 			}		
 			else if (throwingCharacter.GetComponent<Balrog>() != null){
-				if (thrownCharacter.side == Character.Side.P2){
-					thrownCharacter.transform.position = new Vector3(throwingCharacter.transform.position.x + 0.3f, throwingCharacter.transform.position.y, 0f);
-				}
-				else{
-					thrownCharacter.transform.position = new Vector3(throwingCharacter.transform.position.x - 0.3f, throwingCharacter.transform.position.y, 0f);
-				}		
+				ThrowSnapPoint (throwingCharacter, thrownCharacter, 0.3f);	
 			}		
+			else if (throwingCharacter.GetComponent<Akuma>() != null){
+				ThrowSnapPoint (throwingCharacter, thrownCharacter, 0.55f);
+			}
 		}
+	}	
+	
+	public void AIAntiAirDecision (int frequency, RegularDecisions regularDecisions, AIAntiAirs antiAir){		
+		int decision = Random.Range (0, 100);
+		bool doesAIAntiAir = DoesAIAntiAir(decision, frequency);		
+		if (doesAIAntiAir){
+			Debug.Log (gameObject.name + " anti aired");
+			antiAir  ();
+		}
+		else{
+			Debug.Log (gameObject.name + " didnt anti air");
+			regularDecisions ();
+		}
+	}	
+
+	void ThrowSnapPoint (Character throwingCharacter, Character thrownCharacter, float snapPoint){
+		if (thrownCharacter.side == Character.Side.P2) {
+			thrownCharacter.transform.position = new Vector3 (throwingCharacter.transform.position.x + snapPoint, throwingCharacter.transform.position.y, 0f);
+		}
+		else {
+			thrownCharacter.transform.position = new Vector3 (throwingCharacter.transform.position.x - snapPoint, throwingCharacter.transform.position.y, 0f);
+		}
+	}
+	
+	bool DoesAIAntiAir(int randNum, int frequency){			
+		if (randNum <= frequency) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	public bool GetBackPressed{
+		get { return pressedBackward; }
+		set { pressedBackward = value; }
+	}	
+	
+	public bool GetDownPressed{   
+		get { return pressedCrouch; }
+		set { pressedCrouch = value; }
+	}	
+	
+	public bool GetForwardPressed{
+		get { return pressedForward; }
+		set { pressedForward = value; }
 	}	
 	
 	public float GetDistanceFromOtherFighter(){

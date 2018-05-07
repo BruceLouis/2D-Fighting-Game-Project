@@ -43,32 +43,8 @@ AnimationClip:
         tangentMode: 0
       - serializedVersion: 2
         time: 0.46666667
-        value: {x: 0.2, y: -0.1, z: 0}
-        inSlope: {x: Infinity, y: Infinity, z: 0}
-        outSlope: {x: Infinity, y: 0, z: 0}
-        tangentMode: 0
-      - serializedVersion: 2
-        time: 0.53333336
-        value: {x: 0.2, y: 0, z: 0}
-        inSlope: {x: Infinity, y: Infinity, z: 0}
-        outSlope: {x: Infinity, y: 0.8499999, z: 0}
-        tangentMode: 0
-      - serializedVersion: 2
-        time: 0.6666667
-        value: {x: 0, y: 0.07, z: 0}
+        value: {x: 0, y: -0.313, z: 0}
         inSlope: {x: 0, y: Infinity, z: 0}
-        outSlope: {x: 0, y: Infinity, z: 0}
-        tangentMode: 0
-      - serializedVersion: 2
-        time: 0.73333335
-        value: {x: 0, y: 0.113, z: 0}
-        inSlope: {x: 0, y: 0, z: 0}
-        outSlope: {x: 0, y: Infinity, z: 0}
-        tangentMode: 0
-      - serializedVersion: 2
-        time: 0.8
-        value: {x: 0, y: -0.001, z: 0}
-        inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 0
       m_PreInfinity: 2
@@ -104,19 +80,7 @@ AnimationClip:
     - time: 0.23333333
       value: {fileID: 21300008, guid: 7c8c8ab3dcc3e59419686da6db68aea1, type: 3}
     - time: 0.46666667
-      value: {fileID: 21300012, guid: 7c8c8ab3dcc3e59419686da6db68aea1, type: 3}
-    - time: 0.53333336
-      value: {fileID: 21300014, guid: 7c8c8ab3dcc3e59419686da6db68aea1, type: 3}
-    - time: 0.6
-      value: {fileID: 21300016, guid: 7c8c8ab3dcc3e59419686da6db68aea1, type: 3}
-    - time: 0.6666667
-      value: {fileID: 21300018, guid: 7c8c8ab3dcc3e59419686da6db68aea1, type: 3}
-    - time: 0.73333335
-      value: {fileID: 21300020, guid: 7c8c8ab3dcc3e59419686da6db68aea1, type: 3}
-    - time: 0.8
-      value: {fileID: 21300022, guid: 7c8c8ab3dcc3e59419686da6db68aea1, type: 3}
-    - time: 0.8666667
-      value: {fileID: 21300022, guid: 7c8c8ab3dcc3e59419686da6db68aea1, type: 3}
+      value: {fileID: 21300008, guid: 7c8c8ab3dcc3e59419686da6db68aea1, type: 3}
     attribute: m_Sprite
     path: Body
     classID: 212
@@ -154,19 +118,13 @@ AnimationClip:
     - {fileID: 21300002, guid: 7c8c8ab3dcc3e59419686da6db68aea1, type: 3}
     - {fileID: 21300006, guid: 7c8c8ab3dcc3e59419686da6db68aea1, type: 3}
     - {fileID: 21300008, guid: 7c8c8ab3dcc3e59419686da6db68aea1, type: 3}
-    - {fileID: 21300012, guid: 7c8c8ab3dcc3e59419686da6db68aea1, type: 3}
-    - {fileID: 21300014, guid: 7c8c8ab3dcc3e59419686da6db68aea1, type: 3}
-    - {fileID: 21300016, guid: 7c8c8ab3dcc3e59419686da6db68aea1, type: 3}
-    - {fileID: 21300018, guid: 7c8c8ab3dcc3e59419686da6db68aea1, type: 3}
-    - {fileID: 21300020, guid: 7c8c8ab3dcc3e59419686da6db68aea1, type: 3}
-    - {fileID: 21300022, guid: 7c8c8ab3dcc3e59419686da6db68aea1, type: 3}
-    - {fileID: 21300022, guid: 7c8c8ab3dcc3e59419686da6db68aea1, type: 3}
+    - {fileID: 21300008, guid: 7c8c8ab3dcc3e59419686da6db68aea1, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.90000004
+    m_StopTime: 0.5
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -211,24 +169,6 @@ AnimationClip:
         tangentMode: 1
       - serializedVersion: 2
         time: 0.46666667
-        value: 0.2
-        inSlope: Infinity
-        outSlope: Infinity
-        tangentMode: 1
-      - serializedVersion: 2
-        time: 0.6666667
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 1
-      - serializedVersion: 2
-        time: 0.73333335
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 1
-      - serializedVersion: 2
-        time: 0.8
         value: 0
         inSlope: 0
         outSlope: 0
@@ -269,32 +209,8 @@ AnimationClip:
         tangentMode: 1
       - serializedVersion: 2
         time: 0.46666667
-        value: -0.1
+        value: -0.313
         inSlope: Infinity
-        outSlope: 0
-        tangentMode: 1
-      - serializedVersion: 2
-        time: 0.53333336
-        value: 0
-        inSlope: Infinity
-        outSlope: 0.8499999
-        tangentMode: 1
-      - serializedVersion: 2
-        time: 0.6666667
-        value: 0.07
-        inSlope: Infinity
-        outSlope: Infinity
-        tangentMode: 1
-      - serializedVersion: 2
-        time: 0.73333335
-        value: 0.113
-        inSlope: 0
-        outSlope: Infinity
-        tangentMode: 1
-      - serializedVersion: 2
-        time: 0.8
-        value: -0.001
-        inSlope: 0
         outSlope: 0
         tangentMode: 1
       m_PreInfinity: 2
@@ -333,24 +249,6 @@ AnimationClip:
         tangentMode: 1
       - serializedVersion: 2
         time: 0.46666667
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 1
-      - serializedVersion: 2
-        time: 0.6666667
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 1
-      - serializedVersion: 2
-        time: 0.73333335
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 1
-      - serializedVersion: 2
-        time: 0.8
         value: 0
         inSlope: 0
         outSlope: 0
@@ -399,13 +297,6 @@ AnimationClip:
     messageOptions: 0
   - time: 0.23333333
     functionName: KnockedDownDust
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.8666667
-    functionName: SideSwitch
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class KenAI : MonoBehaviour {
-
-	public float decisionTimer;
+		
+	[SerializeField] float decisionTimer, antiAirTimer;
 		
 	private Animator animator;
 	private Player player, playerController;
@@ -15,7 +15,7 @@ public class KenAI : MonoBehaviour {
 	private AIControls AIcontrols;
 	
 	private int decision;
-	private float decisionTimerInput;	
+	private float decisionTimerInput, antiAirTimerInput;	
 	
 	// Use this for initialization
 	void Start () {				
@@ -39,13 +39,15 @@ public class KenAI : MonoBehaviour {
 		}
 		
 		decisionTimerInput = decisionTimer; 
+		antiAirTimerInput = antiAirTimer;
+		antiAirTimer = 0f;
 		decision = Random.Range(0,100);	
 	}
 	
 	public void Behaviors(){
 		decisionTimer--;
-		if (animator.GetBool("isLiftingOff") == false && animator.GetBool("isKnockedDown") == false && animator.GetBool("isThrown") == false && animator.GetBool("isMidAirHit") == false
-		    && animator.GetBool("isMidAirRecovering") == false && animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false){
+		antiAirTimer--;
+		if (AIcontrols.FreeToMakeDecisions() && !TimeControl.inSuperStartup[0] && !TimeControl.inSuperStartup[1]){
 			if (animator.GetBool("isAirborne") == true && animator.GetBool("isLiftingOff") == false){
 				decision = Random.Range(0,100);
 				if (decision <= 3){
@@ -88,8 +90,14 @@ public class KenAI : MonoBehaviour {
 			else{
 				if (player != null){
 				//anti air
-					if (playerCharacter.GetAirborne() == true && playerCharacter.GetKnockDown() == false){
-						PreparationForAntiAir ();
+					if (playerCharacter.GetAirborne() == true && playerCharacter.GetKnockDown() == false && playerCharacter.GetThrown() == false){
+						if (antiAirTimer <= 0f){			
+							sharedProperties.AIAntiAirDecision(67, RegularCloseRangeDecisions, PreparationForAntiAir);
+							antiAirTimer = antiAirTimerInput;
+						}
+						else{
+							RegularCloseRangeDecisions();
+						}
 					}
 				//other guy got hit
 					else if (playerCharacter.GetHitStunned() == true){
@@ -101,7 +109,7 @@ public class KenAI : MonoBehaviour {
 					}
 				//other guy blocked
 					else if (playerCharacter.GetBlockStunned() == true){
-						CloseRangeOtherFighterBlockedDecisions ();					
+						CloseRangeOtherFighterBlockedDecisions ();		
 					}
 					else{
 						RegularCloseRangeDecisions ();
@@ -109,8 +117,14 @@ public class KenAI : MonoBehaviour {
 				}				
 				else if (opponent != null){
 					//anti air
-					if (opponentCharacter.GetAirborne() == true && opponentCharacter.GetKnockDown() == false){
-						PreparationForAntiAir ();
+					if (opponentCharacter.GetAirborne() == true && opponentCharacter.GetKnockDown() == false && opponentCharacter.GetThrown() == false){
+						if (antiAirTimer <= 0f){			
+							sharedProperties.AIAntiAirDecision(67, RegularCloseRangeDecisions, PreparationForAntiAir);
+							antiAirTimer = antiAirTimerInput;
+						}
+						else{
+							RegularCloseRangeDecisions();
+						}
 					}
 					//other guy got hit
 					else if (opponentCharacter.GetHitStunned() == true){
@@ -122,19 +136,14 @@ public class KenAI : MonoBehaviour {
 					}
 					//other guy blocked
 					else if (opponentCharacter.GetBlockStunned() == true){
-						CloseRangeOtherFighterBlockedDecisions ();					
+						CloseRangeOtherFighterBlockedDecisions ();				
 					}
 					else{
 						RegularCloseRangeDecisions ();
 					}
 				}				
 			}
-			if (playerController != null){
-				playerController.WalkAI();
-			}
-			else if (opponentController != null){
-				opponentController.Walk();
-			}
+			AIcontrols.AIWalks();
 		}			
 	}
 
@@ -170,7 +179,12 @@ public class KenAI : MonoBehaviour {
 			decisionTimer = 0f;
 		}
 		else if (decision <= 52 && decision > 46) {
-			AIcontrols.AIShort ();
+			if (character.GetSuper >= 100f){
+				AIShinryukens();
+			}
+			else{
+				AIcontrols.AIShort (10);
+			}
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 			decisionTimer = 0f;
@@ -196,7 +210,7 @@ public class KenAI : MonoBehaviour {
 					decisionTimer = 0f;
 				}
 				else {
-					AIcontrols.AIShort ();
+					AIcontrols.AIShort (10);
 					sharedProperties.CharacterNeutralState ();
 					AIcontrols.DoesAIBlock ();
 					decisionTimer = 0f;
@@ -210,7 +224,7 @@ public class KenAI : MonoBehaviour {
 					decisionTimer = 0f;
 				}
 				else {
-					AIcontrols.AIShort ();
+					AIcontrols.AIShort (10);
 					sharedProperties.CharacterNeutralState ();
 					AIcontrols.DoesAIBlock ();
 					decisionTimer = 0f;
@@ -300,7 +314,7 @@ public class KenAI : MonoBehaviour {
 			decisionTimer = 0f;
 		}
 		else if (decision <= 94 && decision > 93) {
-			AIcontrols.AIShort ();
+			AIcontrols.AIShort (10);
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 			decisionTimer = 0f;
@@ -354,7 +368,7 @@ public class KenAI : MonoBehaviour {
 			}
 		}
 		else if (decision <= 68 && decision > 65) {
-			AIcontrols.AIShort ();
+			AIcontrols.AIShort (10);
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 			decisionTimer = 0f;
@@ -394,7 +408,7 @@ public class KenAI : MonoBehaviour {
 			decisionTimer = 0f;
 		}
 		else if (decision <= 45 && decision > 35) {
-			AIcontrols.AIShort ();
+			AIcontrols.AIShort (10);
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 			decisionTimer = 0f;
@@ -451,7 +465,7 @@ public class KenAI : MonoBehaviour {
 			decisionTimer = 0f;
 		}
 		else if (decision <= 26 && decision > 23) {
-			AIcontrols.AIShort ();
+			AIcontrols.AIShort (10);
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 			decisionTimer = 0f;
@@ -489,6 +503,7 @@ public class KenAI : MonoBehaviour {
 			decisionTimer = 0f;
 		}
 	}
+	
 	void CloseRangeOtherFighterBlockedDecisions (){
 		decision = Random.Range(0,100);
 		if (decision <= 30) {
@@ -500,7 +515,12 @@ public class KenAI : MonoBehaviour {
 			AIcontrols.DoesAIBlock ();
 		}
 		else if (decision <= 55 && decision > 45) {
-			AIcontrols.AIStrong (10);
+			if (character.GetSuper >= 100f){
+				AIShinryukens();
+			}
+			else{
+				AIcontrols.AIStrong (10);
+			}
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 		}
@@ -510,7 +530,7 @@ public class KenAI : MonoBehaviour {
 			AIcontrols.DoesAIBlock ();
 		}
 		else if (decision <= 75 && decision > 65) {
-			AIcontrols.AIShort ();
+			AIcontrols.AIShort (10);
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 		}
@@ -536,11 +556,16 @@ public class KenAI : MonoBehaviour {
 			sharedProperties.CharacterNeutralState ();
 		}
 		else {
-			AIcontrols.AISweep ();
+			if (character.GetSuper >= 100f){
+				AIShinryukens();
+			}
+			else{
+				AIcontrols.AISweep ();
+			}
 			sharedProperties.CharacterNeutralState ();
 		}
 	}
-
+	
 	void PreparationForAntiAir (){
 		decision = Random.Range(0,100);
 		if (decision <= 60) {
@@ -576,7 +601,7 @@ public class KenAI : MonoBehaviour {
 			AIcontrols.DoesAIBlock ();
 		}
 		else if (decision <= 55 && decision > 50) {
-			AIcontrols.AIShort ();
+			AIcontrols.AIShort (10);
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 		}
@@ -598,7 +623,7 @@ public class KenAI : MonoBehaviour {
 			decisionTimer = Random.Range (decisionTimerInput / minDivisor, decisionTimerInput / maxDivisor);
 		}
 	}
-	
+
 	void AIHadoukenLimitsWithLowForward (){
 		if (playerController != null) {
 			if (playerController.GetProjectileP1Parent ().transform.childCount <= 0) {
@@ -626,28 +651,33 @@ public class KenAI : MonoBehaviour {
 		}
 	}
 	
-	void AIJabShoryuken(){
-		if (animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false 
-		    && animator.GetBool("isLiftingOff") == false && animator.GetBool("isAirborne") == false 
-		    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isMidAirRecovering") == false
-		    && animator.GetBool("isThrown") == false){
-			
-			animator.SetTrigger("shoryukenInputed");			
+	void AIShinryukens(){
+		if (AIcontrols.GetConditionsSpecialAttack()){			
+			animator.SetTrigger("motionSuperInputed");		
 			if (animator.GetBool("isAttacking") == false){
-				AIcontrols.AIStand();
+				AIcontrols.AIStand ();
 				character.AttackState();
-				animator.Play("KenShoryukenJab",0);
-				animator.SetInteger("shoryukenPunchType", 0);
+				animator.Play("KenShinryuken",0);					
+			}
+		}
+	}
+	
+	void AIJabShoryuken(){
+		if (AIcontrols.GetConditionsSpecialAttack()) {
+			
+			animator.SetTrigger ("shoryukenInputed");			
+			if (animator.GetBool ("isAttacking") == false) {
+				AIcontrols.AIStand ();
+				character.AttackState ();
+				animator.Play ("KenShoryukenJab", 0);
+				animator.SetInteger ("shoryukenPunchType", 0);
 			}
 		}
 	}
 	
 	void AIShoryukens(){
 		int shoryukenPunch = Random.Range(0,3);
-		if (animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false 
-		    && animator.GetBool("isLiftingOff") == false && animator.GetBool("isAirborne") == false 
-		    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isMidAirRecovering") == false
-		    && animator.GetBool("isThrown") == false){
+		if (AIcontrols.GetConditionsSpecialAttack()){
 			
 			animator.SetTrigger("shoryukenInputed");			
 			if (animator.GetBool("isAttacking") == false){
@@ -670,10 +700,7 @@ public class KenAI : MonoBehaviour {
 	}
 	
 	void AIHadoukens(){		
-		if (animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false 
-		    && animator.GetBool("isLiftingOff") == false && animator.GetBool("isAirborne") == false 
-		    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isMidAirRecovering") == false
-		    && animator.GetBool("isThrown") == false){
+		if (AIcontrols.GetConditionsSpecialAttack()){
 			
 			animator.SetTrigger("hadoukenInputed");
 			
@@ -682,22 +709,13 @@ public class KenAI : MonoBehaviour {
 				character.AttackState();
 				animator.Play("KenHadouken",0);		
 				animator.SetInteger("hadoukenPunchType", Random.Range(0,3));
-//				if (gameObject.tag == "Player2"){
-//					animator.SetInteger("hadoukenOwner", 2);
-//				}
-//				else if (gameObject.tag == "Player1"){
-//					animator.SetInteger("hadoukenOwner", 1);
-//				}
 			}
 		}
 	}
 	
 	void AIHurricaneKicks(){			
 		int hurricaneType = Random.Range(0,3);
-		if (animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false 
-		    && animator.GetBool("isLiftingOff") == false && animator.GetBool("isAirborne") == false 
-		    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isMidAirRecovering") == false
-		    && animator.GetBool("isThrown") == false){	
+		if (AIcontrols.GetConditionsSpecialAttack()){	
 			
 			animator.SetTrigger("hurricaneKickInputed");	
 			
@@ -712,10 +730,7 @@ public class KenAI : MonoBehaviour {
 	
 	void AIRolls(){
 		int rollType = Random.Range (0,3);
-		if (animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false 
-		    && animator.GetBool("isLiftingOff") == false && animator.GetBool("isAirborne") == false 
-		    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isMidAirRecovering") == false
-		    && animator.GetBool("isThrown") == false){
+		if (AIcontrols.GetConditionsSpecialAttack()){
 			
 			animator.SetTrigger("rollInputed");
 			if (animator.GetBool("isAttacking") == false){

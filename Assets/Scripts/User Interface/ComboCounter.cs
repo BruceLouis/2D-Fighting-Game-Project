@@ -83,4 +83,8 @@ public class ComboCounter : MonoBehaviour {
 		get { return startTimer; }
 		set { startTimer = value; }	
 	}		
+	
+	public void ResetComboFinishedTimer(){
+		comboFinishedTimer = comboFinishedTimerInput;
+	}
 }

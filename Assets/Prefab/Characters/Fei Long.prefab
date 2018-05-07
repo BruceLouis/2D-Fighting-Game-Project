@@ -528,6 +528,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   decisionTimer: 25
+  antiAirTimer: 100
 --- !u!114 &114231629194966156
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -543,14 +544,20 @@ MonoBehaviour:
   health: 1000
   landingDust: {fileID: 1229361437117194, guid: dd02c7bc3b3a1e247a245fc24dd5b1a9,
     type: 2}
+  superEffect: {fileID: 1460280132473584, guid: cf70789e49981334bb73ba7342474df2,
+    type: 2}
+  demonSpark: {fileID: 1151641010263658, guid: 44cf356800d1fa64595be0e49ea242e4, type: 2}
+  KOsound: {fileID: 8300000, guid: 87afdf97f3d6542499cc6daa86a412bf, type: 3}
+  fellSound: {fileID: 8300000, guid: 44d2a74b3d0ed2746ba8492917f7564b, type: 3}
+  akumaDemonSound: {fileID: 8300000, guid: 1092c471819d73a4493f1829b3f9b2c9, type: 3}
+  akumaDemonKOSound: {fileID: 8300000, guid: f4c55cbba24d72446ab5fc76c0bf9e0e, type: 3}
+  normalAttackSound: {fileID: 8300000, guid: 591f3f0aef3a9674688fe1f55e73a8b7, type: 3}
+  balrogHeadButtSound: {fileID: 8300000, guid: 9d87675e2db1f7b439e091c46f176d09, type: 3}
+  superEffectSound: {fileID: 8300000, guid: 8dd7f474e6abe934eb3dd03088a8cf7e, type: 3}
   side: 0
   moveType: 0
   hitType: 0
-  normalAttackSound: {fileID: 8300000, guid: 591f3f0aef3a9674688fe1f55e73a8b7, type: 3}
-  KOsound: {fileID: 8300000, guid: 87afdf97f3d6542499cc6daa86a412bf, type: 3}
-  fellSound: {fileID: 8300000, guid: 44d2a74b3d0ed2746ba8492917f7564b, type: 3}
-  flameSound: {fileID: 8300000, guid: e5cb133c672b808489f4ae12d3881e33, type: 3}
-  balrogHeadButtSound: {fileID: 8300000, guid: 9d87675e2db1f7b439e091c46f176d09, type: 3}
+  sparkType: 0
 --- !u!114 &114236150754639032
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -568,8 +575,15 @@ MonoBehaviour:
   rekkaSecondSound: {fileID: 8300000, guid: 8a6d349ebc08e42429ed6418d54226b3, type: 3}
   rekkaThirdSound: {fileID: 8300000, guid: 698048e2c837e474ca0278c2160e249b, type: 3}
   flameKickSound: {fileID: 8300000, guid: f5c9ea25768f6ee4b81f39ef231b987f, type: 3}
+  flameSound: {fileID: 8300000, guid: e5cb133c672b808489f4ae12d3881e33, type: 3}
   chickenWingSound: {fileID: 8300000, guid: a08555cd91a127a4f9804a62d3a952c8, type: 3}
   victorySound: {fileID: 8300000, guid: 0372219a1b676af4ca8ec4842f59a012, type: 3}
+  rekkaShinkenThirdSound: {fileID: 8300000, guid: 569ac1a41347f1a46b5d11d04793a59b,
+    type: 3}
+  rekkaShinkenFourthSound: {fileID: 8300000, guid: 3ca375a24c7e2d2419ef756e4069d62a,
+    type: 3}
+  rekkaShinkenFifthSound: {fileID: 8300000, guid: f7e1b7745b3494b4481de5362183261f,
+    type: 3}
 --- !u!114 &114270336308897114
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -594,12 +608,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitSpark: {fileID: 1784982515930218, guid: 179dd58a731440d4285ff04eb5061df9, type: 2}
+  bigHitSpark: {fileID: 1151641010263658, guid: 44cf356800d1fa64595be0e49ea242e4,
+    type: 2}
   shoryukenSpark: {fileID: 1397779579624298, guid: 88f9da45535328247bfab00bd7afe920,
     type: 2}
   blockSpark: {fileID: 1939279163534822, guid: d4837423e51622a4ead581e63e5b5796, type: 2}
   normalHit: {fileID: 8300000, guid: 9d87675e2db1f7b439e091c46f176d09, type: 3}
-  bigHit: {fileID: 8300000, guid: 58de472658b1264419f33ec67036a27d, type: 3}
+  bigHit: {fileID: 8300000, guid: 1092c471819d73a4493f1829b3f9b2c9, type: 3}
+  shoryukenHit: {fileID: 8300000, guid: 58de472658b1264419f33ec67036a27d, type: 3}
   blockHit: {fileID: 8300000, guid: 3c84103b068e99143b5cdd36b43590bf, type: 3}
+  superKOSound: {fileID: 8300000, guid: 186d2cbea5732ba43af87d103df23852, type: 3}
+  normalHitSlowDown: 20
+  bigHitSlowDown: 30
+  KOSlowDown: 100
 --- !u!114 &114554949861260894
 MonoBehaviour:
   m_ObjectHideFlags: 1

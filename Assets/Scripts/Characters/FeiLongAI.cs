@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class FeiLongAI : MonoBehaviour {
 	
-	public float decisionTimer;
+	[SerializeField] float decisionTimer, antiAirTimer;
 	
 	private Animator animator;
-	private Player player, playerController;
-	private Opponent opponent, opponentController;
+	private Player player;
+	private Opponent opponent;
 	private Character playerCharacter, opponentCharacter;
 	private Character character;
 	private SharedProperties sharedProperties;
 	private AIControls AIcontrols;
 	
 	private int decision;
-	private float decisionTimerInput;	
+	private float decisionTimerInput, antiAirTimerInput;	
 	
 	// Use this for initialization
 	void Start () {		
@@ -23,12 +23,10 @@ public class FeiLongAI : MonoBehaviour {
 		if (GetComponentInParent<Opponent>() != null){
 			player = FindObjectOfType<Player>();
 			playerCharacter = player.GetComponentInChildren<Character>();
-			opponentController = GetComponentInParent<Opponent>();
 		}
 		else if (GetComponentInParent<Player>() != null){
 			opponent = FindObjectOfType<Opponent>();
 			opponentCharacter = opponent.GetComponentInChildren<Character>();
-			playerController = GetComponentInParent<Player>();
 		}
 		
 		character = GetComponent<Character>();
@@ -37,14 +35,16 @@ public class FeiLongAI : MonoBehaviour {
 		sharedProperties = GetComponentInParent<SharedProperties>();
 		
 		decisionTimerInput = decisionTimer; 
+		antiAirTimerInput = antiAirTimer;
+		antiAirTimer = 0f;
 		decision = Random.Range(0,100);	
 	}
 		
 	
 	public void Behaviors(){
 		decisionTimer--;
-		if (animator.GetBool("isLiftingOff") == false && animator.GetBool("isKnockedDown") == false && animator.GetBool("isThrown") == false && animator.GetBool("isMidAirHit") == false
-		 	&& animator.GetBool("isMidAirRecovering") == false && animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false){
+		antiAirTimer--;
+		if (AIcontrols.FreeToMakeDecisions() && !TimeControl.inSuperStartup[0] && !TimeControl.inSuperStartup[1]){
 			if (animator.GetBool("rekkaKenActive")){
 				if (player != null){
 					RekkaChainDecisions (playerCharacter);
@@ -74,6 +74,15 @@ public class FeiLongAI : MonoBehaviour {
 					}
 					else if (playerCharacter.GetKnockDown() == true && playerCharacter.GetAirborne() == false){					
 						KnockDownCloseRangeDecisions ();
+					}					
+					else if (playerCharacter.GetAirborne() == true && playerCharacter.GetKnockDown() == false && playerCharacter.GetThrown() == false){
+						if (antiAirTimer <= 0f){			
+							sharedProperties.AIAntiAirDecision(48, RegularCloseRangeDecisions, PreparationForAntiAir);
+							antiAirTimer = antiAirTimerInput;
+						}
+						else{
+							RegularCloseRangeDecisions();
+						}
 					}
 					else{
 						RegularCloseRangeDecisions();
@@ -86,16 +95,24 @@ public class FeiLongAI : MonoBehaviour {
 					else if (opponentCharacter.GetBlockStunned() == true){
 						CloseRangeOtherFighterBlockedDecisions ();
 					}
-					else if (opponentCharacter.GetKnockDown() == true && opponentCharacter.GetAirborne() == false){					
+					else if (opponentCharacter.GetKnockDown() == true && opponentCharacter.GetAirborne() == false && opponentCharacter.GetThrown() == false){					
 						KnockDownCloseRangeDecisions ();
+					}	
+					else if (opponentCharacter.GetAirborne() == true && opponentCharacter.GetKnockDown() == false){
+						if (antiAirTimer <= 0f){			
+							sharedProperties.AIAntiAirDecision(48, RegularCloseRangeDecisions, PreparationForAntiAir);
+							antiAirTimer = antiAirTimerInput;
+						}
+						else{
+							RegularCloseRangeDecisions();
+						}
 					}
 					else{
 						RegularCloseRangeDecisions();
 					}
 				}
 			}	
-			else if (sharedProperties.GetDistanceFromOtherFighter() < 2f && sharedProperties.GetDistanceFromOtherFighter() >= 1f){
-				
+			else if (sharedProperties.GetDistanceFromOtherFighter() < 2f && sharedProperties.GetDistanceFromOtherFighter() >= 1f){				
 				if (player != null){
 					if (playerCharacter.GetKnockDown() == true){				
 						KnockDownMidRangeDecisions ();
@@ -116,12 +133,7 @@ public class FeiLongAI : MonoBehaviour {
 			else{
 				RegularFarRangeDecisions ();
 			}
-			if (playerController != null){
-				playerController.WalkAI();
-			}
-			else if (opponentController != null){
-				opponentController.Walk();
-			}	
+			AIcontrols.AIWalks();
 		}			
 	}
 
@@ -186,7 +198,7 @@ public class FeiLongAI : MonoBehaviour {
 			decisionTimer = 0f;
 		}
 		else if (decision <= 40 && decision > 39) {
-			AIcontrols.AIShort ();
+			AIcontrols.AIShort (2);
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 			decisionTimer = 0f;
@@ -245,13 +257,18 @@ public class FeiLongAI : MonoBehaviour {
 			decisionTimer = 0f;
 		}
 		else if (decision <= 22 && decision > 16) {
-			AIcontrols.AIJab (8);
+			if (character.GetSuper >= 100f){
+				AIRekkaShinkens();
+			}
+			else{
+				AIcontrols.AIJab (8);
+			}
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 			decisionTimer = 0f;
 		}
 		else if (decision <= 23 && decision > 22) {
-			AIcontrols.AIShort ();
+			AIcontrols.AIShort (2);
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 			decisionTimer = 0f;
@@ -377,7 +394,12 @@ public class FeiLongAI : MonoBehaviour {
 			AIcontrols.DoesAIBlock ();
 		}
 		else if (decision <= 60 && decision > 50) {
-			AIcontrols.AIFierce (10, 8);
+			if (character.GetSuper >= 100f){
+				AIRekkaShinkens();
+			}
+			else{
+				AIcontrols.AIFierce (10, 8);
+			}
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 		}
@@ -406,12 +428,41 @@ public class FeiLongAI : MonoBehaviour {
 			AIcontrols.DoesAIBlock ();
 		}
 		else if (decision <= 70 && decision > 60) {
-			AIcontrols.AIFierce (10, 8);
+			if (character.GetSuper >= 100f){
+				AIRekkaShinkens();
+			}
+			else{
+				AIcontrols.AIFierce (10, 8);
+			}
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 		}
 		else {
 			AIShienKyakus ();
+			sharedProperties.CharacterNeutralState ();
+			AIcontrols.DoesAIBlock ();
+		}
+	}
+	
+	void PreparationForAntiAir (){
+		decision = Random.Range (0, 100);
+		if (decision <= 70) {
+			AIShienKyakus ();
+			sharedProperties.CharacterNeutralState ();
+			AIcontrols.DoesAIBlock ();		
+		}
+		else if (decision <= 80 && decision > 70) {
+			AIcontrols.AIFierce (10, 8);
+			sharedProperties.CharacterNeutralState ();
+			AIcontrols.DoesAIBlock ();
+		}
+		else if (decision <= 90 && decision > 80){	
+			AIcontrols.AIJab (8);
+			sharedProperties.CharacterNeutralState ();
+			AIcontrols.DoesAIBlock ();
+		}
+		else{
+			AIcontrols.AIForward (1);
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 		}
@@ -442,12 +493,20 @@ public class FeiLongAI : MonoBehaviour {
 		}
 	}
 	
+	void AIRekkaShinkens(){
+		if (AIcontrols.GetConditionsSpecialAttack()){			
+			animator.SetTrigger("motionSuperInputed");		
+			if (animator.GetBool("isAttacking") == false){
+				AIcontrols.AIStand ();
+				character.AttackState();
+				animator.Play("FeiLongRekkaShinken",0);					
+			}
+		}
+	}
+	
 	void AIRekkaKens(){
 		int rekkaPunch = Random.Range(0,3);
-		if (animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false 
-		    && animator.GetBool("isLiftingOff") == false && animator.GetBool("isAirborne") == false 
-		    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isMidAirRecovering") == false
-		    && animator.GetBool("isThrown") == false){
+		if (AIcontrols.GetConditionsSpecialAttack()){
 			
 			animator.SetTrigger("hadoukenInputed");			
 			if (animator.GetBool("isAttacking") == false){
@@ -468,10 +527,7 @@ public class FeiLongAI : MonoBehaviour {
 	}
 	
 	void AIShortShienKyakus(){
-		if (animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false 
-		    && animator.GetBool("isLiftingOff") == false && animator.GetBool("isAirborne") == false 
-		    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isMidAirRecovering") == false
-		    && animator.GetBool("isThrown") == false){
+		if (AIcontrols.GetConditionsSpecialAttack()){
 			
 			animator.SetTrigger("reverseShoryukenInputed");			
 			if (animator.GetBool("isAttacking") == false){
@@ -485,10 +541,7 @@ public class FeiLongAI : MonoBehaviour {
 		
 	void AIRekkaKuns(){
 		int rekkaKunKick = Random.Range(0,3);
-		if (animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false 
-		    && animator.GetBool("isLiftingOff") == false && animator.GetBool("isAirborne") == false 
-		    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isMidAirRecovering") == false
-		    && animator.GetBool("isThrown") == false){
+		if (AIcontrols.GetConditionsSpecialAttack()){
 			
 			animator.SetTrigger("shoryukenInputed");			
 			if (animator.GetBool("isAttacking") == false){
@@ -510,10 +563,7 @@ public class FeiLongAI : MonoBehaviour {
 	
 	void AIShienKyakus(){
 		int shienKyakuKick = Random.Range(0,3);
-		if (animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false 
-		    && animator.GetBool("isLiftingOff") == false && animator.GetBool("isAirborne") == false 
-		    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isMidAirRecovering") == false
-		    && animator.GetBool("isThrown") == false){
+		if (AIcontrols.GetConditionsSpecialAttack()){
 			
 			animator.SetTrigger("reverseShoryukenInputed");			
 			if (animator.GetBool("isAttacking") == false){

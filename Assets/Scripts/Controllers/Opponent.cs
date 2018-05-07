@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class Opponent : MonoBehaviour {
@@ -8,8 +9,8 @@ public class Opponent : MonoBehaviour {
 	public GameObject mugShotObject;
 	public GameObject[] streetFighterCharacters;
 	public Text nameText;
-	public Sprite kenMugShot, feiLongMugShot, balrogMugShot;
-	public bool isAI;
+	public Sprite kenMugShot, feiLongMugShot, balrogMugShot, akumaMugShot;
+	public bool isAI, doInitiateCharacter;
 	
 	private TimeControl timeControl;
 	private Animator animator;
@@ -18,6 +19,7 @@ public class Opponent : MonoBehaviour {
 	private Character character;
 	private Rigidbody2D physicsbody;
 	private HealthBarP2 healthBar;
+	private SuperBarP2 superBar;
 	private FeiLong feiLong;
 	private Image mugShot;
 	private GameObject projectileP2Parent;
@@ -27,13 +29,17 @@ public class Opponent : MonoBehaviour {
 	private KenAI kenAI;
 	private FeiLongAI feiLongAI;
 	private BalrogAI balrogAI;
+	private AkumaAI akumaAI;
 	
 	private bool pressedForward, pressedBackward, pressedCrouch, introPlayed;
 	private float distance, distanceFromPlayer;
+	private string characterName;
 		
 	void Awake () {
-	
-		//InitiateCharacter();
+		
+		if (doInitiateCharacter){
+			InitiateCharacter();
+		}
 				
 		gameObject.layer = LayerMask.NameToLayer("Player2");
 		gameObject.tag = "Player2";
@@ -55,23 +61,33 @@ public class Opponent : MonoBehaviour {
 		playerCharacter = player.GetComponentInChildren<Character>();
 		physicsbody = GetComponentInChildren<Rigidbody2D>();	
 		healthBar = FindObjectOfType<HealthBarP2>();
+		superBar = FindObjectOfType<SuperBarP2>();	
 		
 		if (character.GetComponent<FeiLong>() != null){
 			feiLong = GetComponentInChildren<FeiLong>();
 			feiLongAI = GetComponentInChildren<FeiLongAI>();
 			mugShot.sprite = feiLongMugShot;
-			nameText.text = "Fei Long";
+			characterName = "Fei Long";
+			nameText.text = characterName;
 		}	
 		else if (character.GetComponent<Ken>() != null){
 			kenAI = GetComponentInChildren<KenAI>();
 			mugShot.sprite = kenMugShot;
-			nameText.text = "Ken";
+			characterName = "Ken";
+			nameText.text = characterName;
 		}		
 		else if (character.GetComponent<Balrog>() != null){
 			balrogAI = GetComponentInChildren<BalrogAI>();
 			mugShot.sprite = balrogMugShot;
-			nameText.text = "Balrog";
+			characterName = "Balrog";
+			nameText.text = characterName;
 		}		
+		else if (character.GetComponent<Akuma>() != null){
+			akumaAI = GetComponentInChildren<AkumaAI>();
+			mugShot.sprite = akumaMugShot;
+			characterName = "Akuma";
+			nameText.text = characterName;
+		}
 		
 		projectileP2Parent = GameObject.Find("ProjectileP2Parent");
 		if (projectileP2Parent == null){
@@ -107,10 +123,18 @@ public class Opponent : MonoBehaviour {
 				else if (character.GetComponent<Balrog>() != null){
 					balrogAI.Behaviors();
 				}
+				else if (character.GetComponent<Akuma>() != null){
+					akumaAI.Behaviors();
+				}
 			}
 		}
-		else{
-			sharedProperties.KOSequence("You Lose");				
+		else{	
+			if (SceneManager.GetActiveScene().name == "Game"){
+				sharedProperties.KOSequence("You Lose");
+			}
+			else{
+				sharedProperties.KOSequence(characterName + " Wins");
+			}				
 		}
 		if (character.GetHealth() <= 0){
 			animator.SetBool("isKOed", true);
@@ -122,43 +146,10 @@ public class Opponent : MonoBehaviour {
 			comboCounter.GetComboCountP1 = 1;
 		}
 		DetermineSide();
-		healthBar.SetHealth(character.GetHealth());
+		healthBar.SetHealth(character.GetHealth());	
+		superBar.SetSuper(character.GetSuper);	
 	}		
-	
-	public void Walk(){						
-		if (animator.GetBool("isAttacking") == false && animator.GetBool("isInHitStun") == false
-		    && animator.GetBool("isInBlockStun") == false && animator.GetBool("isLiftingOff") == false
-		    && animator.GetBool("isStanding") == true && animator.GetBool("isAirborne") == false
-		    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isMidAirRecovering") == false
-		    && animator.GetBool("isThrown") == false && animator.GetBool("isCrouching") == false){
-			if (pressedForward == true && animator.GetBool("isWalkingBackward") == false){
-				animator.SetBool("isWalkingForward", true);	
 				
-				if (character.side == Character.Side.P1){
-					character.transform.Translate(Vector3.right * character.walkSpeed * Time.deltaTime);	
-				}
-				else{
-					character.transform.Translate(Vector3.left * character.walkSpeed * Time.deltaTime);	
-				}
-			}
-			else if (pressedBackward == true && animator.GetBool("isWalkingForward") == false){
-				animator.SetBool("isWalkingBackward", true);				
-				if (character.side == Character.Side.P2){
-					character.transform.Translate(Vector3.right * character.walkSpeed * Time.deltaTime);	
-				}
-				else{
-					character.transform.Translate(Vector3.left * character.walkSpeed * Time.deltaTime);	
-				}
-			}	
-		}
-		if (pressedForward == false){
-			animator.SetBool("isWalkingForward", false);	
-		}
-		if (pressedBackward == false){	
-			animator.SetBool("isWalkingBackward", false);	
-		}
-	}
-			
 	void InitiateCharacter (){
 		int randChar = Random.Range (0, streetFighterCharacters.Length);
 		GameObject streetFighterCharacter = Instantiate (streetFighterCharacters [randChar]);
@@ -179,7 +170,7 @@ public class Opponent : MonoBehaviour {
 			}
 		}
 		//only after character is not in these states will the sprite actually switch sides
-		if (animator.GetBool ("isAirborne") == false && animator.GetBool ("isThrown") == false && animator.GetBool ("isWalkingForward") == false
+		if (animator.GetBool ("isAirborne") == false && animator.GetBool ("isThrown") == false && animator.GetBool ("isWalkingForward") == false && animator.GetBool ("isLanding") == false
 		    && animator.GetBool ("throwTargetAcquired") == false && animator.GetBool ("isLiftingOff") == false && animator.GetBool ("isWalkingBackward") == false				    
 		    && animator.GetBool ("isInHitStun") == false && animator.GetBool ("isInBlockStun") == false && animator.GetBool("isKnockedDown") == false) {
 			
@@ -196,21 +187,6 @@ public class Opponent : MonoBehaviour {
 	public GameObject GetProjectileP2Parent(){
 		return projectileP2Parent;
 	}
-	
-	public bool GetBackPressed{
-		get { return pressedBackward; }
-		set { pressedBackward = value; }
-	}	
-	
-	public bool GetDownPressed{   
-		get { return pressedCrouch; }
-		set { pressedCrouch = value; }
-	}	
-	
-	public bool GetForwardPressed{
-		get { return pressedForward; }
-		set { pressedForward = value; }
-	}	
 	
 	public float GetDistanceFromPlayer(){
 		return distanceFromPlayer;
@@ -268,7 +244,7 @@ public class Opponent : MonoBehaviour {
 				animator.SetBool ("isLiftingOff",true);
 			}
 		}
-		Walk();
+//		Walk();
 		
 		if (animator.GetBool("isAttacking") == false){
 			if (Input.GetKeyDown(KeyCode.Y)){
@@ -308,13 +284,22 @@ public class Opponent : MonoBehaviour {
 			
 		}
 		if (Input.GetKeyDown(KeyCode.Alpha3)){
-			if(animator.GetBool("isAttacking") == false && animator.GetBool("isAirborne") == false){				
-				character.AttackState();
-				animator.Play("KenHadouken",0);		
-				animator.SetInteger("hadoukenPunchType", Random.Range(0,3));
-				animator.SetInteger("hadoukenOwner", 2);
+			if (character.GetComponent<Ken>() != null){
+				if(animator.GetBool("isAttacking") == false && animator.GetBool("isAirborne") == false){				
+					character.AttackState();
+					animator.Play("KenHadouken",0);		
+					animator.SetInteger("hadoukenPunchType", Random.Range(0,3));
+					animator.SetInteger("hadoukenOwner", 2);
+				}
+				animator.SetTrigger("hadoukenInputed");
 			}
-			animator.SetTrigger("hadoukenInputed");
+			else if (character.GetComponent<FeiLong>() != null){		
+				if (animator.GetBool ("isAttacking") == false) {
+					character.AttackState ();
+					animator.Play ("FeiLongRekkaShinken", 0);
+				}
+				animator.SetTrigger ("motionSuperInputed");
+			}
 		}	
 		if (Input.GetKeyDown(KeyCode.Alpha4)){
 			if (character.GetComponent<Ken>() != null){
@@ -355,6 +340,15 @@ public class Opponent : MonoBehaviour {
 					}
 					animator.SetTrigger("reverseShoryukenInputed");
 					animator.SetInteger("shienKyakuKickType", 0);
+				}
+				else if (character.GetComponent<Akuma>() != null){
+					animator.SetTrigger("shoryukenInputed");			
+					if (animator.GetBool("isAttacking") == false){
+						character.AttackState();
+						animator.Play("AkumaShoryukenFierce",0);
+					}
+					animator.SetTrigger("shoryukenInputed");
+					animator.SetInteger("shoryukenPunchType", 2);
 				}
 			}
 		}

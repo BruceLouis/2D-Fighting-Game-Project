@@ -531,14 +531,21 @@ MonoBehaviour:
   health: 1050
   landingDust: {fileID: 1229361437117194, guid: dd02c7bc3b3a1e247a245fc24dd5b1a9,
     type: 2}
+  superEffect: {fileID: 1460280132473584, guid: cf70789e49981334bb73ba7342474df2,
+    type: 2}
+  demonSpark: {fileID: 1151641010263658, guid: 44cf356800d1fa64595be0e49ea242e4, type: 2}
   side: 0
   moveType: 0
   hitType: 0
-  normalAttackSound: {fileID: 8300000, guid: 591f3f0aef3a9674688fe1f55e73a8b7, type: 3}
+  sparkType: 0
   KOsound: {fileID: 8300000, guid: 8081004046f519f449ee99cccfa87b1f, type: 3}
   fellSound: {fileID: 8300000, guid: 44d2a74b3d0ed2746ba8492917f7564b, type: 3}
-  flameSound: {fileID: 8300000, guid: e5cb133c672b808489f4ae12d3881e33, type: 3}
   balrogHeadButtSound: {fileID: 8300000, guid: 9d87675e2db1f7b439e091c46f176d09, type: 3}
+  akumaDemonSound: {fileID: 8300000, guid: 1092c471819d73a4493f1829b3f9b2c9, type: 3}
+  akumaDemonKOSound: {fileID: 8300000, guid: f4c55cbba24d72446ab5fc76c0bf9e0e, type: 3}
+  normalAttackSound: {fileID: 8300000, guid: 591f3f0aef3a9674688fe1f55e73a8b7, type: 3}
+  flameSound: {fileID: 8300000, guid: e5cb133c672b808489f4ae12d3881e33, type: 3}
+  superEffectSound: {fileID: 8300000, guid: 8dd7f474e6abe934eb3dd03088a8cf7e, type: 3}
 --- !u!114 &114341500906076374
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -571,6 +578,7 @@ MonoBehaviour:
   final: {fileID: 8300000, guid: 23a71106529269e418b6b44a5793165d, type: 3}
   balrogRushPunchSound: {fileID: 8300000, guid: b1d274dd8b045e74f88b87ab82d95944,
     type: 3}
+  superStartSound: {fileID: 8300000, guid: c40619669d2872347ae943d70e408dd2, type: 3}
 --- !u!114 &114753267419648436
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -594,6 +602,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   decisionTimer: 40
+  antiAirTimer: 100
   one: {fileID: 8300000, guid: 49def70fb4059a6469d26c3d20f4a357, type: 3}
   two: {fileID: 8300000, guid: 912c982748df2b042be3fe2ae90f2def, type: 3}
   three: {fileID: 8300000, guid: c89fc6b4e44209c47a1f61e335934e36, type: 3}
@@ -609,12 +618,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitSpark: {fileID: 1784982515930218, guid: 179dd58a731440d4285ff04eb5061df9, type: 2}
+  bigHitSpark: {fileID: 1151641010263658, guid: 44cf356800d1fa64595be0e49ea242e4,
+    type: 2}
   shoryukenSpark: {fileID: 1397779579624298, guid: 88f9da45535328247bfab00bd7afe920,
     type: 2}
   blockSpark: {fileID: 1939279163534822, guid: d4837423e51622a4ead581e63e5b5796, type: 2}
   normalHit: {fileID: 8300000, guid: 9d87675e2db1f7b439e091c46f176d09, type: 3}
-  bigHit: {fileID: 8300000, guid: 58de472658b1264419f33ec67036a27d, type: 3}
+  bigHit: {fileID: 8300000, guid: 1092c471819d73a4493f1829b3f9b2c9, type: 3}
+  shoryukenHit: {fileID: 8300000, guid: 58de472658b1264419f33ec67036a27d, type: 3}
   blockHit: {fileID: 8300000, guid: 3c84103b068e99143b5cdd36b43590bf, type: 3}
+  superKOSound: {fileID: 8300000, guid: 186d2cbea5732ba43af87d103df23852, type: 3}
+  normalHitSlowDown: 20
+  bigHitSlowDown: 30
+  KOSlowDown: 100
 --- !u!114 &114943288506376226
 MonoBehaviour:
   m_ObjectHideFlags: 1

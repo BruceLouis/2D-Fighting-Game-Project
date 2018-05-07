@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class HitBox : MonoBehaviour {
-	public GameObject hitSpark;
-	public GameObject shoryukenSpark;
-	public GameObject blockSpark;	
+
+	delegate bool GetActiveSuper();
 	
-	public AudioClip normalHit;
-	public AudioClip bigHit;
-	public AudioClip blockHit;	
+	[SerializeField] GameObject hitSpark, bigHitSpark, shoryukenSpark, blockSpark;		
+	[SerializeField] AudioClip normalHit, bigHit, shoryukenHit, blockHit, superKOSound;	
+	[SerializeField] float normalHitSlowDown, bigHitSlowDown, KOSlowDown;
 	
 	private ComboCounter comboCounter;
 	private float distance, leftEdgeDistance, rightEdgeDistance;
@@ -90,6 +89,8 @@ public class HitBox : MonoBehaviour {
 					//there's no blocking in this game when you're airborne like in normal street fighter alphas, because i said so
 					InHitStun(hitCharacter, hurtCharacter, hurtCharAnim, hitCharAnim, sparkEffect, hurtPhysicsbody, hitPhysicsbody);					
 				}	
+				hurtCharacter.GetSuper += 1.5f;
+				hitCharacter.GetSuper += hitCharacter.GetSuperAccumulated();
 				hitCharAnim.SetBool("hasntHit", false);
 			}	
 		}
@@ -100,7 +101,7 @@ public class HitBox : MonoBehaviour {
 	}
 	
 	void InBlockStun(Character attacker, Animator anim, Rigidbody2D receiverRigid, Rigidbody2D attackerRigid, Vector3 sparkPlace){
-		float blockStunTimer = attacker.GetEnforceBlockStun();
+		float blockStunTimer = attacker.GetEnforceBlockStun() * 0.2f;
 		anim.SetBool("isInBlockStun", true);
 		AudioSource.PlayClipAtPoint(blockHit, transform.position);
 		if (anim.GetBool("isCrouching") == true){
@@ -110,39 +111,47 @@ public class HitBox : MonoBehaviour {
 			anim.Play("StandBlockStun",0,0f);
 		}
 		anim.SetFloat ("blockStunTimer", blockStunTimer);
-		TimeControl.slowDownTimer = 20;
+		TimeControl.slowDownTimer = normalHitSlowDown;
 		PushBack(attacker, receiverRigid, attackerRigid);
 		Instantiate(blockSpark, sparkPlace, Quaternion.identity);
 	}
 	
 	void InHitStun(Character attacker, Character receiver, Animator anim, Animator attAnim, Vector3 sparkPlace, Rigidbody2D receiverRigid, Rigidbody2D attackerRigid){
 		if (attacker.gameObject.tag == "Player1"){
-			if (anim.GetFloat("hitStunTimer") >= 0 && anim.GetBool("isInHitStun")){
+			if (anim.GetBool("isInHitStun")){
 				comboCounter.GetComboCountP1++;		
+				comboCounter.GetStartTimer = false;
+				comboCounter.ResetComboFinishedTimer();
 			}
 		}
 		else if (attacker.gameObject.tag == "Player2"){
-			if (anim.GetFloat("hitStunTimer") >= 0 && anim.GetBool("isInHitStun")){
+			if (anim.GetBool("isInHitStun")){
 				comboCounter.GetComboCountP2++;		
+				comboCounter.GetStartTimer = false;	
+				comboCounter.ResetComboFinishedTimer();
 			}
 		}
-		float hitStunTimer;
+		float hitStunTimer = attacker.GetEnforceHitStun() * 0.2f;
 		receiver.SetDamage(attacker.GetDamage()); 
 		anim.SetBool("isInHitStun", true); 
 		if (attacker.GetHitType() != Character.HitType.normal && attacker.GetHitType() != Character.HitType.hurricaneKick && attacker.GetHitType() != Character.HitType.rekka){
-			hitStunTimer = attacker.GetEnforceHitStun();
 			OtherHitStunProperties(attacker, receiver, anim, attAnim, sparkPlace, receiverRigid);
 		}
 		else{
 			if (anim.GetBool("isAirborne") == true){
-				hitStunTimer = 15f;
-				AudioSource.PlayClipAtPoint(normalHit, transform.position);
-				if (receiver.GetHealth () <= 0){				
+				if (receiver.GetHealth () <= 0){	
+					if (attacker.GetComponent<FeiLong>() != null){				
+						SuperKO (attacker.GetComponent<FeiLong>().GetRekkaShinkenActive);
+					}
+					else if (attacker.GetComponent<Balrog>() != null){
+						SuperKO (attacker.GetComponent<Balrog>().GetGigatonPunchActive);
+					}			
 					GotKOed (receiver, anim, receiverRigid);
 				}
 				else{
 					anim.Play("MidAirHit",0,0f);
-					TimeControl.slowDownTimer = 20;
+					TimeControl.slowDownTimer = normalHitSlowDown;
+					hitStunTimer = 3f;
 					if (distance > 0){
 						receiver.side = Character.Side.P2;
 						receiver.SideSwitch();
@@ -153,22 +162,24 @@ public class HitBox : MonoBehaviour {
 						receiver.SideSwitch();
 						receiverRigid.velocity = new Vector2(-attacker.GetEnforcePushBack() * 0.15f, 2f);						
 					}
-					TimeControl.slowDownTimer = 20;
-				}
-				
-				Instantiate(hitSpark, sparkPlace, Quaternion.identity);
+					TimeControl.slowDownTimer = normalHitSlowDown;
+				}				
 			}
 			else{
 			
-				hitStunTimer = attacker.GetEnforceHitStun();
-				AudioSource.PlayClipAtPoint(normalHit, transform.position);
-				if (receiver.GetHealth () <= 0){				
+				if (receiver.GetHealth () <= 0){	
+					if (attacker.GetComponent<FeiLong>() != null){				
+						SuperKO (attacker.GetComponent<FeiLong>().GetRekkaShinkenActive);
+					}
+					else if (attacker.GetComponent<Balrog>() != null){
+						SuperKO (attacker.GetComponent<Balrog>().GetGigatonPunchActive);
+					}
 					GotKOed (receiver, anim, receiverRigid);
 				}
 				else{
 					if (anim.GetBool("isCrouching") == true){
 						anim.Play("CrouchHit",0,0f);
-						TimeControl.slowDownTimer = 20;
+						TimeControl.slowDownTimer = normalHitSlowDown;
 					}
 					else{
 						if (attacker.GetMoveType() == Character.MoveType.low){
@@ -177,18 +188,30 @@ public class HitBox : MonoBehaviour {
 						else{
 							anim.Play("HighHit",0,0f);
 						}
-						TimeControl.slowDownTimer = 20;
+						TimeControl.slowDownTimer = normalHitSlowDown;
 					}
 					PushBack(attacker, receiverRigid, attackerRigid);
 				}
-				Instantiate(hitSpark, sparkPlace, Quaternion.identity);
 			} 	
+		}
+		switch(attacker.GetSparkType()){
+			case Character.SparkType.normal:
+				AudioSource.PlayClipAtPoint(normalHit, transform.position);
+				Instantiate(hitSpark, sparkPlace, Quaternion.identity);
+				break;
+			case Character.SparkType.big:
+				AudioSource.PlayClipAtPoint(bigHit, transform.position);
+				Instantiate(bigHitSpark, sparkPlace, Quaternion.identity);
+				break;
+			case Character.SparkType.shoryuken:
+				AudioSource.PlayClipAtPoint(shoryukenHit, transform.position);
+				Instantiate(shoryukenSpark, sparkPlace, Quaternion.identity);
+				break;
 		}
 		anim.SetFloat ("hitStunTimer", hitStunTimer);
 	}
 	
 	void OtherHitStunProperties(Character attacker, Character receiver, Animator recAnim, Animator attAnim, Vector3 sparkPlace, Rigidbody2D receiverRigid){		
-		AudioSource.PlayClipAtPoint(bigHit, transform.position);
 		Rigidbody2D attPhysicsbody = attacker.GetComponent<Rigidbody2D>();
 		if (attacker.GetHitType() == Character.HitType.sweep || attacker.GetHitType() == Character.HitType.dashLow){
 			if (attacker.side == Character.Side.P1){
@@ -203,18 +226,26 @@ public class HitBox : MonoBehaviour {
 				GotKOed (receiver, recAnim, receiverRigid);
 			}
 			else{
-				TimeControl.slowDownTimer = 30;
+				TimeControl.slowDownTimer = bigHitSlowDown;
 				recAnim.Play("Trip",0,0f);
 			}
 		}
 		else if (attacker.GetHitType() == Character.HitType.rekkaKnockdown){
+			recAnim.Play("KnockDownBlendTree",0,0f);
 			if (receiver.GetHealth () <= 0){	
-				TimeControl.slowDownTimer = 100;					
-				recAnim.Play("KOBlendTree",0,0f);
+				if (attacker.GetComponent<Ken>() != null){
+					SuperKO (attacker.GetComponent<Ken>().GetShinryukenActive);
+				}
+				else if (attacker.GetComponent<FeiLong>() != null){
+					SuperKO (attacker.GetComponent<FeiLong>().GetRekkaShinkenActive);
+				}
+				else if (attacker.GetComponent<Balrog>() != null){
+					SuperKO (attacker.GetComponent<Balrog>().GetGigatonPunchActive);
+				}			
+				TimeControl.slowDownTimer = KOSlowDown;		
 			}
 			else{		
-				TimeControl.slowDownTimer = 30;
-				recAnim.Play("KnockDownBlendTree",0,0f);
+				TimeControl.slowDownTimer = bigHitSlowDown;
 			}
 			if (attacker.GetComponent<FeiLong>() != null){		
 				switch(attAnim.GetInteger("rekkaPunchType")){
@@ -244,17 +275,19 @@ public class HitBox : MonoBehaviour {
 				}		
 			}		
 			else if (attacker.GetComponent<Akuma>() != null){
-				GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 1f, 0.5f);
+				GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 2f, 2f);
+			}
+			else if (attacker.GetComponent<Ken>() != null){
+				GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 1f, 3f);
 			}
 		}
 		else if (attacker.GetHitType() == Character.HitType.shoryuken){
+			recAnim.Play("KnockDownBlendTree",0,0f);
 			if (receiver.GetHealth () <= 0){	
-				TimeControl.slowDownTimer = 100;					
-				recAnim.Play("KOBlendTree",0,0f);
+				TimeControl.slowDownTimer = KOSlowDown;		
 			}
 			else{		
-				TimeControl.slowDownTimer = 30;
-				recAnim.Play("KnockDownBlendTree",0,0f);
+				TimeControl.slowDownTimer = bigHitSlowDown;
 			}
 			if (attacker.GetComponent<Ken>() != null){
 				switch(attAnim.GetInteger("shoryukenPunchType")){
@@ -301,17 +334,20 @@ public class HitBox : MonoBehaviour {
 		}
 		else if (attacker.GetHitType() == Character.HitType.akumaHurricaneKick){
 			if (receiver.GetHealth () <= 0){	
-				TimeControl.slowDownTimer = 100;					
-				recAnim.Play("KOBlendTree",0,0f);
+				if (attacker.GetComponent<Ken>() != null){
+					SuperKO (attacker.GetComponent<Ken>().GetShinryukenActive);
+				}
+				TimeControl.slowDownTimer = KOSlowDown;					
+				recAnim.Play("KnockDownBlendTree",0,0f);
 			}
 			else{		
-				TimeControl.slowDownTimer = 30;
+				TimeControl.slowDownTimer = bigHitSlowDown;
 				recAnim.Play("MidAirHit",0,0f);
 			}
 			if (attacker.GetComponent<Akuma>() != null){
 				switch(attAnim.GetInteger("hurricaneKickType")){
 				case 0:
-					GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 1f, 3.5f);
+					GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 0.75f, 3.75f);
 					break;
 				case 1:
 					GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 1.5f, 2.5f);
@@ -320,14 +356,17 @@ public class HitBox : MonoBehaviour {
 					GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 1.5f, 2.25f);
 					break;										
 				}		
-			}		
+			}	
+			else if (attacker.GetComponent<Ken>() != null){
+				GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 0f, 2f);
+			}	
 		}
-		Instantiate(shoryukenSpark, sparkPlace, Quaternion.identity);
 	}
 	
 	void PushBack(Character attacker, Rigidbody2D receiverRigid, Rigidbody2D attackerRigid){						
-		if (attacker.GetHitType() != Character.HitType.hurricaneKick && attacker.GetHitType() != Character.HitType.rekka 
-			&& attacker.GetHitType() != Character.HitType.rekkaKnockdown && attacker.GetHitType() != Character.HitType.dashLow){
+		if (attacker.GetHitType() != Character.HitType.hurricaneKick && attacker.GetHitType() != Character.HitType.rekka
+			&& attacker.GetHitType() != Character.HitType.akumaHurricaneKick && attacker.GetHitType() != Character.HitType.rekkaKnockdown 
+			&& attacker.GetHitType() != Character.HitType.dashLow){
 			if (attacker.side == Character.Side.P1){
 				if (rightEdgeDistance > 0.25f){
 					// if close to the wall, pushback enforced on attacking character instead
@@ -362,9 +401,9 @@ public class HitBox : MonoBehaviour {
 	}
 
 	void GotKOed (Character receiver, Animator anim, Rigidbody2D rigid){
-		TimeControl.slowDownTimer = 100;	
+		TimeControl.slowDownTimer = KOSlowDown;	
 		AudioSource.PlayClipAtPoint(bigHit, transform.position);
-		anim.Play ("KOBlendTree", 0, 0f);
+		anim.Play ("KnockDownBlendTree", 0, 0f);
 		if (receiver.side == Character.Side.P1) {
 			rigid.velocity = new Vector2 (-2f, 4f);
 		}
@@ -383,6 +422,13 @@ public class HitBox : MonoBehaviour {
 			receiver.side = Character.Side.P1;
 			hurtRigid.velocity = new Vector2 (-x, y);		
 		}	
+	}
+
+	void SuperKO (GetActiveSuper getActiveSuper){
+		if (getActiveSuper()) {
+			TimeControl.superKO = true;
+			AudioSource.PlayClipAtPoint (superKOSound, transform.position);
+		}
 	}
 	
 	public bool GetCancellabe(){

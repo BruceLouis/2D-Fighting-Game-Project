@@ -7,8 +7,7 @@ public class ChargeSystem : MonoBehaviour {
 	public int backChargeReached, backChargedWindow;
 	public int downChargeReached, downChargedWindow;
 	
-	private Player player;
-	private Opponent opponent;
+	private SharedProperties sharedProperties;
 	
 	//will revisit this as public if shit hits the fan	
 	private int turnPunchCharge;	
@@ -20,15 +19,8 @@ public class ChargeSystem : MonoBehaviour {
 	private bool downCharged, downLetGoWhenCharged;
 
 	// Use this for initialization
-	void Start () {	
-	
-		if (gameObject.tag == "Player1"){
-			player = GetComponentInParent<Player>();
-		}
-		else if (gameObject.tag == "Player2"){
-			opponent = GetComponentInParent<Opponent>();
-		}
-		
+	void Start () {			
+		sharedProperties = GetComponent<SharedProperties>();
 		turnPunchCharge = 0;
 		backCharging = 0;				
 		backChargedWindowInput = backChargedWindow; 
@@ -43,21 +35,11 @@ public class ChargeSystem : MonoBehaviour {
 	}
 
 	void BackCharging (){
-		if (player != null){			
-			if (player.GetBackPressed) {
-				backCharging++;
-			}
-			else {
-				IsBackCharged();
-			}
+		if (sharedProperties.GetBackPressed){
+			backCharging++;
 		}
-		else if (opponent != null){
-			if (opponent.GetBackPressed) {
-				backCharging++;
-			}
-			else {
-				IsBackCharged();
-			}
+		else {
+			IsBackCharged();
 		}
 		if (backCharging >= backChargeReached) {
 			backCharged = true;
@@ -72,27 +54,14 @@ public class ChargeSystem : MonoBehaviour {
 	}
 	
 	void DownCharging (){
-		if (player != null){
-			if (player.GetDownPressed) {
-				downCharging++;
-			}
-			else {
-				if (downCharged) {
-					downLetGoWhenCharged = true;
-				}
-				downCharging = 0;
-			}
+		if (sharedProperties.GetDownPressed) {
+			downCharging++;
 		}
-		else if (opponent != null){
-			if (opponent.GetDownPressed) {
-				downCharging++;
+		else {
+			if (downCharged) {
+				downLetGoWhenCharged = true;
 			}
-			else {
-				if (downCharged) {
-					downLetGoWhenCharged = true;
-				}
-				downCharging = 0;
-			}
+			downCharging = 0;
 		}
 		if (downCharging >= downChargeReached) {
 			downCharged = true;

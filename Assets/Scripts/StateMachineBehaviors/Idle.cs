@@ -15,7 +15,7 @@ public class Idle : StateMachineBehaviour {
 		animator.SetBool("throwTargetAcquired", false);
 		animator.SetBool("isKnockedDown", false);	
 		animator.SetBool("isRolling", false);
-		animator.SetBool("isMidAirHit", false);		
+		animator.SetBool("isMidAirHit", false);			
 		animator.SetBool("hasntHit", true);
 		animator.SetInteger("hyakkishuAttackType", 0);
 		animator.ResetTrigger("shoryukenInputed");	
@@ -28,7 +28,8 @@ public class Idle : StateMachineBehaviour {
 		animator.ResetTrigger("kickRushInputed");
 		animator.ResetTrigger("turnPunchInputed");
 		animator.ResetTrigger("headButtInputed");
-		animator.ResetTrigger ("hyakkishuInputed");
+		animator.ResetTrigger("hyakkishuInputed");
+		animator.ResetTrigger("motionSuperInputed");
 	}
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
 	//override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {

@@ -32,14 +32,22 @@ public class ThrowBox : MonoBehaviour {
 				}
 				animator.SetBool("isThrown", true);
 				selfAnimator.SetBool("throwTargetAcquired", true);
-				if (throwingCharacter.GetComponent<Ken>() != null){
-					animator.Play("ThrownByKen");
+				if (!selfAnimator.GetBool("shunGokuSatsuActive")){
+					if (throwingCharacter.GetComponent<Ken>() != null){
+						animator.Play("ThrownByKen");
+					}
+					else if (throwingCharacter.GetComponent<FeiLong>() != null){
+						animator.Play("ThrownByFeiLong");
+					}
+					else if (throwingCharacter.GetComponent<Balrog>() != null){
+						animator.Play("ThrownByBalrog");
+					}
+					else if (throwingCharacter.GetComponent<Akuma>() != null){
+						animator.Play("ThrownByAkuma");
+					}
 				}
-				else if (throwingCharacter.GetComponent<FeiLong>() != null){
-					animator.Play("ThrownByFeiLong");
-				}
-				else if (throwingCharacter.GetComponent<Balrog>() != null){
-					animator.Play("ThrownByBalrog");
+				else{
+					animator.Play("DemonedByAkuma");
 				}
 			}
 		}

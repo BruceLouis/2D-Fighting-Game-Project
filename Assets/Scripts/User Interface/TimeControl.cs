@@ -6,23 +6,29 @@ using UnityEngine;
 
 public class TimeControl : MonoBehaviour {
 
-	public static bool slowDown;
-	public static int slowDownTimer;	
+	public static bool slowDown, gettingDemoned, demonKO, superKO;
+	public static bool[] inSuperStartup;
+	public static float slowDownTimer;	
 	public static string winner;
-	
+		
 	public enum GameState {introPose, countDown, fight, KOHappened, victoryPose};
 	public GameState gameState;
 	
+	public GameObject superPanel, shunGokuSatsuPanel, shunGokuSatsuKOPanel, superKOPanel;
+	
 	public Text gameTimerText, countDownText, winnerText;
 	public AudioClip threeSound, twoSound, oneSound, fightSound, youLoseSound, youWinSound;
+	public AudioClip[] winQuotes;
 	
-	private int gameTimer, internalTimer, countDownTimer, restartTimer, KOslowTimer, KOedTimer, playedOnce, introTimer;
+	private int gameTimer, internalTimer, countDownTimer, KOslowTimer, KOedTimer, playedOnce;
+	private float introTimer, restartTimer;
 	private AudioSource audioSource;
 	private LevelManager levelManager;
 	private Opponent opponent;
 	private Player player;
 	private Character playerChar;
 	private Character opponentChar;
+	
 	// Use this for initialization
 	void Awake () {
 		opponent = FindObjectOfType<Opponent>();
@@ -32,25 +38,25 @@ public class TimeControl : MonoBehaviour {
 		
 		gameTimer = 99;
 		internalTimer = 50;
-		restartTimer = 100;
+		restartTimer = 2f;
 		KOedTimer = 150;
-		introTimer = 100;
+		introTimer = 1.75f;
 		countDownTimer = 3;
 		playedOnce = 1;
 		
 		gameTimerText.text = gameTimer.ToString();
 		countDownText.text = "";
 		winner = "";
-		winnerText.text = "";
-		
+		winnerText.text = "";		
 	}
 	
 	void Start () {			
 		playerChar = player.GetComponentInChildren<Character>();
 		opponentChar = opponent.GetComponentInChildren<Character>();		
-//		gameState = GameState.introPose;	
-		gameState = GameState.fight;	
-		slowDown = false;		
+		gameState = GameState.introPose;	
+//		gameState = GameState.fight;	
+		slowDown = false;	
+		inSuperStartup = new bool[2];	
 	}
 	
 	// Update is called once per frame
@@ -75,7 +81,9 @@ public class TimeControl : MonoBehaviour {
 		
 		gameTimerText.text = gameTimer.ToString();
 		
-		IntroPoseState();
+		if (gameState == GameState.introPose){
+			StartCoroutine(IntroPoseState(introTimer));
+		}
 		
 		if (gameState == GameState.countDown){
 			CountDownCommence(countDownTimer);
@@ -83,55 +91,133 @@ public class TimeControl : MonoBehaviour {
 		
 		if (opponentChar.GetKOed() == true || playerChar.GetKOed() == true){
 			gameState = GameState.KOHappened;
-			KOedTimer--;
+			if (demonKO){
+				StartCoroutine(ShunGokuSatsuKO());
+			}
+			else if (superKO){
+				StartCoroutine(SuperKO());
+			}			
+			else{
+				KOedTimer--;
+			}
 		}
 				
 		if (KOedTimer <= 0){
 			gameState = GameState.victoryPose;
 		}
 		if (gameState == GameState.victoryPose){
-			VictoryPoseTime();
+			StartCoroutine(VictoryPoseTime(restartTimer));
 		}
 		
-		if (restartTimer <= 0){
-			levelManager.LoadLevel(SceneManager.GetActiveScene ().name);
+//		if (restartTimer <= 0){
+//			levelManager.LoadLevel(SceneManager.GetActiveScene ().name);
+//		}
+		
+		// may go back to hit stops using coroutines
+//		if (slowDown){
+//			StartCoroutine(SlowDown(slowDownTimer));
+//		}
+		
+		if (inSuperStartup[0]){ 
+			StartCoroutine(SuperPauseP1());	
 		}
-						
-		if (slowDown){
+		if (inSuperStartup[1]){
+			StartCoroutine(SuperPauseP2());	
+		}
+		
+		if (gettingDemoned){			
+			shunGokuSatsuPanel.SetActive(true);
+		}
+		else{			
+			shunGokuSatsuPanel.SetActive(false);
+		}
+		
+		if (slowDown && !inSuperStartup[0] && !inSuperStartup[1]){
 			Time.timeScale = 0.5f;
 			slowDownTimer--;
 		}
-		if (slowDownTimer <= 0){
+		if (slowDownTimer <= 0 && !TimeControl.inSuperStartup[0] && !TimeControl.inSuperStartup[1] && !demonKO){
 			slowDown = false;
 			Time.timeScale = 1f;
-		}
+		}		
 	}
 
-	void IntroPoseState (){
-		if (gameState == GameState.introPose) {
-			introTimer--;
-		}
-		if (introTimer <= 0) {
-			gameState = GameState.countDown;
-		}
+	IEnumerator SuperPauseP1(){
+		Time.timeScale = 0f;
+		superPanel.SetActive(true);
+		yield return new WaitUntil( () => inSuperStartup[0] == false);
+		Time.timeScale = 1f;
+		superPanel.SetActive(false);
+	}
+	
+	IEnumerator SuperPauseP2(){
+		Time.timeScale = 0f;
+		superPanel.SetActive(true);
+		yield return new WaitUntil( () => inSuperStartup[1] == false);
+		Time.timeScale = 1f;
+		superPanel.SetActive(false);
+	}
+	
+	IEnumerator ShunGokuSatsuKO(){
+		Time.timeScale = 0.1f;
+		shunGokuSatsuKOPanel.SetActive(true);
+		yield return new WaitForSecondsRealtime(2f);
+		demonKO = false;
+		Time.timeScale = 1f;
+		KOedTimer = 25;
+		shunGokuSatsuKOPanel.SetActive(false);
+		
+	}
+	
+	IEnumerator SuperKO(){
+		Time.timeScale = 0.2f;
+		superKOPanel.SetActive(true);
+		yield return new WaitForSeconds(2f);
+		superKO = false;
+		Time.timeScale = 1f;
+		KOedTimer = 25;
+		superKOPanel.SetActive(false);
+		
+	}
+//	IEnumerator SlowDown(float slowDownTimer){
+//		Time.timeScale = 0.5f;
+//		while (slowDownTimer > 0f){
+//			yield return null;
+//			slowDownTimer -= Time.deltaTime;
+//			Debug.Log (slowDownTimer);
+//		}		
+//		Time.timeScale = 1f;
+//		slowDown = false;
+//	}
+
+	IEnumerator IntroPoseState (float timer){
+		yield return new WaitForSeconds(timer);
+		gameState = GameState.countDown;
 	}
 
-	void VictoryPoseTime(){
+	IEnumerator VictoryPoseTime(float timer){
 		winnerText.text = winner;
-		if (winner == "You Win") {
-			if (!audioSource.isPlaying && playedOnce == 1) {
-				audioSource.PlayOneShot (youWinSound, 1f);
-				playedOnce = 0;
+		int randWinQuote = Random.Range (0, winQuotes.Length);
+		if (SceneManager.GetActiveScene().name == "Game"){
+			if (winner == "You Win") {
+				PlayWinnerClip (youWinSound);
+			}
+			else if (winner == "You Lose") {
+				PlayWinnerClip (youLoseSound);
 			}
 		}
-		else if (winner == "You Lose") {
-			if (!audioSource.isPlaying && playedOnce == 1) {
-				audioSource.PlayOneShot (youLoseSound, 1f);
-				playedOnce = 0;
-			}
+		else{
+			PlayWinnerClip (winQuotes[randWinQuote]);
 		}
-		Debug.Log ("playedOnce " + playedOnce);
-		restartTimer--;
+		yield return new WaitForSeconds(timer);
+		levelManager.LoadLevel(SceneManager.GetActiveScene ().name);
+	}
+
+	void PlayWinnerClip (AudioClip clip){
+		if (!audioSource.isPlaying && playedOnce == 1) {
+			audioSource.PlayOneShot (clip, 1f);
+			playedOnce = 0;
+		}
 	}
 
 	void CountDownCommence(int countDown){

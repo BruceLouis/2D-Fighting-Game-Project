@@ -9,22 +9,26 @@ public class ComboSystem : MonoBehaviour {
 	public int hurricaneKickComboTimer;
 	public int reverseShoryukenComboTimer;
 	public int shunGokuSatsuComboTimer;
+	public int motionSuperComboTimer;
 	private bool[] hadoukenSequence;
 	private bool[] shoryukenSequence;
 	private bool[] hurricaneKickSequence;
 	private bool[] reverseShoryukenSequence;
 	private bool[] shunGokuSatsuSequence;
-	private Character character;
+	private bool[] motionSuperSequence;
 	private int hadoukenComboIterator;
 	private int shoryukenComboIterator;
 	private int hurricaneKickComboIterator;
 	private int reverseShoryukenComboIterator;
 	private int shunGokuSatsuComboIterator;
+	private int motionSuperComboIterator;
 	private int hadoukenComboTimerInput;
 	private int shoryukenComboTimerInput;
 	private int hurricaneKickComboTimerInput;
 	private int reverseShoryukenComboTimerInput;
 	private int shunGokuSatsuComboTimerInput;
+	private int motionSuperComboTimerInput;
+	private Character character;
 
 	// Use this for initialization
 	void Start () {
@@ -33,16 +37,19 @@ public class ComboSystem : MonoBehaviour {
 		hurricaneKickComboIterator = 0;	
 		reverseShoryukenComboIterator = 0;		
 		shunGokuSatsuComboIterator = 0;	
+		motionSuperComboIterator = 0;	
 		hadoukenSequence = new bool[3];	
 		shoryukenSequence = new bool[3];
 		hurricaneKickSequence = new bool[3];
 		reverseShoryukenSequence = new bool[3];
-		shunGokuSatsuSequence = new bool[4];
+		shunGokuSatsuSequence = new bool[5];
+		motionSuperSequence = new bool[6];
 		hadoukenComboTimerInput = hadoukenComboTimer;
 		shoryukenComboTimerInput = shoryukenComboTimer;
 		hurricaneKickComboTimerInput = hurricaneKickComboTimer;
 		reverseShoryukenComboTimerInput = reverseShoryukenComboTimer;
 		shunGokuSatsuComboTimerInput = shunGokuSatsuComboTimer;
+		motionSuperComboTimerInput = motionSuperComboTimer;
 		character = GetComponentInChildren<Character>();
 	}
 	
@@ -54,48 +61,56 @@ public class ComboSystem : MonoBehaviour {
 		HurricaneKickSequence();	
 		ReverseShoryukenSequence();	
 		ShunGokuSatsuSequence();
+		MotionSuperSequence();
 	}
 	
 	void QuarterCircleStart(){
-		if (Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.LeftArrow)  && hadoukenComboIterator == 0){			
-			ComboSequencer(hadoukenComboIterator, hadoukenComboTimer, hadoukenComboTimerInput, hadoukenSequence);
-			hadoukenComboIterator++;			
-			ComboSequencer(hurricaneKickComboIterator, hurricaneKickComboTimer, hurricaneKickComboTimerInput, hurricaneKickSequence);
-			hurricaneKickComboIterator++;
+		if (Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.LeftArrow)){
+			if (hadoukenComboIterator == 0){			
+				ComboSequencer(hadoukenComboIterator, hadoukenSequence);
+				hadoukenComboIterator++;			
+			}
+			if (hurricaneKickComboIterator == 0){			
+				ComboSequencer(hurricaneKickComboIterator, hurricaneKickSequence);
+				hurricaneKickComboIterator++;
+			}			
+			if (motionSuperComboIterator == 0){			
+				ComboSequencer(motionSuperComboIterator, motionSuperSequence);
+				motionSuperComboIterator++;			
+			}
 		}
 	}
 	
-	void ComboSequencer(int i, int comboTimer, int comboTimerInput, bool[] comboSequence){
+	void ComboSequencer(int i, bool[] comboSequence){
 		try{
 			comboSequence[i] = true;	
 		}
 		catch{
 			Debug.LogWarning("array index i: " + i + " out of range");
 		}
-		comboTimer = comboTimerInput;	
 	}	
 		
 	void HadoukenSequence(){		
 		if (character.side == Character.Side.P1){	
 			if (Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.RightArrow) && hadoukenComboIterator == 1){
-				ComboSequencer(hadoukenComboIterator, hadoukenComboTimer, hadoukenComboTimerInput, hadoukenSequence);
+				ComboSequencer(hadoukenComboIterator, hadoukenSequence);
 				hadoukenComboIterator++;
 			}		
 			if (Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.DownArrow) && hadoukenComboIterator == 2){
-				ComboSequencer(hadoukenComboIterator, hadoukenComboTimer, hadoukenComboTimerInput, hadoukenSequence);
+				ComboSequencer(hadoukenComboIterator, hadoukenSequence);
 			}
 		}
 		else{	
 			if (Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.LeftArrow) && hadoukenComboIterator == 1){
-				ComboSequencer(hadoukenComboIterator, hadoukenComboTimer, hadoukenComboTimerInput, hadoukenSequence);
+				ComboSequencer(hadoukenComboIterator, hadoukenSequence);
 				hadoukenComboIterator++;
 			}		
 			if (Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.DownArrow) && hadoukenComboIterator == 2){
-				ComboSequencer(hadoukenComboIterator, hadoukenComboTimer, hadoukenComboTimerInput, hadoukenSequence);
+				ComboSequencer(hadoukenComboIterator, hadoukenSequence);
 			}
 		}					
 	
-		if (hadoukenSequence[0] == true){
+		if (hadoukenSequence[1] == true){
 			hadoukenComboTimer--;
 		}
 		if (hadoukenComboTimer <= 0){
@@ -104,43 +119,37 @@ public class ComboSystem : MonoBehaviour {
 			}
 			hadoukenComboIterator = 0;
 			hadoukenComboTimer = hadoukenComboTimerInput;
-		}	
-	
-//		for (int i=0; i<hadoukenSequence.Length; i++){
-//			Debug.Log ("hadoukenSequence " + i + " " + hadoukenSequence[i]);
-//		}
-//		Debug.Log ("hadoukenSequence [0]" + hadoukenSequence[0]);
-//		Debug.Log ("hadoukenComboIterator " + hadoukenComboIterator);	
+		}			
 	}
 	
 	void ShoryukenSequence(){	
 		if (character.side == Character.Side.P1){
 			if (Input.GetKey(KeyCode.RightArrow) && shoryukenComboIterator == 0){
-				ComboSequencer(shoryukenComboIterator, shoryukenComboTimer, shoryukenComboTimerInput, shoryukenSequence);
+				ComboSequencer(shoryukenComboIterator, shoryukenSequence);
 				shoryukenComboIterator++;
 			}
 			if (Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.RightArrow) && shoryukenComboIterator == 1){
-				ComboSequencer(shoryukenComboIterator, shoryukenComboTimer, shoryukenComboTimerInput, shoryukenSequence);
+				ComboSequencer(shoryukenComboIterator, shoryukenSequence);		
 				shoryukenComboIterator++;
 			}		
 			if (Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.RightArrow) && shoryukenComboIterator == 2){
-				ComboSequencer(shoryukenComboIterator, shoryukenComboTimer, shoryukenComboTimerInput, shoryukenSequence);
+				ComboSequencer(shoryukenComboIterator, shoryukenSequence);		
 			}	
 		}
 		else{
 			if (Input.GetKey(KeyCode.LeftArrow) && shoryukenComboIterator == 0){
-				ComboSequencer(shoryukenComboIterator, shoryukenComboTimer, shoryukenComboTimerInput, shoryukenSequence);
+				ComboSequencer(shoryukenComboIterator, shoryukenSequence);		
 				shoryukenComboIterator++;
 			}
 			if (Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.LeftArrow) && shoryukenComboIterator == 1){
-				ComboSequencer(shoryukenComboIterator, shoryukenComboTimer, shoryukenComboTimerInput, shoryukenSequence);
+				ComboSequencer(shoryukenComboIterator, shoryukenSequence);		
 				shoryukenComboIterator++;
 			}		
 			if (Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.LeftArrow) && shoryukenComboIterator == 2){
-				ComboSequencer(shoryukenComboIterator, shoryukenComboTimer, shoryukenComboTimerInput, shoryukenSequence);
+				ComboSequencer(shoryukenComboIterator, shoryukenSequence);		
 			}	
 		}			
-		if (shoryukenSequence[0] == true){
+		if (shoryukenSequence[1] == true){
 			shoryukenComboTimer--;
 		}
 		if (shoryukenComboTimer <= 0){
@@ -155,23 +164,23 @@ public class ComboSystem : MonoBehaviour {
 	void HurricaneKickSequence(){	
 		if (character.side == Character.Side.P2){
 			if (Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.RightArrow) && hurricaneKickComboIterator == 1){
-				ComboSequencer(hurricaneKickComboIterator, hurricaneKickComboTimer, hurricaneKickComboTimerInput, hurricaneKickSequence);
+				ComboSequencer(hurricaneKickComboIterator, hurricaneKickSequence);	
 				hurricaneKickComboIterator++;
 			}		
 			if (Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.DownArrow) && hurricaneKickComboIterator == 2){
-				ComboSequencer(hurricaneKickComboIterator, hurricaneKickComboTimer, hurricaneKickComboTimerInput, hurricaneKickSequence);
+				ComboSequencer(hurricaneKickComboIterator, hurricaneKickSequence);	
 			}
 		}
 		else{
 			if (Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.LeftArrow) && hurricaneKickComboIterator == 1){
-				ComboSequencer(hurricaneKickComboIterator, hurricaneKickComboTimer, hurricaneKickComboTimerInput, hurricaneKickSequence);
+				ComboSequencer(hurricaneKickComboIterator, hurricaneKickSequence);		
 				hurricaneKickComboIterator++;
 			}		
 			if (Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.DownArrow) && hurricaneKickComboIterator == 2){
-				ComboSequencer(hurricaneKickComboIterator, hurricaneKickComboTimer, hurricaneKickComboTimerInput, hurricaneKickSequence);
+				ComboSequencer(hurricaneKickComboIterator, hurricaneKickSequence);	
 			}
 		}			
-		if (hurricaneKickSequence[0] == true){
+		if (hurricaneKickSequence[1] == true){
 			hurricaneKickComboTimer--;
 		}
 		if (hurricaneKickComboTimer <= 0){
@@ -186,31 +195,31 @@ public class ComboSystem : MonoBehaviour {
 	void ReverseShoryukenSequence(){	
 		if (character.side == Character.Side.P2){
 			if (Input.GetKey(KeyCode.RightArrow) && reverseShoryukenComboIterator == 0){
-				ComboSequencer(reverseShoryukenComboIterator, reverseShoryukenComboTimer, reverseShoryukenComboTimerInput, reverseShoryukenSequence);
+				ComboSequencer(reverseShoryukenComboIterator, reverseShoryukenSequence);	
 				reverseShoryukenComboIterator++;
 			}
 			if (Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.RightArrow) && reverseShoryukenComboIterator == 1){
-				ComboSequencer(reverseShoryukenComboIterator, reverseShoryukenComboTimer, reverseShoryukenComboTimerInput, reverseShoryukenSequence);
+				ComboSequencer(reverseShoryukenComboIterator, reverseShoryukenSequence);
 				reverseShoryukenComboIterator++;
 			}		
 			if (Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.RightArrow) && reverseShoryukenComboIterator == 2){
-				ComboSequencer(reverseShoryukenComboIterator, reverseShoryukenComboTimer, reverseShoryukenComboTimerInput, reverseShoryukenSequence);
+				ComboSequencer(reverseShoryukenComboIterator, reverseShoryukenSequence);
 			}	
 		}
 		else{
 			if (Input.GetKey(KeyCode.LeftArrow) && reverseShoryukenComboIterator == 0){
-				ComboSequencer(reverseShoryukenComboIterator, reverseShoryukenComboTimer, reverseShoryukenComboTimerInput, reverseShoryukenSequence);
+				ComboSequencer(reverseShoryukenComboIterator, reverseShoryukenSequence);
 				reverseShoryukenComboIterator++;
 			}
 			if (Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.LeftArrow) && reverseShoryukenComboIterator == 1){
-				ComboSequencer(reverseShoryukenComboIterator, reverseShoryukenComboTimer, reverseShoryukenComboTimerInput, reverseShoryukenSequence);
+				ComboSequencer(reverseShoryukenComboIterator, reverseShoryukenSequence);
 				reverseShoryukenComboIterator++;
 			}		
 			if (Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.LeftArrow) && reverseShoryukenComboIterator == 2){
-				ComboSequencer(reverseShoryukenComboIterator, reverseShoryukenComboTimer, reverseShoryukenComboTimerInput, reverseShoryukenSequence);
+				ComboSequencer(reverseShoryukenComboIterator, reverseShoryukenSequence);
 			}	
 		}			
-		if (reverseShoryukenSequence[0] == true){
+		if (reverseShoryukenSequence[1] == true){
 			reverseShoryukenComboTimer--;
 		}
 		if (reverseShoryukenComboTimer <= 0){
@@ -223,41 +232,34 @@ public class ComboSystem : MonoBehaviour {
 	}
 	
 	void ShunGokuSatsuSequence(){	
-		if (character.side == Character.Side.P1){
-			if (Input.GetKeyDown(KeyCode.A) && shunGokuSatsuComboIterator == 0){
-				ComboSequencer(shunGokuSatsuComboIterator, shunGokuSatsuComboTimer, shunGokuSatsuComboTimerInput, shunGokuSatsuSequence);
-				shunGokuSatsuComboIterator++;
-			}
-			else if (Input.GetKeyDown(KeyCode.A) && shunGokuSatsuComboIterator == 1){
-				ComboSequencer(shunGokuSatsuComboIterator, shunGokuSatsuComboTimer, shunGokuSatsuComboTimerInput, shunGokuSatsuSequence);
-				shunGokuSatsuComboIterator++;
-			}		
-			if (Input.GetKeyDown(KeyCode.RightArrow) && shunGokuSatsuComboIterator == 2){
-				ComboSequencer(shunGokuSatsuComboIterator, shunGokuSatsuComboTimer, shunGokuSatsuComboTimerInput, shunGokuSatsuSequence);
-				shunGokuSatsuComboIterator++;
-			}	
-			if (Input.GetKeyDown(KeyCode.Z) && shunGokuSatsuComboIterator == 3){
-				ComboSequencer(shunGokuSatsuComboIterator, shunGokuSatsuComboTimer, shunGokuSatsuComboTimerInput, shunGokuSatsuSequence);
-			}		
+		if (Input.GetKeyDown(KeyCode.A) && shunGokuSatsuComboIterator == 0){
+			ComboSequencer(shunGokuSatsuComboIterator, shunGokuSatsuSequence);
+			shunGokuSatsuComboIterator++;
 		}
-		else{
-			if (Input.GetKeyDown(KeyCode.A) && shunGokuSatsuComboIterator == 0){
-				ComboSequencer(shunGokuSatsuComboIterator, shunGokuSatsuComboTimer, shunGokuSatsuComboTimerInput, shunGokuSatsuSequence);
+		else if (Input.GetKeyDown(KeyCode.A) && shunGokuSatsuComboIterator == 1){
+			ComboSequencer(shunGokuSatsuComboIterator, shunGokuSatsuSequence);
+			shunGokuSatsuComboIterator++;
+		}		
+		if (character.side == Character.Side.P1){
+			if (Input.GetKeyDown(KeyCode.RightArrow) && shunGokuSatsuComboIterator == 2){
+				ComboSequencer(shunGokuSatsuComboIterator, shunGokuSatsuSequence);
 				shunGokuSatsuComboIterator++;
 			}
-			else if (Input.GetKeyDown(KeyCode.A) && shunGokuSatsuComboIterator == 1){
-				ComboSequencer(shunGokuSatsuComboIterator, shunGokuSatsuComboTimer, shunGokuSatsuComboTimerInput, shunGokuSatsuSequence);
-				shunGokuSatsuComboIterator++;
-			}		
+		}	
+		else{
 			if (Input.GetKeyDown(KeyCode.LeftArrow) && shunGokuSatsuComboIterator == 2){
-				ComboSequencer(shunGokuSatsuComboIterator, shunGokuSatsuComboTimer, shunGokuSatsuComboTimerInput, shunGokuSatsuSequence);
+				ComboSequencer(shunGokuSatsuComboIterator, shunGokuSatsuSequence);
 				shunGokuSatsuComboIterator++;
 			}	
-			if (Input.GetKeyDown(KeyCode.Z) && shunGokuSatsuComboIterator == 3){
-				ComboSequencer(shunGokuSatsuComboIterator, shunGokuSatsuComboTimer, shunGokuSatsuComboTimerInput, shunGokuSatsuSequence);
-			}		
+		}
+		if (Input.GetKeyDown(KeyCode.Z) && shunGokuSatsuComboIterator == 3){
+			ComboSequencer(shunGokuSatsuComboIterator, shunGokuSatsuSequence);
+			shunGokuSatsuComboIterator++;
+		}		
+		if (Input.GetKeyDown(KeyCode.D) && shunGokuSatsuComboIterator == 4){
+			ComboSequencer(shunGokuSatsuComboIterator, shunGokuSatsuSequence);
 		}			
-		if (shunGokuSatsuSequence[0] == true){
+		if (shunGokuSatsuSequence[1] == true){
 			shunGokuSatsuComboTimer--;
 		}
 		if (shunGokuSatsuComboTimer <= 0){
@@ -266,6 +268,63 @@ public class ComboSystem : MonoBehaviour {
 			}
 			shunGokuSatsuComboIterator = 0;
 			shunGokuSatsuComboTimer = shunGokuSatsuComboTimerInput;
+		}	
+	}
+	
+	void MotionSuperSequence(){
+		
+		if (character.side == Character.Side.P1){	
+			if (Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.RightArrow) && motionSuperComboIterator == 1){
+				ComboSequencer(motionSuperComboIterator, motionSuperSequence);
+				motionSuperComboIterator++;
+			}		
+			if (Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.DownArrow) && motionSuperComboIterator == 2){
+				ComboSequencer(motionSuperComboIterator, motionSuperSequence);
+				motionSuperComboIterator++;
+			}			
+			if (Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.RightArrow) && motionSuperComboIterator == 3){		
+				ComboSequencer(motionSuperComboIterator, motionSuperSequence);
+				motionSuperComboIterator++;			
+			}			
+			if (Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.RightArrow) && motionSuperComboIterator == 4){
+				ComboSequencer(motionSuperComboIterator, motionSuperSequence);
+				motionSuperComboIterator++;
+			}		
+			if (Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.DownArrow) && motionSuperComboIterator == 5){
+				ComboSequencer(motionSuperComboIterator, motionSuperSequence);
+			}			
+		}
+		else{	
+			if (Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.LeftArrow) && motionSuperComboIterator == 1){
+				ComboSequencer(motionSuperComboIterator, motionSuperSequence);
+				motionSuperComboIterator++;
+			}		
+			if (Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.DownArrow) && motionSuperComboIterator == 2){
+				ComboSequencer(motionSuperComboIterator, motionSuperSequence);
+				motionSuperComboIterator++;
+			}
+			if (Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.LeftArrow) && motionSuperComboIterator == 3){		
+				ComboSequencer(motionSuperComboIterator, motionSuperSequence);
+				motionSuperComboIterator++;			
+			}	
+			if (Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.LeftArrow) && motionSuperComboIterator == 4){
+				ComboSequencer(motionSuperComboIterator, motionSuperSequence);
+				motionSuperComboIterator++;
+			}		
+			if (Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.DownArrow) && motionSuperComboIterator == 5){
+				ComboSequencer(motionSuperComboIterator, motionSuperSequence);
+			}				
+		}	
+		
+		if (motionSuperSequence[1] == true){
+			motionSuperComboTimer--;
+		}
+		if (motionSuperComboTimer <= 0){
+			for (int i=0; i<motionSuperSequence.Length; i++){
+				motionSuperSequence[i] = false;
+			}
+			motionSuperComboIterator = 0;
+			motionSuperComboTimer = motionSuperComboTimerInput;
 		}	
 	}
 	
@@ -309,6 +368,21 @@ public class ComboSystem : MonoBehaviour {
 		shunGokuSatsuComboTimer = shunGokuSatsuComboTimerInput;
 	}
 	
+	public void ResetMotionSuperSequence(){
+		for (int i=0; i<motionSuperSequence.Length; i++){
+			motionSuperSequence[i] = false;
+		}
+		motionSuperComboIterator = 0;
+		motionSuperComboTimer = motionSuperComboTimerInput;
+	}
+	
+	public void ResetAllSequences(){
+		ResetHadoukenSequence();
+		ResetHurricaneKickSequence();
+		ResetReverseShoryukenSequence();
+		ResetShoryukenSequence();
+	}
+	
 	public bool[] GetHadoukenSequence(){
 		return hadoukenSequence;
 	}
@@ -327,5 +401,9 @@ public class ComboSystem : MonoBehaviour {
 	
 	public bool[] GetShunGokuSatsuSequence(){
 		return shunGokuSatsuSequence;
+	}
+	
+	public bool[] GetMotionSuperSequence(){
+		return motionSuperSequence;
 	}
 }

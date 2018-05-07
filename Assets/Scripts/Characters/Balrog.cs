@@ -4,24 +4,23 @@ using UnityEngine;
 
 public class Balrog : MonoBehaviour {
 
-	public AudioClip one, two, three, four, five, six, final;
-	public AudioClip balrogRushPunchSound;
+	[SerializeField] AudioClip one, two, three, four, five, six, final;
+	[SerializeField] AudioClip balrogRushPunchSound, superStartSound;
 
 	private Character character;	
 	private Animator animator; 
 	private Player player;
 	private Opponent opponent;
-	private ChargeSystem chargeSystem;
 	private Rigidbody2D physicsbody;
 	private Vector3 startPos, endPos;
 	private float distanceFromOtherGuy;
+	private bool gigatonPunchActive;
 		
 	// Use this for initialization
 	void Start () {
 		character = GetComponent<Character>();
 		animator = GetComponent<Animator>();
-		physicsbody = GetComponent<Rigidbody2D>();					
-		chargeSystem = GetComponentInParent<ChargeSystem>();
+		physicsbody = GetComponent<Rigidbody2D>();			
 		if (gameObject.tag == "Player1"){
 			player = GetComponentInParent<Player>();
 		}
@@ -46,36 +45,37 @@ public class Balrog : MonoBehaviour {
 		else{
 			physicsbody.isKinematic = false;
 		}
+		gigatonPunchActive = animator.GetBool("superActive");
 	}
 	
 	public void TurnPunch(){
 		switch(animator.GetInteger("turnPunchStrength")){
 			case 1:
-				character.MoveProperties(30f, 25f, 12f, 50f, 2, 2);
+				character.MoveProperties(30f, 25f, 12f, 50f, 2, 2, 2, 4.5f);
 				AudioSource.PlayClipAtPoint(one, transform.position);
 				break;
 			case 2:				
-				character.MoveProperties(30f, 25f, 12f, 60f, 2, 2);
+				character.MoveProperties(30f, 25f, 12f, 60f, 2, 2, 2, 4.75f);
 				AudioSource.PlayClipAtPoint(two, transform.position);
 				break;
 			case 3:
-				character.MoveProperties(30f, 25f, 12f, 80f, 2, 2);
+				character.MoveProperties(30f, 25f, 12f, 80f, 2, 2, 2, 5f);
 				AudioSource.PlayClipAtPoint(three, transform.position);
 				break;
 			case 4:
-				character.MoveProperties(30f, 25f, 12f, 120f, 2, 2);
+				character.MoveProperties(30f, 25f, 12f, 120f, 2, 2, 2, 5.25f);
 				AudioSource.PlayClipAtPoint(four, transform.position);
 				break;
 			case 5:				
-				character.MoveProperties(30f, 25f, 12f, 250f, 2, 2);
+				character.MoveProperties(30f, 25f, 12f, 250f, 2, 2, 2, 5.5f);
 				AudioSource.PlayClipAtPoint(five, transform.position);
 				break;
 			case 6:
-				character.MoveProperties(30f, 25f, 12f, 450f, 2, 2);
+				character.MoveProperties(30f, 25f, 12f, 450f, 2, 2, 2, 5.75f);
 				AudioSource.PlayClipAtPoint(six, transform.position);
 				break;
 			case 7:
-				character.MoveProperties(30f, 25f, 12f, 600f, 2, 2);
+				character.MoveProperties(30f, 25f, 12f, 600f, 2, 2, 2, 6f);
 				AudioSource.PlayClipAtPoint(final, transform.position);
 				break;
 		}
@@ -116,13 +116,13 @@ public class Balrog : MonoBehaviour {
 	void DashStraightProperties(){
 		switch(animator.GetInteger("dashRushPunchType")){
 			case 0:
-				character.MoveProperties(30f, 25f, 7.5f, 50f, 2, 4);
+				character.MoveProperties(30f, 25f, 7.5f, 50f, 2, 4, 1, 4.5f);
 				break;
 			case 1:
-				character.MoveProperties(35f, 25f, 7.5f, 55f, 2, 4);
+				character.MoveProperties(35f, 25f, 7.5f, 55f, 2, 4, 1, 4.5f);
 				break;
 			default:
-				character.MoveProperties(40f, 25f, 7.5f, 60f, 2, 4);
+				character.MoveProperties(40f, 25f, 7.5f, 60f, 2, 4, 1, 4.5f);
 				break;
 		}
 	}
@@ -130,13 +130,13 @@ public class Balrog : MonoBehaviour {
 	void DashLowProperties(){
 		switch(animator.GetInteger("dashRushPunchType")){
 			case 0:
-				character.MoveProperties(40f, 30f, 12f, 65f, 0, 6);
+				character.MoveProperties(40f, 30f, 12f, 65f, 0, 6, 2, 4.5f);
 				break;
 			case 1:
-				character.MoveProperties(40f, 30f, 12f, 70f, 0, 6);
+				character.MoveProperties(40f, 30f, 12f, 70f, 0, 6, 2, 4.5f);
 				break;
 			default:
-				character.MoveProperties(40f, 30f, 12f, 75f, 0, 6);
+				character.MoveProperties(40f, 30f, 12f, 75f, 0, 6, 2, 4.5f);
 				break;
 		}
 	}
@@ -144,13 +144,13 @@ public class Balrog : MonoBehaviour {
 	void KickRushProperties(){
 		switch(animator.GetInteger("dashRushPunchType")){
 			case 0:
-				character.MoveProperties(30f, 25f, 12f, 50f, 2, 2);
+				character.MoveProperties(30f, 25f, 12f, 50f, 2, 2, 2, 4.5f);
 				break;
 			case 1:
-				character.MoveProperties(35f, 25f, 12f, 55f, 2, 2);
+				character.MoveProperties(35f, 25f, 12f, 55f, 2, 2, 2, 4.5f);
 				break;
 			default:
-				character.MoveProperties(40f, 25f, 12f, 60f, 2, 2);
+				character.MoveProperties(40f, 25f, 12f, 60f, 2, 2, 2, 4.5f);
 				break;
 		}
 	}
@@ -158,13 +158,13 @@ public class Balrog : MonoBehaviour {
 	void HeadButtProperties(){
 		switch(animator.GetInteger("dashRushPunchType")){
 			case 0:
-				character.MoveProperties(30f, 25f, 12f, 75f, 2, 3);
+				character.MoveProperties(30f, 25f, 12f, 75f, 2, 3, 2, 5f);
 				break;
 			case 1:
-				character.MoveProperties(35f, 25f, 12f, 80f, 2, 3);
+				character.MoveProperties(35f, 25f, 12f, 80f, 2, 3, 2, 5f);
 				break;
 			default:
-				character.MoveProperties(40f, 25f, 12f, 85f, 2, 3);
+				character.MoveProperties(40f, 25f, 12f, 85f, 2, 3, 2, 5f);
 				break;
 		}
 	}
@@ -178,8 +178,28 @@ public class Balrog : MonoBehaviour {
 		}
 	}
 	
+	void GigatonPunchProperties(int finalHitOrNot){
+		GetComponentInChildren<SpriteRenderer>().sortingLayerName = "Characters";
+		character.TakeOffVelocity(2f, 0f);
+		character.ResetHasntHit();
+		if (finalHitOrNot == 1){
+			character.MoveProperties(40f, 45f, 12f, 80f, 2, 2, 2, 0f);
+		}
+		else{
+			character.MoveProperties(40f, 25f, 12f, 35f, 2, 5, 1, 0f);
+		}
+	}
+	
 	public void PlayBalrogRushPunchSound(){
 		AudioSource.PlayClipAtPoint(balrogRushPunchSound, transform.position);
+	}
+	
+	public void PlaySuperStartSound(){
+		AudioSource.PlayClipAtPoint(superStartSound, transform.position);
+	}
+	
+	public bool GetGigatonPunchActive(){
+		return gigatonPunchActive;
 	}
 	
 }

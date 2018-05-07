@@ -4,35 +4,32 @@ using UnityEngine;
 
 public class Ken : MonoBehaviour {
 	
-	public GameObject projectile;
-	public AudioClip hadoukenSound, shoryukenSound, flameSound;
-	public AudioClip hurricaneKickSound, hadoukenCreatedSound;
+	[SerializeField] GameObject projectile;
+	[SerializeField] AudioClip hadoukenSound, shoryukenSound, shinryukenSound, flameSound;
+	[SerializeField] AudioClip hurricaneKickSound, hadoukenCreatedSound, superStartSound;
 	
 	private Character character;
 	private Animator animator; 
 	private Rigidbody2D physicsbody;
 	
 	private int shoryukenType;
-	private bool hurricaneActive;
+	private bool hurricaneActive, shinryukenActive;
 
 	// Use this for initialization
 	void Start () {
 		character = GetComponent<Character>();
 		animator = GetComponent<Animator>();
 		physicsbody = GetComponent<Rigidbody2D>();
-		hurricaneActive = animator.GetBool("hurricaneKickActive");
 	}
 	
 	void FixedUpdate (){
 		hurricaneActive = animator.GetBool("hurricaneKickActive");
+		shinryukenActive = animator.GetBool("superActive");
 		if (hurricaneActive){
+			character.AtTheCorner();		
+		}
+		else if (shinryukenActive){
 			physicsbody.isKinematic = true;
-			if (character.GetRightEdgeDistance() < 0.5f && character.side == Character.Side.P1){ 			
-				physicsbody.velocity = new Vector2(0f, physicsbody.velocity.y);
-			}
-			if (character.GetLeftEdgeDistance() < 0.5f && character.side == Character.Side.P2){	
-				physicsbody.velocity = new Vector2(0f, physicsbody.velocity.y);
-			}
 		}
 		else{
 			physicsbody.isKinematic = false;
@@ -45,6 +42,7 @@ public class Ken : MonoBehaviour {
 		Rigidbody2D rigidbody = hadouken.GetComponent<Rigidbody2D>();
 		SpriteRenderer hadoukenSprite = hadouken.GetComponentInChildren<SpriteRenderer>();		
 		AudioSource.PlayClipAtPoint(hadoukenCreatedSound, transform.position);
+		character.GetSuper += 4.5f;
 		if (animator.GetInteger("hadoukenOwner") == 1){
 			hadouken.gameObject.layer = LayerMask.NameToLayer("ProjectileP1");
 			hadouken.gameObject.tag = "Player1";
@@ -100,17 +98,18 @@ public class Ken : MonoBehaviour {
 		if (animator.GetBool("isLiftingOff") == false){				
 			switch(animator.GetInteger("shoryukenPunchType")){
 				case 0:
-					character.MoveProperties(30f, 20f, 5f, 80f, 2, 3);
+					character.MoveProperties(30f, 20f, 5f, 80f, 2, 3, 2, 5f);
 					break;
 				case 1:
-					character.MoveProperties(40f, 25f, 7.5f, 85f, 2, 3);
+					character.MoveProperties(40f, 25f, 7.5f, 85f, 2, 3, 2, 5f);
 					break;
 				default:
-					character.MoveProperties(60f, 25f, 10f, 90f, 2, 3);
+					character.MoveProperties(60f, 25f, 10f, 90f, 2, 3, 2, 5f);
 					break;
 			}
 		}
 	}	
+	
 	public void ShoryukenLiftOff(){		
 		switch(animator.GetInteger("shoryukenPunchType")){
 			case 0:
@@ -125,7 +124,7 @@ public class Ken : MonoBehaviour {
 				KenTakeOffVelocity(2f, 5f);			
 				break;	
 		}				
-		AudioSource.PlayClipAtPoint(character.normalAttackSound,transform.position);
+		character.PlayNormalAttackSound();
 	}
 	
 	public void KenRoll(){
@@ -144,7 +143,27 @@ public class Ken : MonoBehaviour {
 			animator.SetBool("isRolling", true);
 		}
 	}
-
+	
+	public void ShinryukenLiftOff(){	
+		animator.SetBool("superActive", true);	
+		GetComponentInChildren<SpriteRenderer>().sortingLayerName = "Characters";
+		KenTakeOffVelocity(0f, 1.25f);
+		character.PlayNormalAttackSound();
+		AudioSource.PlayClipAtPoint(shinryukenSound,transform.position);
+	}
+	
+	public void ShinryukenProperties(int firstOrFinal){
+		if (firstOrFinal == 0){
+			character.MoveProperties(60f, 25f, 10f, 30f, 2, 7, 2, 0f);
+		}
+		else{
+			character.MoveProperties(60f, 25f, 10f, 75f, 2, 2, 2, 0f);
+		}
+	}
+	public void ResetShinryukenActive(){	
+		animator.SetBool("superActive", false);	
+	}
+	
 	void KenTakeOffVelocity (float x, float y){
 		if (character.transform.localScale.x == 1) {
 			physicsbody.velocity = new Vector2 (x, y);
@@ -160,12 +179,12 @@ public class Ken : MonoBehaviour {
 		
 	public void KenHurricaneKickLiftOff(){		
 		KenTakeOffVelocity(1f, 1.5f);
-		character.MoveProperties(45f, 20f, 10f, 17f, 2, 4);
+		character.MoveProperties(45f, 20f, 10f, 17f, 2, 4, 1);
 	}
 	
 	public void KenHurricaneKickFloat(){		
 		physicsbody.velocity = new Vector2 (physicsbody.velocity.x, 0f);
-		character.MoveProperties(40f, 20f, 10f, 17f, 2, 4);
+		character.MoveProperties(40f, 20f, 10f, 17f, 2, 4, 1);
 	}	
 	
 	public void KenHurricaneLanding(){
@@ -181,14 +200,22 @@ public class Ken : MonoBehaviour {
 	}
 	
 	public void PlayFlamesSound(){
-		AudioSource.PlayClipAtPoint(character.flameSound, transform.position);
+		AudioSource.PlayClipAtPoint(flameSound, transform.position);
 	}
 	
 	public void PlayHurricaneKickSound(){
 		AudioSource.PlayClipAtPoint(hurricaneKickSound, transform.position);
 	}
 	
+	public void PlaySuperStartSound(){
+		AudioSource.PlayClipAtPoint(superStartSound, transform.position);
+	}
+		
 	public int GetShoryukenType(){
 		return shoryukenType;
 	}
+	
+	public bool GetShinryukenActive(){
+		return shinryukenActive;
+	}	
 }

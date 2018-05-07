@@ -43,8 +43,8 @@ public class Hadouken : MonoBehaviour {
 	}
 	
 	void CharacterKOed(Character receiver, Rigidbody2D recRigid, Animator recAnim){
-		TimeControl.slowDownTimer = 100;				
-		recAnim.Play("KOBlendTree",0);
+		TimeControl.slowDownTimer = 100f;				
+		recAnim.Play("KnockDownBlendTree", 0);
 		if (receiver.side == Character.Side.P1){
 			recRigid.velocity = new Vector2(-2f, 4f);
 		}
@@ -58,7 +58,9 @@ public class Hadouken : MonoBehaviour {
 		Animator hurtCharAnimator = collider.gameObject.GetComponentInParent<Animator>();	
 		Hadouken otherHadouken = collider.gameObject.GetComponent<Hadouken>();
 		float timer; 
-		if (hurtBox && hurtBox.gameObject.tag != gameObject.tag){	
+		if (hurtBox && hurtBox.gameObject.tag != gameObject.tag && !hurtBox.GetHurtBoxCollided()){	
+		
+			hurtBox.SetHurtBoxCollided(true);
 			Character hurtCharacter = hurtBox.GetComponentInParent<Character>();
 			Rigidbody2D hurtPhysicsbody = hurtCharacter.GetComponent<Rigidbody2D>();
 			animator.SetBool("madeContact", true);	
@@ -69,7 +71,7 @@ public class Hadouken : MonoBehaviour {
 				
 				//if attack is blocked
 				AudioSource.PlayClipAtPoint(blockedSound, transform.position);
-				timer = blockStun;
+				timer = blockStun * 0.2f;
 				hurtCharAnimator.SetBool("isInBlockStun", true);
 				if (hurtCharAnimator.GetBool("isStanding") == true){
 					hurtCharAnimator.Play("StandBlockStun",0,0f);
@@ -87,21 +89,25 @@ public class Hadouken : MonoBehaviour {
 				AudioSource.PlayClipAtPoint(connectedSound, transform.position);
 				hurtCharacter.SetDamage(damage);		
 				if (gameObject.tag == "Player1"){
-					if (hurtCharAnimator.GetFloat("hitStunTimer") >= 0 && hurtCharAnimator.GetBool("isInHitStun")){
+					if (hurtCharAnimator.GetBool("isInHitStun")){
 						comboCounter.GetComboCountP1++;		
+						comboCounter.GetStartTimer = false;	
+						comboCounter.ResetComboFinishedTimer();
 					}
 				}
 				else if (gameObject.tag == "Player2"){
-					if (hurtCharAnimator.GetFloat("hitStunTimer") >= 0 && hurtCharAnimator.GetBool("isInHitStun")){
+					if (hurtCharAnimator.GetBool("isInHitStun")){
 						comboCounter.GetComboCountP2++;		
+						comboCounter.GetStartTimer = false;	
+						comboCounter.ResetComboFinishedTimer();
 					}
 				}
 				if (hurtCharacter.GetHealth () <= 0){	
 					CharacterKOed(hurtCharacter, hurtPhysicsbody, hurtCharAnimator);
 				}		    
 				else{
-					TimeControl.slowDownTimer = 30;
-					timer = hitStun;
+					TimeControl.slowDownTimer = 30f;
+					timer = hitStun * 0.2f;
 					if (hurtCharAnimator.GetBool("isAirborne") == true){
 						hurtCharAnimator.Play("KnockDownBlendTree",0,0f);
 						if (hurtCharacter.side == Character.Side.P2){

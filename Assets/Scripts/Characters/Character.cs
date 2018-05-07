@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class Character : MonoBehaviour {
 	
-	public float walkSpeed;
-	public float health;
-	public GameObject landingDust;
+	[SerializeField] float 		walkSpeed, health;
+	[SerializeField] GameObject landingDust, superEffect, demonSpark;	
+	[SerializeField] AudioClip 	KOsound, fellSound, akumaDemonSound, akumaDemonKOSound;
+	[SerializeField] AudioClip 	normalAttackSound, balrogHeadButtSound, superEffectSound;
 	
 	public enum Side {P1, P2};
 	public Side side;
@@ -17,16 +18,18 @@ public class Character : MonoBehaviour {
 	public enum HitType {normal, sweep, rekkaKnockdown, shoryuken, hurricaneKick, rekka, dashLow, akumaHurricaneKick};
 	public HitType hitType;
 	
-	public AudioClip normalAttackSound, KOsound, fellSound, flameSound, balrogHeadButtSound;
+	public enum SparkType {normal, big, shoryuken};
+	public SparkType sparkType;	
 	
 	private Rigidbody2D physicsbody;
 	private Animator animator;
 	private HitBox hitBox;	 
 	
-	private float 	enforceHitStun, enforceBlockStun, enforcePushBack, enforceDamage, leftEdgeDistance, rightEdgeDistance;
+	private float 	enforceHitStun, enforceBlockStun, enforcePushBack, enforceDamage,
+					accumulateSuper, super, leftEdgeDistance, rightEdgeDistance;
 	
-	private bool 	backPressed, airborne, midAirRecovering, didntHit, 
-					isHitStunned, isBlockStunned, isKnockDown, isKO;
+	private bool 	backPressed, airborne, midAirRecovering, didntHit, changePosition,
+					isHitStunned, isBlockStunned, isKnockDown, isThrown, isKO;
 		
 		
 	void Start(){
@@ -49,14 +52,15 @@ public class Character : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update(){	
+	void Update(){
 		airborne = animator.GetBool("isAirborne");
-		midAirRecovering = animator.GetBool("isMidAirRecovering");
+		didntHit = animator.GetBool("hasntHit");
+		midAirRecovering = animator.GetBool("isMidAirRecovering");	
 		isHitStunned = animator.GetBool("isInHitStun");
 		isBlockStunned = animator.GetBool("isInBlockStun");
 		isKnockDown = animator.GetBool("isKnockedDown");
-		didntHit = animator.GetBool("hasntHit");
-		isKO = animator.GetBool("isKOed");
+		isThrown = animator.GetBool("isThrown");
+		isKO = animator.GetBool("isKOed");		
 		animator.SetBool("isCancellable", hitBox.GetCancellabe());
 		animator.SetFloat("yVelocity", physicsbody.velocity.y);	
 						
@@ -76,11 +80,11 @@ public class Character : MonoBehaviour {
 			AudioSource.PlayClipAtPoint(normalAttackSound, transform.position);
 			if (animator.GetBool("isStanding")){
 				animator.Play("StandJab",0);
-				MoveProperties(15f, 15f, 7.5f, 20f, 2, 0);
+				MoveProperties(15f, 15f, 10f, 20f, 2, 0, 0);
 			}
 			else if (animator.GetBool("isCrouching")){
 				animator.Play("CrouchJab",0);
-				MoveProperties(20f, 15f, 7.5f, 20f, 2, 0);
+				MoveProperties(25f, 15f, 10f, 20f, 2, 0, 0);
 			}
 			else if (animator.GetBool("isAirborne")){
 				if (physicsbody.velocity.x != 0){
@@ -89,7 +93,7 @@ public class Character : MonoBehaviour {
 				else{
 					animator.Play("JumpNeutralJab",0);
 				}		
-				MoveProperties(15f, 7f, 7.5f, 20f, 1, 0);	
+				MoveProperties(15f, 7f, 7.5f, 20f, 1, 0, 0);	
 			}
 		}
 	}
@@ -99,11 +103,11 @@ public class Character : MonoBehaviour {
 			AudioSource.PlayClipAtPoint(normalAttackSound, transform.position);
 			if (animator.GetBool("isStanding")){
 				animator.Play("StandStrong",0);
-				MoveProperties(30f, 22.5f, 10f, 40f, 2, 0);
+				MoveProperties(30f, 22.5f, 10f, 40f, 2, 0, 0);
 			}
 			else if (animator.GetBool("isCrouching")){
 				animator.Play("CrouchStrong",0);
-				MoveProperties(30f, 25f, 10f, 40f, 2, 0);
+				MoveProperties(30f, 25f, 10f, 40f, 2, 0, 0);
 			}
 			else if (animator.GetBool("isAirborne")){
 				if (physicsbody.velocity.x != 0){
@@ -112,7 +116,7 @@ public class Character : MonoBehaviour {
 				else{
 					animator.Play("JumpNeutralStrong",0);
 				}			
-				MoveProperties(15f, 8.5f, 10f, 40f, 1, 0);
+				MoveProperties(15f, 8.5f, 10f, 40f, 1, 0, 0);
 			}	
 		}
 	}
@@ -122,11 +126,11 @@ public class Character : MonoBehaviour {
 			AudioSource.PlayClipAtPoint(normalAttackSound, transform.position);
 			if (animator.GetBool("isStanding")){
 				animator.Play("StandFierce",0);
-				MoveProperties(40f, 20f, 12f, 55f, 2, 0);
+				MoveProperties(40f, 20f, 12f, 55f, 2, 0, 1);
 			}
 			else if (animator.GetBool("isCrouching")){
 				animator.Play("CrouchFierce",0);
-				MoveProperties(40f, 20f, 12f, 55f, 2, 0);
+				MoveProperties(40f, 20f, 12f, 55f, 2, 0, 1);
 			}
 			else if (animator.GetBool("isAirborne")){
 				if (physicsbody.velocity.x != 0){
@@ -135,7 +139,7 @@ public class Character : MonoBehaviour {
 				else{
 					animator.Play("JumpNeutralFierce",0);
 				}			
-				MoveProperties(40f, 8.5f, 6f, 55f, 1, 0);
+				MoveProperties(40f, 8.5f, 6f, 55f, 1, 0, 1);
 			}
 		}
 	}
@@ -146,24 +150,24 @@ public class Character : MonoBehaviour {
 			if (animator.GetBool("isStanding")){
 				animator.Play("StandShort",0);
 				if (GetComponent<Balrog>() != null){
-					MoveProperties(15f, 15f, 7.5f, 20f, 2, 0);
+					MoveProperties(15f, 15f, 10f, 20f, 2, 0, 0);
 				}
 				else{					
-					MoveProperties(15f, 15f, 7.5f, 20f, 0, 0);
+					MoveProperties(15f, 15f, 10f, 20f, 0, 0, 0);
 				}
 			}
 			else if (animator.GetBool("isCrouching")){
 				animator.Play("CrouchShort",0);
-				MoveProperties(20f, 17.5f, 7.5f, 20f, 0, 0);
+				MoveProperties(30f, 17.5f, 10f, 20f, 0, 0, 0);
 			}			
 			else if (animator.GetBool("isAirborne")){
 				if (physicsbody.velocity.x != 0){
 					animator.Play("JumpShort",0);
 				}
 				else{
-					animator.Play("JumpNeutralShort",0);
+					animator.Play("JumpNeutralShort",0, 0);
 				}			
-				MoveProperties(20f, 7f, 7.5f, 20f, 1, 0);
+				MoveProperties(20f, 7f, 7.5f, 20f, 1, 0, 0);
 			}
 		}
 	}
@@ -173,11 +177,11 @@ public class Character : MonoBehaviour {
 			AudioSource.PlayClipAtPoint(normalAttackSound, transform.position);
 			if (animator.GetBool("isStanding")){
 				animator.Play("StandForward",0);
-				MoveProperties(30f, 20f, 10f, 40f, 2, 0);
+				MoveProperties(30f, 20f, 10f, 40f, 2, 0, 0);
 			}
 			else if (animator.GetBool("isCrouching")){
 				animator.Play("CrouchForward",0);
-				MoveProperties(32.5f, 25f, 10f, 40f, 0, 0);
+				MoveProperties(32.5f, 25f, 10f, 40f, 0, 0, 0);
 			}
 			else if (animator.GetBool("isAirborne")){
 				if (physicsbody.velocity.x != 0){
@@ -186,7 +190,7 @@ public class Character : MonoBehaviour {
 				else{
 					animator.Play("JumpNeutralForward",0);
 				}			
-				MoveProperties(35f, 8.5f, 10f, 40f, 1, 0);
+				MoveProperties(35f, 8.5f, 10f, 40f, 1, 0, 0);
 			}
 		}
 	}
@@ -196,11 +200,11 @@ public class Character : MonoBehaviour {
 			AudioSource.PlayClipAtPoint(normalAttackSound, transform.position);	
 			if (animator.GetBool("isStanding")){
 				animator.Play("StandRoundhouse",0);
-				MoveProperties(40f, 20f, 12f, 55f, 2, 0);
+				MoveProperties(40f, 20f, 12f, 55f, 2, 0, 1);
 			}
 			else if (animator.GetBool("isCrouching")){
 				animator.Play("CrouchRoundhouse",0);
-				MoveProperties(40f, 20f, 12f, 60f, 0, 1);
+				MoveProperties(40f, 20f, 12f, 60f, 0, 1, 1);
 			}
 			else if (animator.GetBool("isAirborne")){
 				if (physicsbody.velocity.x != 0){
@@ -209,7 +213,7 @@ public class Character : MonoBehaviour {
 				else{
 					animator.Play("JumpNeutralRoundhouse",0);
 				}			
-				MoveProperties(40f, 8.5f, 12f, 55f, 1, 0);
+				MoveProperties(40f, 8.5f, 12f, 55f, 1, 0, 1);
 			}	
 		}
 	}
@@ -230,13 +234,25 @@ public class Character : MonoBehaviour {
 		if (animator.GetBool("isAirborne") == false && animator.GetBool("isInHitStun") == false 
 		    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isInBlockStun") == false
 	    	&& animator.GetBool("isThrown") == false && animator.GetBool("isMidAirRecovering") == false
-		   	&& animator.GetBool("isLiftingOff") == true){			
-			if (side == Side.P1){
+		   	&& animator.GetBool("isLanding") == false && animator.GetBool("isLiftingOff") == true){			
+			if (transform.localScale.x == 1){
 				physicsbody.velocity = new Vector2(x, 4.5f);
 			}
 			else{
 				physicsbody.velocity = new Vector2(-x, 4.5f);
 			}
+		}
+	}
+	
+	public void AtTheCorner (){
+		physicsbody.isKinematic = true;
+		// if he's near the right corner & travelling towards the right corner facing the right corner on p1 side
+		if (GetRightEdgeDistance () < 0.5f && transform.localScale.x == 1) {
+			physicsbody.velocity = new Vector2 (0f, physicsbody.velocity.y);
+		}
+		// if he's near the left corner & travelling towards the left corner facing the left corner on p2 side
+		if (GetLeftEdgeDistance () < 0.5f && transform.localScale.x == -1) {
+			physicsbody.velocity = new Vector2 (0f, physicsbody.velocity.y);
 		}
 	}
 	
@@ -255,7 +271,7 @@ public class Character : MonoBehaviour {
 	}
 	
 	public void MidAirRecovery(){
-		if (side == Side.P2){
+		if (transform.localScale.x == -1){
 			physicsbody.velocity = new Vector2(1.5f, 2f);
 		}
 		else{
@@ -274,55 +290,29 @@ public class Character : MonoBehaviour {
 	}
 	
 	public void TossedByKen(){
-		SetDamage(60f);
-		if (GetHealth() <= 0){
-			animator.Play("KOBlendTree",0);
-			TimeControl.slowDownTimer = 100;	
-		}
-		if (side == Side.P2){
-			physicsbody.velocity = new Vector2(-3f, 4f);
-		}
-		else{
-			physicsbody.velocity = new Vector2(3f, 4f);
-		}
-		animator.SetBool("isAirborne", true);
+		YouGonnaGetTossed (60f, -3f, 4f);
 	}
 	
 	public void TossedByFeiLong(){
-		SetDamage(60f);
-		if (GetHealth() <= 0){
-			animator.Play("KOBlendTree",0);
-			TimeControl.slowDownTimer = 100;	
-		}
-		if (side == Side.P2){
-			physicsbody.velocity = new Vector2(3f, 4f);
-		}
-		else{
-			physicsbody.velocity = new Vector2(-3f, 4f);
-		}
-		animator.SetBool("isAirborne", true);
+		YouGonnaGetTossed (60f, 3f, 4f);
 	}
 		
 	public void HeadButtedByBalrog(){
-		SetDamage(20f);
-		if (GetHealth() <= 0){
-			animator.Play("KOBlendTree",0);
-			TimeControl.slowDownTimer = 100;	
-		}
-		if (side == Side.P2){
-			physicsbody.velocity = new Vector2(2f, 4f);
-		}
-		else{
-			physicsbody.velocity = new Vector2(-2f, 4f);
-		}
-		animator.SetBool("isAirborne", true);
+		YouGonnaGetTossed (20f, 2f, 4f);
 	}
 	
-	public void MoveProperties(float hitstun, float blockstun, float pushback, float damage, int moveTypeInt, int hitTypeInt){
+	public void TossedByAkuma(){
+		YouGonnaGetTossed (60f, 3f, 4f);
+	}
+
+	public void MoveProperties(	float hitstun, float blockstun, float pushback, float damage, 
+								int moveTypeInt, int hitTypeInt, int sparkTypeInt, float superBuilt = 3f){
+								
 		enforceHitStun = hitstun;		
 		enforceBlockStun = blockstun;
 		enforcePushBack = pushback;
 		enforceDamage = damage;
+		accumulateSuper = superBuilt;
 		
 		switch(moveTypeInt){
 			case 0:
@@ -362,6 +352,18 @@ public class Character : MonoBehaviour {
 				hitType = HitType.akumaHurricaneKick;
 				break;				
 		}
+		
+		switch(sparkTypeInt){
+			case 0:
+				sparkType = SparkType.normal;
+				break;
+			case 1:
+				sparkType = SparkType.big;
+				break;
+			default:
+				sparkType = SparkType.shoryuken;
+				break;
+		}
 	}
 	
 	public void ThrowRoll(){
@@ -386,8 +388,76 @@ public class Character : MonoBehaviour {
 	public void KnockedDownDust(){
 		Vector3 offset = new Vector3(0f, -0.4f, 0f);
 		Instantiate(landingDust, transform.position + offset, Quaternion.Euler(new Vector3(-90f, 0f, 0f)));
-	}
+	}	
+	
+	void YouGonnaGetTossed (float dmg, float x, float y){
+		SetDamage (dmg);
+		if (GetHealth () <= 0) {
+			animator.Play ("KOBlendTree", 0);
+			TimeControl.slowDownTimer = 100;
+		}
+		if (side == Side.P2) {
+			physicsbody.velocity = new Vector2 (x, y);
+		}
+		else {
+			physicsbody.velocity = new Vector2 (-x, y);
+		}
+		animator.SetBool ("isAirborne", true);
+	}	
+	
+	public void SuperStartUp(){
+		if (gameObject.tag == "Player1"){
+			TimeControl.inSuperStartup[0] = true;
+		}
+		else if (gameObject.tag == "Player2"){
+			TimeControl.inSuperStartup[1] = true;
+		}
 		
+		Vector3 offset = Vector3.zero;
+		GetComponentInChildren<SpriteRenderer>().sortingLayerName = "Effects";
+		GetSuper = 0f;
+		if (GetComponent<Akuma>() != null){
+			if (side == Side.P1){
+				offset = new Vector3(0.1f, 0.25f, 0f);
+			}
+			else{
+				offset = new Vector3(-0.1f, 0.25f, 0f);
+			}
+		}
+		else if (GetComponent<Ken>() != null){
+			if (side == Side.P1){
+				offset = new Vector3(0.1f, -0.2f, 0f);
+			}
+			else{
+				offset = new Vector3(-0.1f, -0.2f, 0f);
+			}
+		}
+		else if (GetComponent<FeiLong>() != null){
+			if (side == Side.P1){
+				offset = new Vector3(0.5f, 0.25f, 0f);
+			}
+			else{
+				offset = new Vector3(-0.5f, 0.25f, 0f);
+			}
+		}
+		else if (GetComponent<Balrog>() != null){
+			if (side == Side.P1){
+				offset = new Vector3(-0.4f, 0f, 0f);
+			}
+			else{
+				offset = new Vector3(0.4f, 0f, 0f);
+			}
+		}
+		GameObject newSuperEffect = Instantiate(superEffect, transform.position + offset, Quaternion.identity) as GameObject;
+		newSuperEffect.tag = gameObject.tag;
+	}	
+		
+	public void CreateDemonSparks(){
+		float x = Random.Range (-0.25f, 0.25f);
+		float y = Random.Range (-0.25f, 0.25f);
+		Vector3 offset = new Vector3 (x, y, 0f);
+		Instantiate(demonSpark, transform.position + offset, Quaternion.identity);
+	}
 	
 	public void KOSound(){
 		AudioSource.PlayClipAtPoint(KOsound, transform.position);		
@@ -405,16 +475,45 @@ public class Character : MonoBehaviour {
 		AudioSource.PlayClipAtPoint(balrogHeadButtSound, transform.position);
 	}
 	
+	public void PlayAkumaDemonSound(){
+		AudioSource.PlayClipAtPoint(akumaDemonSound, transform.position);
+	}
+	
+	public void LastAkumaDemon(){
+		SetDamage(300f);
+		if (GetHealth() <= 0f){
+			AudioSource.PlayClipAtPoint(akumaDemonKOSound, transform.position);
+			TimeControl.demonKO = true;
+			
+		}
+		else{
+			AudioSource.PlayClipAtPoint(akumaDemonSound, transform.position);
+		}
+	}
+	
+	public void PlaySuperEffectSound(){
+		AudioSource.PlayClipAtPoint(superEffectSound, transform.position);
+	}	
+	
 	public void SetBackPressed(bool isBackPressed){
 		backPressed = isBackPressed;
 	}
-	
+		
 	public void ResetHasntHit(){
 		animator.SetBool("hasntHit", true);
 	}
 	
 	public void SetDamage(float damage){
 		health -= damage;
+	}
+		
+	public void ThrowDamage(float damage){
+		if (health - damage < 1f){
+			health = 1f;
+		}
+		else{
+			SetDamage(damage);
+		}
 	}
 	
 	public float GetEnforceHitStun(){
@@ -433,9 +532,17 @@ public class Character : MonoBehaviour {
 		return health;
 	}
 	
+	public float GetWalkSpeed(){
+		return walkSpeed;
+	}
+	
 	public float GetDamage(){
 		return enforceDamage;
 	}	
+	
+	public float GetSuperAccumulated(){
+		return accumulateSuper;
+	}
 	
 	public float GetRightEdgeDistance(){
 		return rightEdgeDistance;
@@ -445,6 +552,11 @@ public class Character : MonoBehaviour {
 		return leftEdgeDistance;
 	}
 	
+	public float GetSuper{
+		get { return super; }
+		set { super = value; }
+	}
+	
 	public MoveType GetMoveType(){
 		return moveType;
 	}
@@ -452,6 +564,11 @@ public class Character : MonoBehaviour {
 	public HitType GetHitType(){
 		return hitType;
 	}
+		
+	public SparkType GetSparkType(){
+		return sparkType;
+	}
+	
 	public bool GetBackPressed(){
 		return backPressed;
 	}
@@ -480,10 +597,15 @@ public class Character : MonoBehaviour {
 		return isKnockDown;
 	}
 	
+	public bool GetThrown(){
+		return isThrown;
+	}
+	
 	public bool GetKOed(){
 		return isKO;
 	}
-			
+				
+	//when character lands on the ground without getting hit
 	void OnCollisionEnter2D(Collision2D collision){
 		if (collision.gameObject.GetComponent<Ground>()	&& animator.GetBool("isMidAirHit") == false && animator.GetFloat("yVelocity") <= 0){
 			animator.SetBool("isAirborne", false);

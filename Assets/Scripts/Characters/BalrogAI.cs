@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class BalrogAI : MonoBehaviour {
 
-	public float decisionTimer;
-	public AudioClip one, two, three;
-	
+	[SerializeField] float decisionTimer, antiAirTimer;
+		
 	private Animator animator;
-	private Player player, playerController;
-	private Opponent opponent, opponentController;
+	private Player player;
+	private Opponent opponent;
 	private Character playerCharacter, opponentCharacter;
 	private Character character;
 	private SharedProperties sharedProperties;
@@ -17,7 +16,7 @@ public class BalrogAI : MonoBehaviour {
 	private ChargeSystem chargeSystem;
 	
 	private int decision;
-	private float decisionTimerInput;	
+	private float decisionTimerInput, antiAirTimerInput;	
 
 	// Use this for initialization
 	void Start () {
@@ -25,12 +24,10 @@ public class BalrogAI : MonoBehaviour {
 		if (GetComponentInParent<Opponent>() != null){
 			player = FindObjectOfType<Player>();
 			playerCharacter = player.GetComponentInChildren<Character>();
-			opponentController = GetComponentInParent<Opponent>();
 		}
 		else if (GetComponentInParent<Player>() != null){
 			opponent = FindObjectOfType<Opponent>();
 			opponentCharacter = opponent.GetComponentInChildren<Character>();
-			playerController = GetComponentInParent<Player>();
 		}
 		
 		character = GetComponent<Character>();
@@ -40,14 +37,15 @@ public class BalrogAI : MonoBehaviour {
 		sharedProperties = GetComponentInParent<SharedProperties>();
 		
 		decisionTimerInput = decisionTimer; 
+		antiAirTimerInput = antiAirTimer;
+		antiAirTimer = 0f;
 		decision = Random.Range(0,100);	
 	}
 		
 	public void Behaviors(){
 		decisionTimer--;
-		if (animator.GetBool("isLiftingOff") == false && animator.GetBool("isKnockedDown") == false && animator.GetBool("isThrown") == false && animator.GetBool("isMidAirHit") == false
-		    && animator.GetBool("isMidAirRecovering") == false && animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false){
-			
+		antiAirTimer--;
+		if (AIcontrols.FreeToMakeDecisions() && !TimeControl.inSuperStartup[0] && !TimeControl.inSuperStartup[1]){			
 			if (animator.GetBool("isAirborne") == true && animator.GetBool("isLiftingOff") == false){				
 				decision = Random.Range(0,100);	
 				if (decision <= 1){
@@ -119,12 +117,13 @@ public class BalrogAI : MonoBehaviour {
 					else if (playerCharacter.GetKnockDown() == true && playerCharacter.GetAirborne() == false){				
 						KnockDownFromCloseRangeDecisions ();
 					}
-					else if (playerCharacter.GetAirborne() == true && playerCharacter.GetKnockDown() == false){	
-						if (playerCharacter.GetComponent<FeiLong>() != null){
-							VsFeiLongsChickenWing ();
+					else if (playerCharacter.GetAirborne() == true && playerCharacter.GetKnockDown() == false && playerCharacter.GetThrown() == false){	
+						if (antiAirTimer <= 0f){			
+							sharedProperties.AIAntiAirDecision(60, RegularCloseRangeDecisions, PreparationForAntiAir);
+							antiAirTimer = antiAirTimerInput;
 						}
-						else{	
-							PreparationForAntiAir ();
+						else{
+							RegularCloseRangeDecisions();
 						}
 					}
 					else {
@@ -141,12 +140,13 @@ public class BalrogAI : MonoBehaviour {
 					else if (opponentCharacter.GetKnockDown() == true && opponentCharacter.GetAirborne() == false){				
 						KnockDownFromCloseRangeDecisions ();
 					}
-					else if (opponentCharacter.GetAirborne() == true && opponentCharacter.GetKnockDown() == false){		
-						if (opponentCharacter.GetComponent<FeiLong>() != null){
-							VsFeiLongsChickenWing ();
+					else if (opponentCharacter.GetAirborne() == true && opponentCharacter.GetKnockDown() == false && opponentCharacter.GetThrown() == false){	
+						if (antiAirTimer <= 0f){			
+							sharedProperties.AIAntiAirDecision(60, RegularCloseRangeDecisions, PreparationForAntiAir);
+							antiAirTimer = antiAirTimerInput;
 						}
-						else{	
-							PreparationForAntiAir ();
+						else{
+							RegularCloseRangeDecisions();
 						}
 					}
 					else {
@@ -155,12 +155,7 @@ public class BalrogAI : MonoBehaviour {
 				}
 					
 			}
-			if (playerController != null){
-				playerController.WalkAI();
-			}
-			else if (opponentController != null){
-				opponentController.Walk();
-			}
+			AIcontrols.AIWalks();
 		}
 	}
 
@@ -188,7 +183,13 @@ public class BalrogAI : MonoBehaviour {
 				character.SetBackPressed (true);
 			}
 			else {
-				AIcontrols.AIStrong (20);
+				int strongVsForward = Random.Range (0, 3);
+				if (strongVsForward == 0){
+					AIcontrols.AILowForward();
+				}
+				else{				
+					AIcontrols.AIStrong (20);
+				}
 				AIcontrols.AICharges ();
 				character.SetBackPressed (true);
 				decisionTimer = 0f;
@@ -201,20 +202,31 @@ public class BalrogAI : MonoBehaviour {
 				character.SetBackPressed (true);
 			}
 			else {
-				AIcontrols.AIJab (10);
+				int jabVsStrong = Random.Range (0, 5);
+				if (jabVsStrong == 0){
+					AIcontrols.AIStrong (20);
+				}
+				else{
+					AIcontrols.AIJab (10);
+				}
 				AIcontrols.AICharges ();
 				character.SetBackPressed (true);
 				decisionTimer = 0f;
 			}
 		}
-		else if (decision <= 80 && decision > 75) {
-			if (chargeSystem.GetDownCharged () && !animator.GetBool ("isAttacking")) {
+		else if (decision <= 80 && decision > 75) {			
+			if (character.GetSuper >= 100f){
+				AIGigatonPunches();
+				AIcontrols.AICharges ();
+				character.SetBackPressed (true);
+			}
+			else if (chargeSystem.GetDownCharged () && !animator.GetBool ("isAttacking")) {
 				AIHeadButt ();
 				AIcontrols.AICharges ();
 				character.SetBackPressed (true);
 			}
 			else {
-				AIcontrols.AIShort ();
+				AIcontrols.AIShort (2);
 				AIcontrols.AICharges ();
 				character.SetBackPressed (true);
 			}
@@ -253,9 +265,16 @@ public class BalrogAI : MonoBehaviour {
 	void RegularMidRangeDecisions (){
 		DecisionMade (5, 2);
 		if (decision <= 10) {
-			AIcontrols.AIStand ();
-			AIcontrols.AIPressedForward ();
-			character.SetBackPressed (false);
+			if (character.GetSuper >= 100f){
+				AIGigatonPunches();
+				AIcontrols.AICharges ();
+				character.SetBackPressed (true);
+			}
+			else{
+				AIcontrols.AIStand ();
+				AIcontrols.AIPressedForward ();
+				character.SetBackPressed (false);
+			}
 		}
 		else if (decision <= 15 && decision > 10) {
 			AIcontrols.AIPressedForward ();
@@ -274,7 +293,7 @@ public class BalrogAI : MonoBehaviour {
 				character.SetBackPressed (true);
 			}
 			else {
-				AIcontrols.AIShort ();
+				AIcontrols.AILowForward ();
 				AIcontrols.AICharges ();
 				character.SetBackPressed (true);
 				decisionTimer = 0f;
@@ -307,7 +326,7 @@ public class BalrogAI : MonoBehaviour {
 			}
 		}
 		else if (decision <= 95 && decision > 90) {
-			AIcontrols.AIFierce (1, 1);
+			AIcontrols.AIFierce (5, 2);
 			AIcontrols.AICharges ();
 			character.SetBackPressed (true);
 			decisionTimer = 0f;
@@ -349,7 +368,7 @@ public class BalrogAI : MonoBehaviour {
 				character.SetBackPressed (true);
 			}
 			else {
-				AIcontrols.AIShort ();
+				AIcontrols.AIShort (2);
 				AIcontrols.AICharges ();
 				character.SetBackPressed (true);
 				decisionTimer = 0f;
@@ -430,7 +449,7 @@ public class BalrogAI : MonoBehaviour {
 				character.SetBackPressed (true);
 			}
 			else {
-				AIcontrols.AIShort ();
+				AIcontrols.AIShort (2);
 				AIcontrols.AICharges ();
 				character.SetBackPressed (true);
 				decisionTimer = 0f;
@@ -483,44 +502,6 @@ public class BalrogAI : MonoBehaviour {
 		}
 	}
 	
-	void VsFeiLongsChickenWing (){
-		decision = Random.Range (0, 100);
-		if (decision <= 50) {
-			if (chargeSystem.GetDownCharged () && !animator.GetBool ("isAttacking")) {
-				AIHeadButt ();
-				AIcontrols.AICharges ();
-				character.SetBackPressed (true);
-			}
-			else {
-				AIcontrols.AICrouch ();
-				AIcontrols.AICharges ();
-				character.SetBackPressed (true);
-			}
-		}
-		else if (decision <= 60 && decision > 50) {
-			AIcontrols.AIStrong (1);
-			AIcontrols.AICharges ();
-			character.SetBackPressed (true);
-		}
-		else if (decision <= 90 && decision > 60) {
-			if (chargeSystem.GetBackCharged () && !animator.GetBool ("isAttacking")) {
-				AIKickRushesRoundhouse ();
-				AIcontrols.AICharges ();
-				character.SetBackPressed (true);
-			}
-			else {
-				AIcontrols.AICrouch ();
-				AIcontrols.AICharges ();
-				character.SetBackPressed (true);
-			}
-		}
-		else {
-			AIcontrols.AIFierce (1, 1);
-			sharedProperties.CharacterNeutralState ();
-			AIcontrols.DoesAIBlock ();
-		}
-	}
-	
 	void PreparationForAntiAir (){
 		decision = Random.Range (0, 100);
 		if (decision <= 50) {
@@ -530,7 +511,7 @@ public class BalrogAI : MonoBehaviour {
 				character.SetBackPressed (true);
 			}
 			else {
-				AIcontrols.AIStrong (1);
+				AIcontrols.AIFierce(50,1);
 				AIcontrols.AICharges ();
 				character.SetBackPressed (true);
 			}
@@ -547,18 +528,18 @@ public class BalrogAI : MonoBehaviour {
 				character.SetBackPressed (true);
 			}
 			else {
-				AIcontrols.AIFierce (1, 1);
-				sharedProperties.CharacterNeutralState ();
-				AIcontrols.DoesAIBlock ();
+				AIcontrols.AIStrong (1);
+				AIcontrols.AICharges ();
+				character.SetBackPressed (true);
 			}
 		}
 		else {
-			AIcontrols.AIFierce (1, 1);
+			AIcontrols.AIFierce (10, 1);
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 		}
 	}
-
+	
 	void OtherFighterGotHitDecisions (){
 		decision = Random.Range (0, 100);
 		if (decision <= 50) {
@@ -573,8 +554,13 @@ public class BalrogAI : MonoBehaviour {
 				character.SetBackPressed (true);
 			}
 		}
-		else if (decision <= 60 && decision > 50) {
-			if (chargeSystem.GetBackCharged ()) {
+		else if (decision <= 60 && decision > 50) {			
+			if (character.GetSuper >= 100f){
+				AIGigatonPunches();
+				AIcontrols.AICharges ();
+				character.SetBackPressed (true);
+			}
+			else if (chargeSystem.GetBackCharged ()) {
 				AIKickRushesRoundhouse ();
 				AIcontrols.AICharges ();
 				character.SetBackPressed (true);
@@ -643,9 +629,16 @@ public class BalrogAI : MonoBehaviour {
 			}
 		}
 		else {
-			AIcontrols.AIStrong (80);
-			AIcontrols.AICharges ();
-			character.SetBackPressed (true);
+			if (character.GetSuper >= 100f){
+				AIGigatonPunches();
+				AIcontrols.AICharges ();
+				character.SetBackPressed (true);
+			}
+			else{
+				AIcontrols.AIStrong (80);
+				AIcontrols.AICharges ();
+				character.SetBackPressed (true);
+			}
 		}
 	}
 
@@ -838,13 +831,21 @@ public class BalrogAI : MonoBehaviour {
 			decisionTimer = Random.Range (decisionTimerInput / minDivisor, decisionTimerInput / maxDivisor);
 		}
 	}
+	
+	void AIGigatonPunches(){
+		if (AIcontrols.GetConditionsSpecialAttack()){			
+			animator.SetTrigger("motionSuperInputed");		
+			if (animator.GetBool("isAttacking") == false){
+				character.AttackState();
+				animator.Play("BalrogGigatonPunch",0);					
+			}
+		}
+	}
+	
 			
 	void AIKickRushesShortOrForward(){		
 		int randNum = Random.Range (0,10);
-		if (animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false 
-	       && animator.GetBool("isLiftingOff") == false && animator.GetBool("isAirborne") == false 
-	       && animator.GetBool("isKnockedDown") == false && animator.GetBool("isMidAirRecovering") == false
-	       && animator.GetBool("isThrown") == false){			
+		if (AIcontrols.GetConditionsSpecialAttack()){			
 			animator.SetTrigger("kickRushInputed");		
 			if (animator.GetBool("isAttacking") == false){
 				character.AttackState();
@@ -864,10 +865,7 @@ public class BalrogAI : MonoBehaviour {
 	}
 	
 	void AIKickRushesRoundhouse(){		
-		if (animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false 
-		    && animator.GetBool("isLiftingOff") == false && animator.GetBool("isAirborne") == false 
-		    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isMidAirRecovering") == false
-		    && animator.GetBool("isThrown") == false){			
+		if (AIcontrols.GetConditionsSpecialAttack()){			
 			animator.SetTrigger("kickRushInputed");		
 			if (animator.GetBool("isAttacking") == false){
 				character.AttackState();
@@ -882,10 +880,7 @@ public class BalrogAI : MonoBehaviour {
 	
 	void AIDashLowJabOrStrong(){	
 		int randNum = Random.Range (0,10);	
-		if (animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false 
-		    && animator.GetBool("isLiftingOff") == false && animator.GetBool("isAirborne") == false 
-		    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isMidAirRecovering") == false
-		    && animator.GetBool("isThrown") == false){			
+		if (AIcontrols.GetConditionsSpecialAttack()){			
 			animator.SetTrigger("dashLowInputed");		
 			if (animator.GetBool("isAttacking") == false){
 				character.AttackState();
@@ -905,10 +900,7 @@ public class BalrogAI : MonoBehaviour {
 	}
 	
 	void AIDashLowFierce(){	
-		if (animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false 
-		    && animator.GetBool("isLiftingOff") == false && animator.GetBool("isAirborne") == false 
-		    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isMidAirRecovering") == false
-		    && animator.GetBool("isThrown") == false){			
+		if (AIcontrols.GetConditionsSpecialAttack()){			
 			animator.SetTrigger("dashLowInputed");		
 			if (animator.GetBool("isAttacking") == false){
 				character.AttackState();
@@ -924,10 +916,7 @@ public class BalrogAI : MonoBehaviour {
 	
 	void AIDashStraightJabOrStrong(){	
 		int randNum = Random.Range (0,10);	
-		if (animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false 
-		    && animator.GetBool("isLiftingOff") == false && animator.GetBool("isAirborne") == false 
-		    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isMidAirRecovering") == false
-		    && animator.GetBool("isThrown") == false){			
+		if (AIcontrols.GetConditionsSpecialAttack()){			
 			animator.SetTrigger("dashLowInputed");		
 			if (animator.GetBool("isAttacking") == false){
 				character.AttackState();
@@ -948,10 +937,7 @@ public class BalrogAI : MonoBehaviour {
 	
 	void AIHeadButt(){	
 		int randNum = Random.Range (0,3);	
-		if (animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false 
-		    && animator.GetBool("isLiftingOff") == false && animator.GetBool("isAirborne") == false 
-		    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isMidAirRecovering") == false
-		    && animator.GetBool("isThrown") == false){			
+		if (AIcontrols.GetConditionsSpecialAttack()){			
 			animator.SetTrigger("headButtInputed");		
 			if (animator.GetBool("isAttacking") == false){
 				character.AttackState();
@@ -978,10 +964,7 @@ public class BalrogAI : MonoBehaviour {
 	
 	void AITurnPunches(){	
 		int randNum = Random.Range (0,50);	
-		if (animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false 
-		    && animator.GetBool("isLiftingOff") == false && animator.GetBool("isAirborne") == false 
-		    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isMidAirRecovering") == false
-		    && animator.GetBool("isThrown") == false){			
+		if (AIcontrols.GetConditionsSpecialAttack()){			
 			animator.SetTrigger("turnPunchInputed");
 			if (animator.GetBool("isAttacking") == false){
 				character.AttackState();

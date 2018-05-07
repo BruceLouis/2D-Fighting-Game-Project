@@ -25,7 +25,8 @@ public class Thrown : StateMachineBehaviour {
 		animator.ResetTrigger("kickRushInputed");
 		animator.ResetTrigger("turnPunchInputed");
 		animator.ResetTrigger("headButtInputed");
-		animator.ResetTrigger ("hyakkishuInputed");
+		animator.ResetTrigger("hyakkishuInputed");
+		animator.ResetTrigger("motionSuperInputed");
 	}
 
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

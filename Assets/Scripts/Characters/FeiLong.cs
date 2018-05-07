@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class FeiLong : MonoBehaviour {
 	
-	public GameObject feiLongFlame;
-	public AudioClip rekkaFirstSound, rekkaSecondSound, rekkaThirdSound;
-	public AudioClip flameKickSound, chickenWingSound, victorySound;
+	[SerializeField] GameObject feiLongFlame;
+	[SerializeField] AudioClip rekkaFirstSound, rekkaSecondSound, rekkaThirdSound;
+	[SerializeField] AudioClip flameKickSound, flameSound, chickenWingSound, victorySound;
+	[SerializeField] AudioClip rekkaShinkenThirdSound, rekkaShinkenFourthSound, rekkaShinkenFifthSound;
 	
 	private Character character;
 	private Animator animator; 
 	private Rigidbody2D physicsbody;
 	private GameObject flameEffect;
+	private bool rekkaShinkenActive;
 		
 	// Use this for initialization
 	void Start () {
@@ -24,27 +26,28 @@ public class FeiLong : MonoBehaviour {
 		if (!animator.GetBool("shienKyakuActive") && GameObject.Find ("FeiLongFlames(Clone)")){
 			FlameIsGone();
 		}
+		rekkaShinkenActive = animator.GetBool("superActive");
 	}
 	
 	public void FeiLongCloseJab(){
 		if (animator.GetBool("isLiftingOff") == false){
-			AudioSource.PlayClipAtPoint(character.normalAttackSound, transform.position);
+			character.PlayNormalAttackSound();
 			animator.Play ("StandJabClose", 0);
-			character.MoveProperties(20f, 20f, 7.5f, 25f, 2, 0);
+			character.MoveProperties(20f, 20f, 7.5f, 25f, 2, 0, 0);
 		}
 	}
 	public void FeiLongCloseStrong(){
 		if (animator.GetBool("isLiftingOff") == false){
-			AudioSource.PlayClipAtPoint(character.normalAttackSound, transform.position);
+			character.PlayNormalAttackSound();
 			animator.Play ("StandStrongClose", 0);
-			character.MoveProperties(30f, 25f, 10f, 40f, 2, 0);
+			character.MoveProperties(30f, 25f, 10f, 40f, 2, 0, 0);
 		}
 	}
 	public void FeiLongCloseFierce(){
 		if (animator.GetBool("isLiftingOff") == false){
-			AudioSource.PlayClipAtPoint(character.normalAttackSound, transform.position);
+			character.PlayNormalAttackSound();
 			animator.Play ("StandFierceClose", 0);
-			character.MoveProperties(40f, 20f, 10f, 60f, 2, 0);
+			character.MoveProperties(40f, 20f, 10f, 60f, 2, 0, 1);
 		}
 	}
 	
@@ -52,13 +55,13 @@ public class FeiLong : MonoBehaviour {
 		if (animator.GetBool("isLiftingOff") == false){	
 			switch(animator.GetInteger("shienKyakuKickType")){
 				case 0:
-					character.MoveProperties(30f, 20f, 5f, 80f, 2, 3);
+					character.MoveProperties(30f, 20f, 5f, 80f, 2, 3, 2, 5f);
 					break;
 				case 1:
-					character.MoveProperties(40f, 25f, 7.5f, 85f, 2, 3);
+					character.MoveProperties(40f, 25f, 7.5f, 85f, 2, 3, 2, 5f);
 					break;
 				default:
-					character.MoveProperties(60f, 25f, 10f, 90f, 2, 3);
+					character.MoveProperties(60f, 25f, 10f, 90f, 2, 3, 2, 5f);
 					break;
 			}
 		}
@@ -79,7 +82,7 @@ public class FeiLong : MonoBehaviour {
 		Vector3 angle = new Vector3(-90f, 0f, 0f); 
 		flameEffect = Instantiate(feiLongFlame, transform.position, Quaternion.Euler(angle)) as GameObject;
 		flameEffect.transform.parent = gameObject.transform;
-		AudioSource.PlayClipAtPoint(character.normalAttackSound,transform.position);
+		character.PlayNormalAttackSound();
 	}
 	
 	
@@ -87,13 +90,13 @@ public class FeiLong : MonoBehaviour {
 		if (animator.GetBool("isLiftingOff") == false){	
 			switch(animator.GetInteger("rekkaKunKickType")){
 				case 0:
-					character.MoveProperties(40f, 20f, 10f, 30f, 2, 4);
+					character.MoveProperties(50f, 20f, 10f, 30f, 2, 4, 1);
 					break;
 				case 1:
-					character.MoveProperties(40f, 25f, 10f, 32f, 2, 4);
+					character.MoveProperties(50f, 25f, 10f, 32f, 2, 4, 1);
 					break;
 				default:
-					character.MoveProperties(40f, 25f, 10f, 35f, 2, 4);
+					character.MoveProperties(50f, 25f, 10f, 35f, 2, 4, 1);
 					break;
 			}
 		}
@@ -111,26 +114,26 @@ public class FeiLong : MonoBehaviour {
 				FeiLongTakeOffVelocity (3.5f, 3f);
 				break;
 		}
-		AudioSource.PlayClipAtPoint(character.normalAttackSound,transform.position);
+		character.PlayNormalAttackSound();
 	}
 	
 	public void FeiLongRekkaKen(){
 		if (animator.GetBool("isLiftingOff") == false){	
 			switch(animator.GetInteger("rekkaPunchType")){
 				case 0:
-					character.MoveProperties(40f, 30f, 15f, 20f, 2, 5);
+					character.MoveProperties(40f, 30f, 15f, 20f, 2, 5, 1, 4f);
 					FeiLongTakeOffVelocity(2f, 0f);
 					break;
 				case 1:
-					character.MoveProperties(40f, 30f, 15f, 25f, 2, 5);
+					character.MoveProperties(40f, 30f, 15f, 25f, 2, 5, 1, 4f);
 					FeiLongTakeOffVelocity(2.5f, 0f);
 					break;
 				default:
-					character.MoveProperties(40f, 30f, 15f, 30f, 2, 5);
+					character.MoveProperties(40f, 30f, 15f, 30f, 2, 5, 1, 4f);
 					FeiLongTakeOffVelocity(3f, 0f);
 					break;
 			}
-			AudioSource.PlayClipAtPoint(character.normalAttackSound,transform.position);
+			character.PlayNormalAttackSound();
 		}
 	}	
 	
@@ -138,22 +141,59 @@ public class FeiLong : MonoBehaviour {
 		if (animator.GetBool("isLiftingOff") == false){	
 			switch(animator.GetInteger("rekkaPunchType")){
 			 	case 0:
-					character.MoveProperties(40f, 20f, 15f, 35f, 2, 2);
+					character.MoveProperties(40f, 20f, 15f, 35f, 2, 2, 2, 4.5f);
 					FeiLongTakeOffVelocity(2.5f, 0f);
 					break;
 				case 1:
-					character.MoveProperties(50f, 22.5f, 20f, 40f, 2, 2);
+					character.MoveProperties(50f, 22.5f, 20f, 40f, 2, 2, 2, 4.5f);
 					FeiLongTakeOffVelocity(3.5f, 0f);
 					break;
 				default:
-					character.MoveProperties(60f, 25f, 20f, 50f, 2, 2);
+					character.MoveProperties(60f, 25f, 20f, 50f, 2, 2, 2, 4.5f);
 					FeiLongTakeOffVelocity(4f, 0f);
 					break;
 			}
-			AudioSource.PlayClipAtPoint(character.normalAttackSound,transform.position);
+			character.PlayNormalAttackSound();
 		}
 	}	
-
+	
+	public void FeiLongRekkaShinken(int whichPunch){
+		if (animator.GetBool("isLiftingOff") == false){	
+			GetComponentInChildren<SpriteRenderer>().sortingLayerName = "Characters";
+			character.MoveProperties(40f, 40f, 15f, 50f, 2, 5, 1, 0f);
+			character.ResetHasntHit();
+			FeiLongTakeOffVelocity(3f, 0f);
+			switch(whichPunch){
+				case 0:				
+					AudioSource.PlayClipAtPoint(rekkaFirstSound,transform.position);	
+					break;		
+				
+				case 1:
+					AudioSource.PlayClipAtPoint(rekkaSecondSound,transform.position);			
+					break;
+					
+				case 2:	
+					AudioSource.PlayClipAtPoint(rekkaShinkenThirdSound,transform.position);			
+					break;
+					
+				default:
+					AudioSource.PlayClipAtPoint(rekkaShinkenFourthSound,transform.position);			
+					break;
+			}
+			character.PlayNormalAttackSound();			
+		}
+	}	
+	
+	public void FeiLongRekkaShinkenFinal(){
+		if (animator.GetBool("isLiftingOff") == false){	
+			character.MoveProperties(60f, 25f, 20f, 100f, 2, 2, 2, 0f);
+			character.ResetHasntHit();
+			FeiLongTakeOffVelocity(4f, 0f);
+			AudioSource.PlayClipAtPoint(rekkaShinkenFifthSound,transform.position);	
+			character.PlayNormalAttackSound();
+		}
+	}	
+	
 	void FeiLongTakeOffVelocity (float x, float y){
 		if (character.transform.localScale.x == 1) {
 			physicsbody.velocity = new Vector2 (x, y);
@@ -184,7 +224,7 @@ public class FeiLong : MonoBehaviour {
 	}
 	
 	public void PlayFlamesSound(){
-		AudioSource.PlayClipAtPoint(character.flameSound, transform.position);
+		AudioSource.PlayClipAtPoint(flameSound, transform.position);
 	}
 	
 	public void PlayVictorySound(){
@@ -236,4 +276,8 @@ public class FeiLong : MonoBehaviour {
 	public void FlameIsGone(){
 		Destroy(flameEffect);
 	}
+	
+	public bool GetRekkaShinkenActive(){
+		return rekkaShinkenActive;
+	}	
 }

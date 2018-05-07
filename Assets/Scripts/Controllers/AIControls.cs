@@ -14,12 +14,6 @@ public class AIControls : MonoBehaviour {
 	// Use this for initialization
 	
 	void Start () {
-		if (GetComponent<Opponent>() != null){
-			opponent = GetComponent<Opponent>();
-		}
-		else if (GetComponent<Player>() != null){
-			player = GetComponent<Player>();
-		}
 		animator = GetComponentInChildren<Animator>();
 		character = GetComponentInChildren<Character>();	
 		sharedProperties = GetComponent<SharedProperties>();	
@@ -29,10 +23,7 @@ public class AIControls : MonoBehaviour {
 	}
 	
 	public void AIThrow(){
-		if (animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false 
-		    && animator.GetBool("isLiftingOff") == false && animator.GetBool("isAirborne") == false 
-		    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isAttacking") == false
-		    && animator.GetBool("isMidAirRecovering") == false && animator.GetBool("isThrown") == false){	
+		if (GetConditions()){					
 			AIStand();
 			character.SetBackPressed(false);
 			character.AttackState();
@@ -42,10 +33,7 @@ public class AIControls : MonoBehaviour {
 	
 	public void AIJab(int maxNum){
 		int crouchOrStand = Random.Range(0, maxNum);
-		if (animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false 
-		    && animator.GetBool("isLiftingOff") == false && animator.GetBool("isAirborne") == false 
-		    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isAttacking") == false
-		    && animator.GetBool("isMidAirRecovering") == false && animator.GetBool("isThrown") == false){					
+		if (GetConditions()){					
 			character.AttackState();
 			if (crouchOrStand == 0){
 				AIStand();
@@ -68,12 +56,9 @@ public class AIControls : MonoBehaviour {
 		}
 	}
 	
-	public void AIShort(){
-		int crouchOrStand = Random.Range(0, 2);
-		if (animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false 
-		    && animator.GetBool("isLiftingOff") == false && animator.GetBool("isAirborne") == false 
-		    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isAttacking") == false
-		    && animator.GetBool("isMidAirRecovering") == false && animator.GetBool("isThrown") == false){			
+	public void AIShort(int maxNum){
+		int crouchOrStand = Random.Range(0, maxNum);
+		if (GetConditions()){			
 			character.AttackState();
 			if (crouchOrStand == 0){
 				AIStand();
@@ -88,10 +73,7 @@ public class AIControls : MonoBehaviour {
 	
 	public void AIStrong(int maxNum){
 		int crouchOrStand = Random.Range(0, maxNum);
-		if (animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false 
-		    && animator.GetBool("isLiftingOff") == false && animator.GetBool("isAirborne") == false 
-		    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isAttacking") == false
-		    && animator.GetBool("isMidAirRecovering") == false && animator.GetBool("isThrown") == false){			
+		if (GetConditions()){			
 			character.AttackState();
 			if (crouchOrStand == 0){
 				AIStand();
@@ -116,10 +98,7 @@ public class AIControls : MonoBehaviour {
 	
 	public void AIForward(int maxNum){
 		int crouchOrStand = Random.Range(0, maxNum);
-		if (animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false 
-		    && animator.GetBool("isLiftingOff") == false && animator.GetBool("isAirborne") == false 
-		    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isAttacking") == false
-		    && animator.GetBool("isMidAirRecovering") == false && animator.GetBool("isThrown") == false){			
+		if (GetConditions()){			
 			character.AttackState();
 			if (crouchOrStand == 0){
 				AIStand();
@@ -134,10 +113,7 @@ public class AIControls : MonoBehaviour {
 	
 	public void AIFierce(int maxNum, int standNum){
 		int crouchOrStand = Random.Range(0, maxNum);
-		if (animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false 
-		    && animator.GetBool("isLiftingOff") == false && animator.GetBool("isAirborne") == false 
-		    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isAttacking") == false
-		    && animator.GetBool("isMidAirRecovering") == false && animator.GetBool("isThrown") == false){					
+		if (GetConditions()){					
 			character.AttackState();
 			if (crouchOrStand <= standNum){
 				AIStand();
@@ -161,30 +137,21 @@ public class AIControls : MonoBehaviour {
 	}
 	
 	public void AIJumpFierce(){
-		if (animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false 
-		    && animator.GetBool("isLiftingOff") == false && animator.GetBool("isThrown") == false
-		    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isAttacking") == false
-		    && animator.GetBool("isMidAirRecovering") == false && animator.GetBool("isAirborne") == true){					
+		if (GetConditionsAirborneAttack()) {					
 			character.AttackState();
 			character.CharacterFierce();
 		}
 	}
 	
 	public void AIJumpRoundhouse(){
-		if (animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false 
-		    && animator.GetBool("isLiftingOff") == false && animator.GetBool("isThrown") == false
-		    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isAttacking") == false
-		    && animator.GetBool("isMidAirRecovering") == false && animator.GetBool("isAirborne") == true){					
+		if (GetConditionsAirborneAttack()){					
 			character.AttackState();
 			character.CharacterRoundhouse();
 		}
 	}
 	
 	public void AILowForward(){
-		if (animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false 
-		    && animator.GetBool("isLiftingOff") == false && animator.GetBool("isAirborne") == false 
-		    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isAttacking") == false
-		    && animator.GetBool("isMidAirRecovering") == false && animator.GetBool("isThrown") == false){	
+		if (GetConditions()){	
 			character.AttackState();
 			AICrouch();
 			character.CharacterForward();
@@ -193,10 +160,7 @@ public class AIControls : MonoBehaviour {
 	}
 	
 	public void AISweep(){
-		if (animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false 
-		    && animator.GetBool("isLiftingOff") == false && animator.GetBool("isAirborne") == false 
-		    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isAttacking") == false
-		    && animator.GetBool("isMidAirRecovering") == false && animator.GetBool("isThrown") == false){	
+		if (GetConditions()){	
 			character.AttackState();
 			AICrouch();
 			character.CharacterRoundhouse();
@@ -205,18 +169,9 @@ public class AIControls : MonoBehaviour {
 	}
 	
 	public void AIJump(){		
-		if (animator.GetBool("isAttacking") == false && animator.GetBool("isInHitStun") == false
-		    && animator.GetBool("isInBlockStun") == false && animator.GetBool("isLiftingOff") == false
-		    && animator.GetBool("isStanding") == true && animator.GetBool("isAirborne") == false
-		    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isMidAirRecovering") == false
-		    && animator.GetBool("isThrown") == false){
+		if (GetConditions () && animator.GetBool("isStanding") == true){		    
 			AIStand();
-			if (player != null){
-				character.CharacterJump(player.GetForwardPressed, player.GetBackPressed);
-			}
-			else{
-				character.CharacterJump(opponent.GetForwardPressed, opponent.GetBackPressed);
-			}			
+			character.CharacterJump(sharedProperties.GetForwardPressed, sharedProperties.GetBackPressed);
 			animator.SetBool ("isStanding",false);
 			animator.SetBool ("isLiftingOff",true);
 		}
@@ -232,59 +187,81 @@ public class AIControls : MonoBehaviour {
 		}
 	}
 	
+	
+	public void AIWalks(){
+		if (GetConditions() && animator.GetBool("isStanding") == true && animator.GetBool("isCrouching") == false){
+			if (sharedProperties.GetForwardPressed == true && animator.GetBool("isWalkingBackward") == false){
+				animator.SetBool("isWalkingForward", true);	
+				
+				if (character.side == Character.Side.P1){
+					character.transform.Translate(Vector3.right * character.GetWalkSpeed() * Time.deltaTime);	
+				}
+				else{
+					character.transform.Translate(Vector3.left * character.GetWalkSpeed() * Time.deltaTime);	
+				}
+			}
+			else if (sharedProperties.GetBackPressed == true && animator.GetBool("isWalkingForward") == false){
+				animator.SetBool("isWalkingBackward", true);				
+				if (character.side == Character.Side.P2){
+					character.transform.Translate(Vector3.right * character.GetWalkSpeed() * Time.deltaTime);	
+				}
+				else{
+					character.transform.Translate(Vector3.left * character.GetWalkSpeed() * Time.deltaTime);	
+				}
+			}	
+		}
+		if (sharedProperties.GetForwardPressed == false){
+			animator.SetBool("isWalkingForward", false);	
+		}
+		if (sharedProperties.GetBackPressed == false){	
+			animator.SetBool("isWalkingBackward", false);	
+		}
+	}
+	
 	public void AIStand(){
 		animator.SetBool("isStanding", true);
 		animator.SetBool("isCrouching", false);
-		if (player != null){
-			player.GetDownPressed = false;
-		}
-		else{
-			opponent.GetDownPressed = false;
-		}
+		sharedProperties.GetDownPressed = false;
 	}	
 	
 	public void AICrouch(){
 		animator.SetBool("isStanding", false);
 		animator.SetBool("isCrouching", true);
-		if (player != null){
-			player.GetDownPressed = true;
-		}
-		else{
-			opponent.GetDownPressed = true;
-		}
+		sharedProperties.GetDownPressed = true;
 	}
 	
 	public void AIPressedForward(){
-		if (player != null){
-			player.GetForwardPressed = true;
-			player.GetBackPressed = false;
-		}
-		else{			
-			opponent.GetForwardPressed = true;
-			opponent.GetBackPressed = false;
-		}
+		sharedProperties.GetForwardPressed = true;
+		sharedProperties.GetBackPressed = false;
 	}
 	
 	public void AIPressedBackward(){
-		if (player != null){
-			player.GetBackPressed = true;
-			player.GetForwardPressed = false;
-		}
-		else{			
-			opponent.GetBackPressed = true;
-			opponent.GetForwardPressed = false;
-		}
+		sharedProperties.GetBackPressed = true;
+		sharedProperties.GetForwardPressed = false;
 	}	
 	
 	public void AICharges(){
-		if (player != null){
-			player.GetForwardPressed = false;
-			player.GetBackPressed = true;
-		}
-		else{			
-			opponent.GetForwardPressed = false;
-			opponent.GetBackPressed = true;
-		}
+		sharedProperties.GetForwardPressed = false;
+		sharedProperties.GetBackPressed = true;
+	}	
+	
+	public bool FreeToMakeDecisions (){
+		return 	animator.GetBool("isLiftingOff") == false && animator.GetBool("isKnockedDown") == false 
+				&& animator.GetBool("isThrown") == false && animator.GetBool("isMidAirHit") == false
+				&& animator.GetBool("isMidAirRecovering") == false && animator.GetBool("isInHitStun") == false
+				&& animator.GetBool("isInBlockStun") == false && animator.GetBool("isLanding") == false;				
+	}										
+	
+	public bool GetConditionsSpecialAttack (){
+		return 	FreeToMakeDecisions() && animator.GetBool ("isAirborne") == false; 
+	}
+
+	public bool GetConditionsAirborneAttack (){
+		return 	FreeToMakeDecisions() && animator.GetBool ("isAttacking") == false && animator.GetBool ("isAirborne") == true;
+	}
+	
+	public bool GetConditions (){		
+		return 	FreeToMakeDecisions() && animator.GetBool ("isAttacking") == false && animator.GetBool ("isAirborne") == false;
 	}
 	
 }

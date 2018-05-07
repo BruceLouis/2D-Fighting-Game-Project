@@ -1,16 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
-//will implement a delegate later
 public class Player : MonoBehaviour {
+	
+	delegate void AttackStrength();
+	delegate void FeiLongClosePunch();
+	AttackStrength attackStrength;
+	FeiLongClosePunch feiLongPunch;
 	
 	public GameObject mugShotObject;
 	public GameObject[] streetFighterCharacters;
 	public Text nameText;
-	public bool isAI;
-	public Sprite kenMugShot, feiLongMugShot, balrogMugShot;
+	public bool isAI, doInitiateCharacter;
+	public Sprite kenMugShot, feiLongMugShot, balrogMugShot, akumaMugShot;
 	
 	private TimeControl timeControl;
 	private Animator animator;
@@ -23,6 +28,7 @@ public class Player : MonoBehaviour {
 	private ComboSystem comboSystem;
 	private ChargeSystem chargeSystem;
 	private HealthBarP1 healthBar;
+	private SuperBarP1 superBar;
 	private Image mugShot;
 	private CharacterChoice characterChoice;
 	private GameObject projectileP1Parent;
@@ -32,13 +38,17 @@ public class Player : MonoBehaviour {
 	private KenAI kenAI;
 	private FeiLongAI feiLongAI;
 	private BalrogAI balrogAI;
+	private AkumaAI akumaAI;
 	
 	private bool pressedForward, pressedBackward, pressedCrouch, pressedUp, introPlayed;
 	private float distance, distanceFromOpponent;	
+	private string characterName;
 	
 	void Awake () {
 		
-		//InitiateCharacter();
+		if (doInitiateCharacter){
+			InitiateCharacter();
+		}
 				
 		gameObject.layer = LayerMask.NameToLayer("Player1");
 		gameObject.tag = "Player1";
@@ -63,23 +73,33 @@ public class Player : MonoBehaviour {
 		chargeSystem = GetComponent<ChargeSystem>();
 		character.side = Character.Side.P1;			
 		healthBar = FindObjectOfType<HealthBarP1>();	
+		superBar = FindObjectOfType<SuperBarP1>();	
 		
 		if (character.GetComponent<FeiLong>() != null){
 			feiLong = GetComponentInChildren<FeiLong>();
 			feiLongAI = GetComponentInChildren<FeiLongAI>();
 			mugShot.sprite = feiLongMugShot;
-			nameText.text = "Fei Long";
+			characterName = "Fei Long";
+			nameText.text = characterName;
 		}
 		else if (character.GetComponent<Ken>() != null){
 			kenAI = GetComponentInChildren<KenAI>();
 			mugShot.sprite = kenMugShot;
-			nameText.text = "Ken";
+			characterName = "Ken";
+			nameText.text = characterName;
 		}
 		else if (character.GetComponent<Balrog>() != null){
 			balrog = GetComponentInChildren<Balrog>();
 			balrogAI = GetComponentInChildren<BalrogAI>();
 			mugShot.sprite = balrogMugShot;
-			nameText.text = "Balrog";
+			characterName = "Balrog";
+			nameText.text = characterName;
+		}
+		else if (character.GetComponent<Akuma>() != null){
+			akumaAI = GetComponentInChildren<AkumaAI>();
+			mugShot.sprite = akumaMugShot;
+			characterName = "Akuma";
+			nameText.text = characterName;
 		}
 		
 		projectileP1Parent = GameObject.Find("ProjectileP1Parent");
@@ -103,8 +123,8 @@ public class Player : MonoBehaviour {
 			sharedProperties.IsThrown(animator, opponentCharacter, character);	
 			DetermineSide();	
 			if (!isAI){					
-				character.SetBackPressed(pressedBackward);
-				PlayerControls();		
+				character.SetBackPressed(sharedProperties.GetBackPressed);
+				PlayerControls();				
 			}
 			else{				
 				if (character.GetComponent<Ken>() != null){
@@ -116,10 +136,19 @@ public class Player : MonoBehaviour {
 				else if (character.GetComponent<Balrog>() != null){
 					balrogAI.Behaviors();
 				}
+				else if (character.GetComponent<Akuma>() != null){
+					akumaAI.Behaviors();
+				}
 			}
 		}
 		else{	
-			sharedProperties.KOSequence("You Win");
+			if (SceneManager.GetActiveScene().name == "Game"){
+				sharedProperties.KOSequence("You Win");
+			}
+			else{
+				sharedProperties.KOSequence(characterName + " Wins");
+			}
+				
 		}
 		if (character.GetHealth() <= 0){
 			animator.SetBool("isKOed", true);
@@ -131,6 +160,7 @@ public class Player : MonoBehaviour {
 			comboCounter.GetComboCountP2 = 1;
 		}
 		healthBar.SetHealth(character.GetHealth());	
+		superBar.SetSuper(character.GetSuper);	
 	}
 
 	void PlayerControls (){
@@ -139,7 +169,8 @@ public class Player : MonoBehaviour {
 		WalkInput ();
 		WalkNoMoreInput ();
 		if (animator.GetBool ("isKnockedDown") == false && animator.GetBool ("isThrown") == false && animator.GetBool ("isMidAirRecovering") == false
-			&& animator.GetBool ("isInHitStun") == false && animator.GetBool ("isInBlockStun") == false && animator.GetBool ("isLiftingOff") == false) {
+			&& animator.GetBool ("isInHitStun") == false && animator.GetBool ("isInBlockStun") == false && animator.GetBool ("isLiftingOff") == false
+			&& animator.GetBool ("isLanding") == false) {
 			AttacksInput ();
 			if (animator.GetBool ("isStanding") == true && animator.GetBool ("isAirborne") == false && animator.GetBool ("isAttacking") == false) {
 				WalkPlayer ();
@@ -179,7 +210,7 @@ public class Player : MonoBehaviour {
 		if (animator.GetBool ("isAirborne") == false && animator.GetBool ("isThrown") == false
 		    && animator.GetBool ("throwTargetAcquired") == false && animator.GetBool ("isLiftingOff") == false) {
 			//crouch
-			if (pressedCrouch) {
+			if (sharedProperties.GetDownPressed) {
 				animator.SetBool ("isStanding", false);
 				animator.SetBool ("isCrouching", true);
 			}
@@ -190,10 +221,10 @@ public class Player : MonoBehaviour {
 			}
 		}
 		if (Input.GetKey (KeyCode.DownArrow)) {
-			pressedCrouch = true;
+			sharedProperties.GetDownPressed = true;
 		}
 		if (Input.GetKeyUp (KeyCode.DownArrow)){
-			pressedCrouch = false;
+			sharedProperties.GetDownPressed = false;
 		}
 	}
 	
@@ -207,11 +238,10 @@ public class Player : MonoBehaviour {
 	}
 
 	void CharacterJumping (){
-		character.CharacterJump (pressedForward, pressedBackward);
+		character.CharacterJump (sharedProperties.GetForwardPressed, sharedProperties.GetBackPressed);
 		animator.SetBool ("isStanding", false);
 		animator.SetBool ("isLiftingOff", true);
 	}
-
 	
 	void DetermineSide (){
 		distance = opponentCharacter.transform.position.x - character.transform.position.x;
@@ -226,14 +256,16 @@ public class Player : MonoBehaviour {
 			if (distance < 0 && character.side == Character.Side.P1){			
 				character.side = Character.Side.P2;
 				sharedProperties.CharacterNeutralState();
+				comboSystem.ResetAllSequences();
 			}
 			else if (distance >= 0 && character.side == Character.Side.P2){
 				character.side = Character.Side.P1;
 				sharedProperties.CharacterNeutralState();
+				comboSystem.ResetAllSequences();
 			}
 			//only after character is not in these states will the sprite actually switch sides
 			//only distinction here is extra booleans of both walks being false if AI is true so animation would play properly
-			if (animator.GetBool ("isAirborne") == false && animator.GetBool ("isThrown") == false
+			if (animator.GetBool ("isAirborne") == false && animator.GetBool ("isThrown") == false && animator.GetBool ("isLanding") == false
 			    && animator.GetBool ("throwTargetAcquired") == false && animator.GetBool ("isLiftingOff") == false && animator.GetBool("isAttacking") == false				    
 			    && animator.GetBool ("isInHitStun") == false && animator.GetBool ("isInBlockStun") == false && animator.GetBool("isKnockedDown") == false) {
 				
@@ -253,7 +285,7 @@ public class Player : MonoBehaviour {
 			}
 			if (animator.GetBool ("isAirborne") == false && animator.GetBool ("isThrown") == false && animator.GetBool ("isWalkingForward") == false 
 			    && animator.GetBool ("throwTargetAcquired") == false && animator.GetBool ("isLiftingOff") == false && animator.GetBool ("isWalkingBackward") == false				    
-			    && animator.GetBool ("isInHitStun") == false && animator.GetBool ("isInBlockStun") == false && animator.GetBool("isKnockedDown") == false) {
+			    && animator.GetBool ("isInHitStun") == false && animator.GetBool ("isInBlockStun") == false && animator.GetBool("isKnockedDown") == false && animator.GetBool ("isLanding") == false) {
 				
 				character.SideSwitch();
 			}
@@ -263,39 +295,39 @@ public class Player : MonoBehaviour {
 	void WalkInput(){
 		if (Input.GetKey(KeyCode.RightArrow)){
 			if (character.side == Character.Side.P1){
-				pressedForward = true;
+				sharedProperties.GetForwardPressed = true;
 			}
 			else{
-				pressedBackward = true;
+				sharedProperties.GetBackPressed = true;				
 			}
 		}
 		if (Input.GetKey(KeyCode.LeftArrow)){
 			if (character.side == Character.Side.P2){
-				pressedForward = true;
+				sharedProperties.GetForwardPressed = true;
 			}
 			else{
-				pressedBackward = true;
+				sharedProperties.GetBackPressed = true;
 			}
 		}
 	}
 		
 	void WalkPlayer(){					
-		if (pressedForward == true && animator.GetBool("isWalkingBackward") == false){
+		if (sharedProperties.GetForwardPressed == true && animator.GetBool("isWalkingBackward") == false){
 			animator.SetBool("isWalkingForward", true);	
 			if (character.side == Character.Side.P1){
-				character.transform.Translate(Vector3.right * character.walkSpeed * Time.deltaTime);	
+				character.transform.Translate(Vector3.right * character.GetWalkSpeed() * Time.deltaTime);	
 			}
 			else{
-				character.transform.Translate(Vector3.left * character.walkSpeed * Time.deltaTime);	
+				character.transform.Translate(Vector3.left * character.GetWalkSpeed() * Time.deltaTime);	
 			}
 		}
-		else if (pressedBackward == true && animator.GetBool("isWalkingForward") == false){
+		else if (sharedProperties.GetBackPressed == true && animator.GetBool("isWalkingForward") == false){
 			animator.SetBool("isWalkingBackward", true);					
 			if (character.side == Character.Side.P2){
-				character.transform.Translate(Vector3.right * character.walkSpeed * Time.deltaTime);	
+				character.transform.Translate(Vector3.right * character.GetWalkSpeed() * Time.deltaTime);	
 			}
 			else{
-				character.transform.Translate(Vector3.left * character.walkSpeed * Time.deltaTime);	
+				character.transform.Translate(Vector3.left * character.GetWalkSpeed() * Time.deltaTime);	
 			}
 		}	
 	}
@@ -303,383 +335,74 @@ public class Player : MonoBehaviour {
 	void WalkNoMoreInput(){			
 		if (Input.GetKeyUp(KeyCode.RightArrow)){
 			if (character.side == Character.Side.P1){
-				pressedForward = false;
+				sharedProperties.GetForwardPressed = false;
 				animator.SetBool("isWalkingForward", false);	
 			}
 			else{
-				pressedBackward = false;
+				sharedProperties.GetBackPressed = false;
 				animator.SetBool("isWalkingBackward", false);	
 			}
 			
 		}	
 		if (Input.GetKeyUp(KeyCode.LeftArrow)){
 			if (character.side == Character.Side.P2){
-				pressedForward = false;
+				sharedProperties.GetForwardPressed = false;
 				animator.SetBool("isWalkingForward", false);	
 			}
 			else{
-				pressedBackward = false;
+				sharedProperties.GetBackPressed = false;
 				animator.SetBool("isWalkingBackward", false);	
 			}
 		}
 	}
 	
 	void AttacksInput(){		
-		
 		if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.Z)){
 			if (animator.GetBool("isAttacking") == false && animator.GetBool("isAirborne") == false){
 				character.AttackState();
 				animator.Play("ThrowStartup");
 			}				
 		}
+		else if (CheckShunGokuSatsuSequence() && character.GetComponent<Akuma>() != null && animator.GetBool("isAirborne") == false && character.GetSuper >= 100f){
+			Debug.Log("shun goku satsu inputed");		
+			character.AttackState ();
+			animator.Play ("AkumaShunGokuSatsuStartup", 0);
+			character.GetSuper = 0f;
+			comboSystem.ResetShunGokuSatsuSequence();
+		}
 		else{
-			if (Input.GetKeyDown(KeyCode.A)){				
-				if (character.GetComponent<Ken>() != null){
-					if (CheckHadoukenSequence() && animator.GetBool("isAirborne") == false 
-						&& projectileP1Parent.transform.childCount <= 0){
-						ShotoCompletesHadouken("Ken", 0);
-					}
-					else if (CheckShoryukenSequence() && animator.GetBool("isAirborne") == false){
-						ShotoCompletesShoryuken("Ken", "Jab", 0);
-					}
-					else if (animator.GetBool("isAttacking") == false){					
-						character.AttackState();
-						character.CharacterJab();
-					}
+			if (Input.GetKeyDown(KeyCode.A)){	
+				attackStrength = character.CharacterJab;
+				if (character.GetComponent<FeiLong>() != null){
+					feiLongPunch = feiLong.FeiLongCloseJab;
 				}
-				else if (character.GetComponent<FeiLong>() != null){
-					if (CheckHadoukenSequence() && animator.GetBool("isAirborne") == false){
-						FeiLongCompletesRekka(0);
-					}
-					else if (animator.GetBool("isAttacking") == false){	
-						if (Mathf.Abs(distance) < 0.75f && animator.GetBool("isStanding") == true){
-							feiLong.FeiLongCloseJab();
-						}
-						else{							
-							character.CharacterJab();
-						}
-						character.AttackState();
-					}
-				}		
-				else if (character.GetComponent<Balrog>() != null){
-					if (chargeSystem.GetBackCharged() && !pressedBackward && animator.GetBool("isAirborne") == false){
-						BalrogCompletesDashRushes("Jab", 0);
-					}
-					else if (chargeSystem.GetDownCharged() && !pressedCrouch 
-						&& animator.GetBool("isAirborne") == false && pressedUp){
-						BalrogCompletesHeadButt("Jab", 0);
-							
-					}
-					else if (animator.GetBool("isAttacking") == false){	
-						character.CharacterJab();
-						character.AttackState();
-					}
-				}		
-				else if (character.GetComponent<Akuma>() != null){
-					if (CheckHadoukenSequence() && projectileP1Parent.transform.childCount <= 0){
-						if (animator.GetBool("isAirborne") == true){
-							AkumaCompletesAirHadouken(0);
-						}
-						else{
-							ShotoCompletesHadouken("Akuma", 0);
-						}
-					}
-					else if (CheckShoryukenSequence() && animator.GetBool("isAirborne") == false){
-						ShotoCompletesShoryuken("Akuma", "Jab", 0);
-					}
-					else if (animator.GetBool("hyakkishuActive") == true){
-						animator.SetInteger("hyakkishuAttackType", 1);
-					}
-					else if (animator.GetBool("isAttacking") == false){	
-						character.CharacterJab();
-						character.AttackState();
-					}
-				}
+				PunchCommands (attackStrength, feiLongPunch, 0, "Jab");
 			}		
-			if (Input.GetKeyDown(KeyCode.S)){
-				
-				if (character.GetComponent<Ken>() != null){
-					if (CheckHadoukenSequence() && animator.GetBool("isAirborne") == false
-					    && projectileP1Parent.transform.childCount <= 0){
-						ShotoCompletesHadouken("Ken", 1);
-					}
-					else if (CheckShoryukenSequence() && animator.GetBool("isAirborne") == false){
-						ShotoCompletesShoryuken("Ken", "Strong", 1);
-					}	
-					else if (animator.GetBool("isAttacking") == false){					
-						character.AttackState();
-						character.CharacterStrong();
-					}
+			if (Input.GetKeyDown(KeyCode.S)){				
+				attackStrength = character.CharacterStrong;
+				if (character.GetComponent<FeiLong>() != null){
+					feiLongPunch = feiLong.FeiLongCloseStrong;
 				}
-				else if (character.GetComponent<FeiLong>() != null){
-					if (CheckHadoukenSequence() && animator.GetBool("isAirborne") == false){
-						FeiLongCompletesRekka(1);
-					}
-					else if (animator.GetBool("isAttacking") == false){	
-						if (Mathf.Abs(distance) < 0.75f && animator.GetBool("isStanding") == true){
-							feiLong.FeiLongCloseStrong();
-						}
-						else{							
-							character.CharacterStrong();
-						}
-						character.AttackState();
-					}
-				}	
-				else if (character.GetComponent<Balrog>() != null){
-					if (chargeSystem.GetBackCharged() && !pressedBackward && animator.GetBool("isAirborne") == false){
-						BalrogCompletesDashRushes("Strong", 1);
-					}
-					else if (chargeSystem.GetDownCharged() && !pressedCrouch 
-						&& animator.GetBool("isAirborne") == false && pressedUp){
-						BalrogCompletesHeadButt("Strong", 1);						
-					}
-					else if (animator.GetBool("isAttacking") == false){	
-						character.CharacterStrong();
-						character.AttackState();
-					}
-				}	
-				else if (character.GetComponent<Akuma>() != null){
-					if (CheckHadoukenSequence() && projectileP1Parent.transform.childCount <= 0){
-						if (animator.GetBool("isAirborne") == true){
-							AkumaCompletesAirHadouken(1);
-						}
-						else{
-							ShotoCompletesHadouken("Akuma", 1);
-						}
-					}
-					else if (CheckShoryukenSequence() && animator.GetBool("isAirborne") == false){
-						ShotoCompletesShoryuken("Akuma", "Strong", 1);
-					}
-					else if (animator.GetBool("hyakkishuActive") == true){
-						animator.SetInteger("hyakkishuAttackType", 1);
-					}
-					else if (animator.GetBool("isAttacking") == false){	
-						character.CharacterStrong();
-						character.AttackState();
-					}
-				}
+				PunchCommands (attackStrength, feiLongPunch, 1, "Strong");
 			}			
-			if (Input.GetKeyDown(KeyCode.D)){
-				
-				if (character.GetComponent<Ken>() != null){
-					if (CheckHadoukenSequence() && animator.GetBool("isAirborne") == false
-					    && projectileP1Parent.transform.childCount <= 0){
-						ShotoCompletesHadouken("Ken", 2);
-					}
-					else if (CheckShoryukenSequence() && animator.GetBool("isAirborne") == false){
-						ShotoCompletesShoryuken("Ken", "Fierce", 2);
-					}	
-					else if (animator.GetBool("isAttacking") == false){					
-						character.AttackState();
-						character.CharacterFierce();
-					}
+			if (Input.GetKeyDown(KeyCode.D)){				
+				attackStrength = character.CharacterFierce;
+				if (character.GetComponent<FeiLong>() != null){
+					feiLongPunch = feiLong.FeiLongCloseFierce;
 				}
-				else if (character.GetComponent<FeiLong>() != null){
-					if (CheckHadoukenSequence() && animator.GetBool("isAirborne") == false){
-						FeiLongCompletesRekka(2);
-					}
-					else if (animator.GetBool("isAttacking") == false){	
-						if (Mathf.Abs(distance) < 0.75f && animator.GetBool("isStanding") == true){
-							feiLong.FeiLongCloseFierce();
-						}
-						else{							
-							character.CharacterFierce();
-						}
-						character.AttackState();
-					}
-				}	
-				else if (character.GetComponent<Balrog>() != null){
-					if (chargeSystem.GetBackCharged() && !pressedBackward && animator.GetBool("isAirborne") == false){
-						BalrogCompletesDashRushes("Fierce", 2);
-					}
-					else if (chargeSystem.GetDownCharged() && !pressedCrouch 
-						&& animator.GetBool("isAirborne") == false && pressedUp){						
-						BalrogCompletesHeadButt("Fierce", 2);						
-					}
-					else if (animator.GetBool("isAttacking") == false){	
-						character.CharacterFierce();
-						character.AttackState();
-					}
-				}		
-				else if (character.GetComponent<Akuma>() != null){
-					if (CheckHadoukenSequence() && projectileP1Parent.transform.childCount <= 0){
-						if (animator.GetBool("isAirborne") == true){
-							AkumaCompletesAirHadouken(2);
-						}
-						else{
-							ShotoCompletesHadouken("Akuma", 2);
-						}
-					}
-					else if (CheckShoryukenSequence() && animator.GetBool("isAirborne") == false){
-						ShotoCompletesShoryuken("Akuma", "Fierce", 2);
-					}
-					else if (animator.GetBool("hyakkishuActive") == true){
-						animator.SetInteger("hyakkishuAttackType", 1);
-					}
-					else if (CheckShunGokuSatsuSequence() && animator.GetBool("isAirborne") == false){
-						Debug.Log ("shun goku satsu inputed");
-					} 
-					else if (animator.GetBool("isAttacking") == false){	
-						character.CharacterFierce();
-						character.AttackState();
-					}
-				}
+				PunchCommands (attackStrength, feiLongPunch, 2, "Fierce");
 			}
-			if (Input.GetKeyDown(KeyCode.Z)){	
-			
-				if (character.GetComponent<Ken>() != null){				
-					if (CheckHurricaneKickSequence() && animator.GetBool("isAirborne") == false){
-						ShotoCompletesHurricaneKick("Ken", 0);
-					}
-					else if (CheckHadoukenSequence() && animator.GetBool("isAirborne") == false){
-						KenCompletesRoll(0);
-					}
-					else if (animator.GetBool("isAttacking") == false){
-						character.AttackState();
-						character.CharacterShort();
-					}
-				}
-				else if (character.GetComponent<FeiLong>() != null){
-					if (CheckReverseShoryukenSequence() && animator.GetBool("isAirborne") == false){
-						FeiLongCompletesShienKyaku("Short", 0);	
-					}	
-					else if (CheckShoryukenSequence() && animator.GetBool("isAirborne") == false){
-						FeiLongCompletesRekkaKun(0);
-					}	
-					else if (animator.GetBool("isAttacking") == false){						
-						character.CharacterShort();
-						character.AttackState();
-					}
-				}	
-				else if (character.GetComponent<Balrog>() != null){
-					if (chargeSystem.GetBackCharged() && !pressedBackward
-						&& animator.GetBool("isAirborne") == false && pressedForward){
-						BalrogCompletesKickRush("Short", 0);
-					}
-					else if (animator.GetBool("isAttacking") == false){	
-						character.CharacterShort();
-						character.AttackState();
-					}
-				}		
-				else if (character.GetComponent<Akuma>() != null){	
-					if (CheckHurricaneKickSequence() && animator.GetBool("isAirborne") == false){
-						ShotoCompletesHurricaneKick("Akuma", 0);
-					}
-					else if (CheckShoryukenSequence() && animator.GetBool("isAirborne") == false){
-						AkumaCompletesHyakkishu(0);
-					}	
-					else if (animator.GetBool("hyakkishuActive") == true){
-						animator.SetInteger("hyakkishuAttackType", 2);
-					}
-					else if (animator.GetBool("isAttacking") == false){	
-						character.CharacterShort();
-						character.AttackState();
-					}
-				}
+			if (Input.GetKeyDown(KeyCode.Z)){					
+				attackStrength = character.CharacterShort;
+				KickCommands (attackStrength, 0, "Short");
 			}	
-			if (Input.GetKeyDown(KeyCode.X)){
-			
-				if (character.GetComponent<Ken>() != null){
-					if (CheckHurricaneKickSequence() && animator.GetBool("isAirborne") == false){
-						ShotoCompletesHurricaneKick("Ken", 1);
-					}
-					else if (CheckHadoukenSequence() && animator.GetBool("isAirborne") == false){
-						KenCompletesRoll(1);
-					}
-					else if (animator.GetBool("isAttacking") == false){
-						character.AttackState();
-						character.CharacterForward();
-					}
-				}
-				else if (character.GetComponent<FeiLong>() != null){
-					if (CheckReverseShoryukenSequence() && animator.GetBool("isAirborne") == false){
-						FeiLongCompletesShienKyaku("Forward", 1);	
-					}	
-					else if (CheckShoryukenSequence() && animator.GetBool("isAirborne") == false){
-						FeiLongCompletesRekkaKun(1);
-					}	
-					else if (animator.GetBool("isAttacking") == false){						
-						character.CharacterForward();
-						character.AttackState();
-					}
-				}	
-				else if (character.GetComponent<Balrog>() != null){
-					if (chargeSystem.GetBackCharged() && !pressedBackward
-						&& animator.GetBool("isAirborne") == false && pressedForward){
-						BalrogCompletesKickRush("Forward", 1);
-					}
-					else if (animator.GetBool("isAttacking") == false){	
-						character.CharacterForward();
-						character.AttackState();
-					}
-				}		
-				else if (character.GetComponent<Akuma>() != null){
-					if (CheckHurricaneKickSequence() && animator.GetBool("isAirborne") == false){
-						ShotoCompletesHurricaneKick("Akuma", 1);
-					}
-					else if (CheckShoryukenSequence() && animator.GetBool("isAirborne") == false){
-						AkumaCompletesHyakkishu(1);
-					}	
-					else if (animator.GetBool("hyakkishuActive") == true){
-						animator.SetInteger("hyakkishuAttackType", 2);
-					}
-					else if (animator.GetBool("isAttacking") == false){	
-						character.CharacterForward();
-						character.AttackState();
-					}
-				}
+			if (Input.GetKeyDown(KeyCode.X)){				
+				attackStrength = character.CharacterForward;
+				KickCommands (attackStrength, 1, "Forward");
 			}	
-			if (Input.GetKeyDown(KeyCode.C)){
-				
-				if (character.GetComponent<Ken>() != null){
-					if (CheckHurricaneKickSequence() && animator.GetBool("isAirborne") == false){
-						ShotoCompletesHurricaneKick("Ken", 2);
-					}
-					else if (CheckHadoukenSequence() && animator.GetBool("isAirborne") == false){
-						KenCompletesRoll(2);
-					}
-					else if (animator.GetBool("isAttacking") == false){
-						character.AttackState();
-						character.CharacterRoundhouse();
-					}
-				}
-				else if (character.GetComponent<FeiLong>() != null){					
-					if (CheckReverseShoryukenSequence() && animator.GetBool("isAirborne") == false){
-						FeiLongCompletesShienKyaku("Roundhouse", 2);	
-					}	
-					else if (CheckShoryukenSequence() && animator.GetBool("isAirborne") == false){
-						FeiLongCompletesRekkaKun(2);
-					}	
-					else if (animator.GetBool("isAttacking") == false){						
-						character.CharacterRoundhouse();
-						character.AttackState();
-					}
-				}	
-				else if (character.GetComponent<Balrog>() != null){
-					if (chargeSystem.GetBackCharged() && !pressedBackward 
-						&& animator.GetBool("isAirborne") == false && pressedForward){
-						BalrogCompletesKickRush("Roundhouse", 2);
-					}
-					else if (animator.GetBool("isAttacking") == false){	
-						character.CharacterRoundhouse();
-						character.AttackState();
-					}
-				}		
-				else if (character.GetComponent<Akuma>() != null){
-					if (CheckHurricaneKickSequence() && animator.GetBool("isAirborne") == false){
-						ShotoCompletesHurricaneKick("Akuma", 2);
-					}
-					else if (CheckShoryukenSequence() && animator.GetBool("isAirborne") == false){
-						AkumaCompletesHyakkishu(2);
-					}	
-					else if (animator.GetBool("hyakkishuActive") == true){
-						animator.SetInteger("hyakkishuAttackType", 2);
-					}
-					else if (animator.GetBool("isAttacking") == false){	
-						character.CharacterRoundhouse();
-						character.AttackState();
-					}
-				}
+			if (Input.GetKeyDown(KeyCode.C)){		
+				attackStrength = character.CharacterRoundhouse;
+				KickCommands (attackStrength, 2, "Roundhouse");
 			}	
 			if (Input.GetKey(KeyCode.F)){
 				if (character.GetComponent<Balrog>() != null){
@@ -693,6 +416,137 @@ public class Player : MonoBehaviour {
 			}
 		}
 	}	
+
+	void PunchCommands (AttackStrength punch, FeiLongClosePunch feiLongPunches, int punchType, string punchStrength){
+		if (character.GetComponent<Ken> () != null) {
+			if (CheckMotionSuperSequence () && animator.GetBool ("isAirborne") == false && character.GetSuper >= 100f){
+				CharacterCompletesMotionSuper ("Ken", "Shinryuken"); 
+			}
+			if (CheckHadoukenSequence () && animator.GetBool ("isAirborne") == false && projectileP1Parent.transform.childCount <= 0) {
+				ShotoCompletesHadouken ("Ken", punchType);
+			}
+			else if (CheckShoryukenSequence () && animator.GetBool ("isAirborne") == false) {
+				ShotoCompletesShoryuken ("Ken", punchStrength, punchType);
+			}
+			else if (animator.GetBool ("isAttacking") == false) {
+				character.AttackState ();
+				punch();
+			}
+		}
+		else if (character.GetComponent<FeiLong> () != null) {
+			if (CheckMotionSuperSequence () && animator.GetBool ("isAirborne") == false && character.GetSuper >= 100f){
+				CharacterCompletesMotionSuper ("FeiLong", "RekkaShinken"); 
+			}
+			else if (CheckHadoukenSequence () && animator.GetBool ("isAirborne") == false) {
+				FeiLongCompletesRekka (punchType);
+			}
+			else if (animator.GetBool ("isAttacking") == false) {
+				if (Mathf.Abs (distance) < 0.75f && animator.GetBool ("isStanding") == true) {
+					feiLongPunches();
+				}
+				else {
+					punch();
+				}
+				character.AttackState ();
+			}
+		}
+		else if (character.GetComponent<Balrog> () != null) {
+			if (CheckMotionSuperSequence () && animator.GetBool ("isAirborne") == false && character.GetSuper >= 100f){
+				CharacterCompletesMotionSuper ("Balrog", "GigatonPunch"); 
+			}
+			else if (chargeSystem.GetBackCharged () && !sharedProperties.GetBackPressed && animator.GetBool ("isAirborne") == false) {
+				BalrogCompletesDashRushes (punchStrength, punchType);
+			}
+			else if (chargeSystem.GetDownCharged () && !sharedProperties.GetDownPressed && animator.GetBool ("isAirborne") == false && pressedUp) {
+				BalrogCompletesHeadButt (punchStrength, punchType);
+			}
+			else if (animator.GetBool ("isAttacking") == false) {
+				punch();
+				character.AttackState ();
+			}
+		}
+		else if (character.GetComponent<Akuma> () != null) {
+			if (CheckHadoukenSequence () && projectileP1Parent.transform.childCount <= 0) {
+				if (animator.GetBool ("isAirborne") == true) {
+					AkumaCompletesAirHadouken (punchType);
+				}
+				else {
+					ShotoCompletesHadouken ("Akuma", punchType);
+				}
+			}
+			else if (CheckShoryukenSequence () && animator.GetBool ("isAirborne") == false) {
+				ShotoCompletesShoryuken ("Akuma", punchStrength, punchType);
+			}
+			else if (animator.GetBool ("hyakkishuActive") == true) {
+				animator.SetInteger ("hyakkishuAttackType", 1);
+			}
+			else if (animator.GetBool ("isAttacking") == false) {
+				punch();
+				character.AttackState ();
+			}
+		}
+	}
+
+	void KickCommands (AttackStrength kick, int kickType, string kickStrength){
+		if (character.GetComponent<Ken> () != null) {
+			if (CheckHurricaneKickSequence () && animator.GetBool ("isAirborne") == false) {
+				ShotoCompletesHurricaneKick ("Ken", kickType);
+			}
+			else if (CheckHadoukenSequence () && animator.GetBool ("isAirborne") == false) {
+				KenCompletesRoll (kickType);
+			}
+			else if (animator.GetBool ("isAttacking") == false) {
+				character.AttackState ();
+				kick();
+			}
+		}
+		else if (character.GetComponent<FeiLong> () != null) {
+			if (CheckReverseShoryukenSequence () && animator.GetBool ("isAirborne") == false) {
+				FeiLongCompletesShienKyaku (kickStrength, kickType);
+			}
+			else if (CheckShoryukenSequence () && animator.GetBool ("isAirborne") == false) {
+				FeiLongCompletesRekkaKun (kickType);
+			}
+			else if (animator.GetBool ("isAttacking") == false) {
+				kick();
+				character.AttackState ();
+			}
+		}
+		else if (character.GetComponent<Balrog> () != null) {
+			if (chargeSystem.GetBackCharged () && !sharedProperties.GetBackPressed && animator.GetBool ("isAirborne") == false && sharedProperties.GetForwardPressed) {
+				BalrogCompletesKickRush (kickStrength, kickType);
+			}
+			else if (animator.GetBool ("isAttacking") == false) {
+				kick();
+				character.AttackState ();
+			}
+		}
+		else if (character.GetComponent<Akuma> () != null) {
+			if (CheckHurricaneKickSequence () && animator.GetBool ("isAirborne") == false) {
+				ShotoCompletesHurricaneKick ("Akuma", kickType);
+			}
+			else if (CheckShoryukenSequence () && animator.GetBool ("isAirborne") == false) {
+				AkumaCompletesHyakkishu (kickType);
+			}
+			else if (animator.GetBool ("hyakkishuActive") == true) {
+				animator.SetInteger ("hyakkishuAttackType", 2);
+			}
+			else if (animator.GetBool ("isAttacking") == false) {
+				kick();
+				character.AttackState ();
+			}
+		}
+	}
+	
+	void CharacterCompletesMotionSuper (string fighter, string superName){
+		Debug.Log ("Super inputed");
+		if (animator.GetBool ("isAttacking") == false) {
+			character.AttackState ();
+			animator.Play (fighter + superName, 0);
+		}
+		animator.SetTrigger ("motionSuperInputed");
+		comboSystem.ResetMotionSuperSequence ();
+	}
 	
 	void ShotoCompletesHadouken (string shoto, int punchType){
 		Debug.Log ("Hadouken inputed");
@@ -741,7 +595,7 @@ public class Player : MonoBehaviour {
 	}
 	
 	void AkumaCompletesHyakkishu (int kickType){
-		Debug.Log ("Hadouken inputed");
+		Debug.Log ("Shoryuken inputed");
 		if (animator.GetBool ("isAttacking") == false) {
 			character.AttackState ();
 			animator.Play ("AkumaHyakkishu", 0);
@@ -750,6 +604,7 @@ public class Player : MonoBehaviour {
 		animator.SetInteger ("hyakkishuKickType", kickType);
 		comboSystem.ResetShoryukenSequence ();
 	}
+	
 	void KenCompletesRoll (int kickType){
 		Debug.Log ("Hadouken inputed");
 		if (animator.GetBool ("isAttacking") == false) {
@@ -795,7 +650,7 @@ public class Player : MonoBehaviour {
 	}
 
 	void BalrogCompletesDashRushes (string punchName, int punchType){
-		if (pressedForward && pressedCrouch) {
+		if (sharedProperties.GetForwardPressed && sharedProperties.GetDownPressed) {			
 			Debug.Log ("dashed low");
 			if (animator.GetBool ("isAttacking") == false) {
 				character.AttackState ();
@@ -803,7 +658,7 @@ public class Player : MonoBehaviour {
 			}
 			animator.SetTrigger ("dashLowInputed");
 		}
-		else if (pressedForward) {
+		else if (sharedProperties.GetForwardPressed) {
 			Debug.Log ("dashed straight");
 			if (animator.GetBool ("isAttacking") == false) {
 				character.AttackState ();
@@ -917,59 +772,19 @@ public class Player : MonoBehaviour {
 		return true;
 	}	
 	
-	public void WalkAI(){						
-		if (animator.GetBool("isAttacking") == false && animator.GetBool("isInHitStun") == false
-		    && animator.GetBool("isInBlockStun") == false && animator.GetBool("isLiftingOff") == false
-		    && animator.GetBool("isStanding") == true && animator.GetBool("isAirborne") == false
-		    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isMidAirRecovering") == false
-		    && animator.GetBool("isThrown") == false && animator.GetBool("isCrouching") == false){
-			if (pressedForward == true && animator.GetBool("isWalkingBackward") == false){
-				animator.SetBool("isWalkingForward", true);	
-				
-				if (character.side == Character.Side.P1){
-					character.transform.Translate(Vector3.right * character.walkSpeed * Time.deltaTime);	
-				}
-				else{
-					character.transform.Translate(Vector3.left * character.walkSpeed * Time.deltaTime);	
-				}
+	bool CheckMotionSuperSequence(){
+		for (int i=0; i<comboSystem.GetMotionSuperSequence().Length; i++){
+			if (comboSystem.GetMotionSuperSequence()[i] == false){
+				return false;
 			}
-			else if (pressedBackward == true && animator.GetBool("isWalkingForward") == false){
-				animator.SetBool("isWalkingBackward", true);				
-				if (character.side == Character.Side.P2){
-					character.transform.Translate(Vector3.right * character.walkSpeed * Time.deltaTime);	
-				}
-				else{
-					character.transform.Translate(Vector3.left * character.walkSpeed * Time.deltaTime);	
-				}
-			}	
 		}
-		if (pressedForward == false){
-			animator.SetBool("isWalkingForward", false);	
-		}
-		if (pressedBackward == false){	
-			animator.SetBool("isWalkingBackward", false);	
-		}
+		return true;
 	}	
 	
 	public GameObject GetProjectileP1Parent(){
 		return projectileP1Parent;
 	}
-	
-	public bool GetBackPressed{
-		get { return pressedBackward; }
-		set { pressedBackward = value; }
-	}	
-	
-	public bool GetDownPressed{   
-		get { return pressedCrouch; }
-		set { pressedCrouch = value; }
-	}	
-	
-	public bool GetForwardPressed{
-		get { return pressedForward; }
-		set { pressedForward = value; }
-	}	
-	
+		
 	public float GetDistance(){
 		return distance;
 	}

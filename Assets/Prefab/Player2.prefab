@@ -65,17 +65,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fd349ac855d0ac4b9ab3d71d334f02e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mugShotObject: {fileID: 1315826604722480, guid: 50c5b1efe1c72d3488cf599a3c862633,
-    type: 2}
+  mugShotObject: {fileID: 0}
   streetFighterCharacters:
   - {fileID: 1311962846860956, guid: a54394606edf4464e9da4297728e604a, type: 2}
   - {fileID: 1313107464066380, guid: e03ec49ecee8e8b4cac1c2deb0233a40, type: 2}
   - {fileID: 1647165389008910, guid: 58480a3eded57ba49861dd4628e30675, type: 2}
-  nameText: {fileID: 114652789324749666, guid: 50c5b1efe1c72d3488cf599a3c862633, type: 2}
+  - {fileID: 1388078500905076, guid: f9293da83d08c084ba426b68f315fd3c, type: 2}
+  nameText: {fileID: 0}
   kenMugShot: {fileID: 21300000, guid: 57b925a7041ae334ba11c7e6239d2d67, type: 3}
   feiLongMugShot: {fileID: 21300000, guid: e7cb0cb8d48489b4ebe6f7e8488ea3a8, type: 3}
   balrogMugShot: {fileID: 21300000, guid: 2fe8d91dae7c87c4f89b08700ea83ac0, type: 3}
+  akumaMugShot: {fileID: 21300000, guid: 4e48469390830f047a9e25f35701b31e, type: 3}
   isAI: 1
+  doInitiateCharacter: 1
 --- !u!114 &114798463087345360
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -91,8 +93,6 @@ MonoBehaviour:
   backChargedWindow: 30
   downChargeReached: 60
   downChargedWindow: 30
-  downCharged: 0
-  downLetGoWhenCharged: 0
 --- !u!114 &114887285994288812
 MonoBehaviour:
   m_ObjectHideFlags: 1
