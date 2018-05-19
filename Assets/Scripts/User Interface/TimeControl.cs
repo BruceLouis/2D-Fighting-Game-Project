@@ -20,8 +20,9 @@ public class TimeControl : MonoBehaviour {
 	public AudioClip threeSound, twoSound, oneSound, fightSound, youLoseSound, youWinSound;
 	public AudioClip[] winQuotes;
 	
-	private int gameTimer, internalTimer, countDownTimer, KOslowTimer, KOedTimer, playedOnce;
-	private float introTimer, restartTimer;
+	private int gameTimer, internalTimer, countDownTimer, KOslowTimer, KOedTimer;
+    private bool countDownStarted, gameTimerCountingDown, announcementPlayed;
+    private float introTimer, restartTimer;
 	private AudioSource audioSource;
 	private LevelManager levelManager;
 	private Opponent opponent;
@@ -42,8 +43,11 @@ public class TimeControl : MonoBehaviour {
 		KOedTimer = 150;
 		introTimer = 1.75f;
 		countDownTimer = 3;
-		playedOnce = 1;
-		
+		announcementPlayed = false;
+
+        countDownStarted = false;
+        gameTimerCountingDown = false;
+
 		gameTimerText.text = gameTimer.ToString();
 		countDownText.text = "";
 		winner = "";
@@ -62,33 +66,31 @@ public class TimeControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
-		if (gameState != GameState.introPose){
-			internalTimer--;		
-		}		
-		if (internalTimer <= 0){
-			switch(gameState){
-				case GameState.countDown:				
-					countDownTimer--;
-					internalTimer = 50;
-					playedOnce = 1;
-					break;
-				case GameState.fight:
-					gameTimer--;
-					internalTimer = 75;
-					break;
-			}
-		}
+		//if (gameState != GameState.introPose){
+		//	internalTimer--;		
+		//}		
+		//if (internalTimer <= 0){
+		//	switch(gameState){
+		//		case GameState.fight:
+		//			gameTimer--;
+		//			internalTimer = 75;
+		//			break;
+		//	}
+		//}
 		
-		gameTimerText.text = gameTimer.ToString();
 		
 		if (gameState == GameState.introPose){
 			StartCoroutine(IntroPoseState(introTimer));
 		}
 		
-		if (gameState == GameState.countDown){
-			CountDownCommence(countDownTimer);
+		if (gameState == GameState.countDown && !countDownStarted){
+			StartCoroutine(CountDownCommence());
 		}
 		
+        if (gameState == GameState.fight && !gameTimerCountingDown){
+            StartCoroutine(InGameTimer());
+        }
+
 		if (opponentChar.GetKOed() == true || playerChar.GetKOed() == true){
 			gameState = GameState.KOHappened;
 			if (demonKO){
@@ -108,10 +110,6 @@ public class TimeControl : MonoBehaviour {
 		if (gameState == GameState.victoryPose){
 			StartCoroutine(VictoryPoseTime(restartTimer));
 		}
-		
-//		if (restartTimer <= 0){
-//			levelManager.LoadLevel(SceneManager.GetActiveScene ().name);
-//		}
 		
 		// may go back to hit stops using coroutines
 //		if (slowDown){
@@ -136,7 +134,7 @@ public class TimeControl : MonoBehaviour {
 			Time.timeScale = 0.5f;
 			slowDownTimer--;
 		}
-		if (slowDownTimer <= 0 && !TimeControl.inSuperStartup[0] && !TimeControl.inSuperStartup[1] && !demonKO){
+		if (slowDownTimer <= 0 && !inSuperStartup[0] && !inSuperStartup[1] && !demonKO){
 			slowDown = false;
 			Time.timeScale = 1f;
 		}		
@@ -212,52 +210,68 @@ public class TimeControl : MonoBehaviour {
 		yield return new WaitForSeconds(timer);
 		levelManager.LoadLevel(SceneManager.GetActiveScene ().name);
 	}
+    
+    IEnumerator CountDownCommence(){
+        countDownStarted = true;
 
-	void PlayWinnerClip (AudioClip clip){
-		if (!audioSource.isPlaying && playedOnce == 1) {
-			audioSource.PlayOneShot (clip, 1f);
-			playedOnce = 0;
+		if (!audioSource.isPlaying && !announcementPlayed) {
+			audioSource.PlayOneShot (threeSound, 0.7f);
+			announcementPlayed = true;
 		}
-	}
+		countDownText.text = countDownTimer.ToString();
 
-	void CountDownCommence(int countDown){
-		switch(countDown){
-			case 3:
-				if (!audioSource.isPlaying && playedOnce == 1) {
-					audioSource.PlayOneShot (threeSound, 0.7f);
-					playedOnce = 0;
-				}
-				countDownText.text = countDownTimer.ToString();
-				break;
-				
-			case 2: 
-				if (!audioSource.isPlaying && playedOnce == 1) {
-					audioSource.PlayOneShot (twoSound, 0.7f);
-					playedOnce = 0;
-				}
-				countDownText.text = countDownTimer.ToString();
-				break;
-				
-			case 1:
-				if (!audioSource.isPlaying && playedOnce == 1) {
-					audioSource.PlayOneShot (oneSound, 0.7f);
-					playedOnce = 0;
-				}
-				countDownText.text = countDownTimer.ToString();
-				break;
-			
-			case 0:
-				if (!audioSource.isPlaying && playedOnce == 1) {
-					audioSource.PlayOneShot (fightSound, 0.7f);
-					playedOnce = 0;
-				}
-				countDownText.text = "FIGHT";
-				break;
-			
-			default:
-				gameState = GameState.fight;
-				countDownText.text = "";	
-				break;	
-		}	
-	}
+        yield return new WaitForSecondsRealtime(1f);
+
+        announcementPlayed = false;
+        if (!audioSource.isPlaying && !announcementPlayed) {
+			audioSource.PlayOneShot (twoSound, 0.7f);
+			announcementPlayed = true;
+		}
+        countDownTimer--;
+        countDownText.text = countDownTimer.ToString();
+
+        yield return new WaitForSecondsRealtime(1f);
+
+        announcementPlayed = false;
+        if (!audioSource.isPlaying && !announcementPlayed) {
+			audioSource.PlayOneShot (oneSound, 0.7f);
+			announcementPlayed = true;
+		}
+        countDownTimer--;
+        countDownText.text = countDownTimer.ToString();
+
+        yield return new WaitForSecondsRealtime(1f);
+
+        announcementPlayed = false;
+        if (!audioSource.isPlaying && !announcementPlayed) {
+			audioSource.PlayOneShot (fightSound, 0.7f);
+			announcementPlayed = true;
+		}
+        countDownTimer--;
+        countDownText.text = "FIGHT";
+
+        yield return new WaitForSecondsRealtime(1f);
+        
+		gameState = GameState.fight;
+		countDownText.text = "";
+
+        announcementPlayed = false;
+        countDownStarted = false;
+    }
+
+    IEnumerator InGameTimer(){
+        gameTimerCountingDown = true;
+        yield return new WaitForSeconds(1f);
+        gameTimer--;
+        gameTimerText.text = gameTimer.ToString();
+        gameTimerCountingDown = false;
+    }
+
+    void PlayWinnerClip(AudioClip clip){
+        if (!audioSource.isPlaying && !announcementPlayed)
+        {
+            audioSource.PlayOneShot(clip, 1f);
+            announcementPlayed = true;
+        }
+    }
 }

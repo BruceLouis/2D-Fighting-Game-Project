@@ -10,16 +10,20 @@ public class Character : MonoBehaviour {
 	[SerializeField] AudioClip 	normalAttackSound, balrogHeadButtSound, superEffectSound;
 	
 	public enum Side {P1, P2};
-	public Side side;
-	
-	public enum MoveType {low, mid, high};
-	public MoveType moveType;
-	
-	public enum HitType {normal, sweep, rekkaKnockdown, shoryuken, hurricaneKick, rekka, dashLow, akumaHurricaneKick};
-	public HitType hitType;
-	
-	public enum SparkType {normal, big, shoryuken};
-	public SparkType sparkType;	
+    [HideInInspector]
+    public Side side;
+
+    public enum MoveType {low, mid, high};
+    [HideInInspector]
+    public MoveType moveType;
+
+    public enum HitType {normal, sweep, rekkaKnockdown, shoryuken, hurricaneKick, rekka, dashLow, akumaHurricaneKick};
+    [HideInInspector]
+    public HitType hitType;
+
+    public enum SparkType {normal, big, shoryuken};
+    [HideInInspector]
+    public SparkType sparkType;	
 	
 	private Rigidbody2D physicsbody;
 	private Animator animator;

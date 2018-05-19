@@ -8,22 +8,23 @@ public class Player : MonoBehaviour {
 	
 	delegate void AttackStrength();
 	delegate void FeiLongClosePunch();
+    delegate void AIBehavior();
 	AttackStrength attackStrength;
 	FeiLongClosePunch feiLongPunch;
+    AIBehavior aiBehavior;
 	
 	public GameObject mugShotObject;
 	public GameObject[] streetFighterCharacters;
 	public Text nameText;
-	public bool isAI, doInitiateCharacter;
 	public Sprite kenMugShot, feiLongMugShot, balrogMugShot, akumaMugShot;
-	
-	private TimeControl timeControl;
+    public bool isAI, doInitiateCharacter;
+
+    private TimeControl timeControl;
 	private Animator animator;
 	private Opponent opponent;
 	private Character opponentCharacter;
 	private Character character;
 	private FeiLong feiLong;
-	private Balrog balrog;
 	private Rigidbody2D physicsbody;
 	private ComboSystem comboSystem;
 	private ChargeSystem chargeSystem;
@@ -81,26 +82,29 @@ public class Player : MonoBehaviour {
 			mugShot.sprite = feiLongMugShot;
 			characterName = "Fei Long";
 			nameText.text = characterName;
+            aiBehavior = feiLongAI.Behaviors;
 		}
 		else if (character.GetComponent<Ken>() != null){
 			kenAI = GetComponentInChildren<KenAI>();
 			mugShot.sprite = kenMugShot;
 			characterName = "Ken";
 			nameText.text = characterName;
-		}
+            aiBehavior = kenAI.Behaviors;
+        }
 		else if (character.GetComponent<Balrog>() != null){
-			balrog = GetComponentInChildren<Balrog>();
 			balrogAI = GetComponentInChildren<BalrogAI>();
 			mugShot.sprite = balrogMugShot;
 			characterName = "Balrog";
 			nameText.text = characterName;
-		}
+            aiBehavior = balrogAI.Behaviors;
+        }
 		else if (character.GetComponent<Akuma>() != null){
 			akumaAI = GetComponentInChildren<AkumaAI>();
 			mugShot.sprite = akumaMugShot;
 			characterName = "Akuma";
 			nameText.text = characterName;
-		}
+            aiBehavior = akumaAI.Behaviors;
+        }
 		
 		projectileP1Parent = GameObject.Find("ProjectileP1Parent");
 		if (projectileP1Parent == null){
@@ -126,19 +130,8 @@ public class Player : MonoBehaviour {
 				character.SetBackPressed(sharedProperties.GetBackPressed);
 				PlayerControls();				
 			}
-			else{				
-				if (character.GetComponent<Ken>() != null){
-					kenAI.Behaviors();
-				}	
-				else if (character.GetComponent<FeiLong>() != null){
-					feiLongAI.Behaviors();
-				}
-				else if (character.GetComponent<Balrog>() != null){
-					balrogAI.Behaviors();
-				}
-				else if (character.GetComponent<Akuma>() != null){
-					akumaAI.Behaviors();
-				}
+			else{
+                aiBehavior();
 			}
 		}
 		else{	
@@ -164,33 +157,37 @@ public class Player : MonoBehaviour {
 	}
 
 	void PlayerControls (){
-		CrouchOrStand ();
-		IsUpPressed ();
-		WalkInput ();
-		WalkNoMoreInput ();
-		if (animator.GetBool ("isKnockedDown") == false && animator.GetBool ("isThrown") == false && animator.GetBool ("isMidAirRecovering") == false
-			&& animator.GetBool ("isInHitStun") == false && animator.GetBool ("isInBlockStun") == false && animator.GetBool ("isLiftingOff") == false
-			&& animator.GetBool ("isLanding") == false) {
-			AttacksInput ();
-			if (animator.GetBool ("isStanding") == true && animator.GetBool ("isAirborne") == false && animator.GetBool ("isAttacking") == false) {
-				WalkPlayer ();
-				if (pressedUp) {
-					if (character.GetComponent<Balrog>() != null){
-						//give balrog a window of time to input the headbutt before he jumps
-						if (chargeSystem.downChargedWindow < (chargeSystem.GetDownChargedWindowInput()/2) && chargeSystem.GetDownCharged()) {
-							CharacterJumping ();
-						}
-						else if (!chargeSystem.GetDownCharged()){
-							CharacterJumping ();
-						}
-					}
-					else{
-						CharacterJumping ();
-					}						
-				}
-			}
-		}
-	}
+
+        if (!TimeControl.inSuperStartup[0] && !TimeControl.inSuperStartup[1]){
+		    CrouchOrStand ();
+		    DirectionsInputted ();
+		    if (animator.GetBool ("isKnockedDown") == false && animator.GetBool ("isThrown") == false && animator.GetBool ("isMidAirRecovering") == false
+			    && animator.GetBool ("isInHitStun") == false && animator.GetBool ("isInBlockStun") == false && animator.GetBool ("isLiftingOff") == false
+			    && animator.GetBool ("isLanding") == false) {
+			    AttacksInput ();
+			    if (animator.GetBool ("isStanding") == true && animator.GetBool ("isAirborne") == false && animator.GetBool ("isAttacking") == false) {
+				    WalkPlayer ();
+				    if (pressedUp) {
+					    if (character.GetComponent<Balrog>() != null){
+						    //give balrog a window of time to input the headbutt before he jumps
+						    if (chargeSystem.downChargedWindow < (chargeSystem.GetDownChargedWindowInput()/2) && chargeSystem.GetDownCharged()) {
+							    CharacterJumping ();
+						    }
+						    else if (!chargeSystem.GetDownCharged()){
+							    CharacterJumping ();
+						    }
+					    }
+					    else{
+						    CharacterJumping ();
+					    }						
+				    }
+			    }
+            }
+        }
+
+
+        DirectionsReleased();
+    }
 	
 	void InitiateCharacter (){
 		GameObject streetFighterCharacter;
@@ -220,24 +217,86 @@ public class Player : MonoBehaviour {
 				animator.SetBool ("isCrouching", false);
 			}
 		}
-		if (Input.GetKey (KeyCode.DownArrow)) {
-			sharedProperties.GetDownPressed = true;
-		}
-		if (Input.GetKeyUp (KeyCode.DownArrow)){
-			sharedProperties.GetDownPressed = false;
-		}
 	}
 	
-	void IsUpPressed(){
+	void DirectionsInputted(){
+
 		if (Input.GetKeyDown(KeyCode.UpArrow)){
 			pressedUp = true;
 		}
-		else if (Input.GetKeyUp(KeyCode.UpArrow)){
-			pressedUp = false;
-		}
-	}
 
-	void CharacterJumping (){
+        if (Input.GetKey(KeyCode.DownArrow))
+        {
+            sharedProperties.GetDownPressed = true;
+        }
+
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            if (character.side == Character.Side.P1)
+            {
+                sharedProperties.GetForwardPressed = true;
+            }
+            else
+            {
+                sharedProperties.GetBackPressed = true;
+            }
+        }
+
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            if (character.side == Character.Side.P2)
+            {
+                sharedProperties.GetForwardPressed = true;
+            }
+            else
+            {
+                sharedProperties.GetBackPressed = true;
+            }
+        }
+    }
+
+    void DirectionsReleased()
+    {
+        if (Input.GetKeyUp(KeyCode.DownArrow))
+        {
+            sharedProperties.GetDownPressed = false;
+        }
+
+        if (Input.GetKeyUp(KeyCode.UpArrow))
+        {
+            pressedUp = false;
+        }
+
+        if (Input.GetKeyUp(KeyCode.RightArrow))
+        {
+            if (character.side == Character.Side.P1)
+            {
+                sharedProperties.GetForwardPressed = false;
+                animator.SetBool("isWalkingForward", false);
+            }
+            else
+            {
+                sharedProperties.GetBackPressed = false;
+                animator.SetBool("isWalkingBackward", false);
+            }
+
+        }
+        if (Input.GetKeyUp(KeyCode.LeftArrow))
+        {
+            if (character.side == Character.Side.P2)
+            {
+                sharedProperties.GetForwardPressed = false;
+                animator.SetBool("isWalkingForward", false);
+            }
+            else
+            {
+                sharedProperties.GetBackPressed = false;
+                animator.SetBool("isWalkingBackward", false);
+            }
+        }
+    }
+
+    void CharacterJumping (){
 		character.CharacterJump (sharedProperties.GetForwardPressed, sharedProperties.GetBackPressed);
 		animator.SetBool ("isStanding", false);
 		animator.SetBool ("isLiftingOff", true);
@@ -291,26 +350,7 @@ public class Player : MonoBehaviour {
 			}
 		}
 	}
-	
-	void WalkInput(){
-		if (Input.GetKey(KeyCode.RightArrow)){
-			if (character.side == Character.Side.P1){
-				sharedProperties.GetForwardPressed = true;
-			}
-			else{
-				sharedProperties.GetBackPressed = true;				
-			}
-		}
-		if (Input.GetKey(KeyCode.LeftArrow)){
-			if (character.side == Character.Side.P2){
-				sharedProperties.GetForwardPressed = true;
-			}
-			else{
-				sharedProperties.GetBackPressed = true;
-			}
-		}
-	}
-		
+			
 	void WalkPlayer(){					
 		if (sharedProperties.GetForwardPressed == true && animator.GetBool("isWalkingBackward") == false){
 			animator.SetBool("isWalkingForward", true);	
@@ -330,30 +370,6 @@ public class Player : MonoBehaviour {
 				character.transform.Translate(Vector3.left * character.GetWalkSpeed() * Time.deltaTime);	
 			}
 		}	
-	}
-	
-	void WalkNoMoreInput(){			
-		if (Input.GetKeyUp(KeyCode.RightArrow)){
-			if (character.side == Character.Side.P1){
-				sharedProperties.GetForwardPressed = false;
-				animator.SetBool("isWalkingForward", false);	
-			}
-			else{
-				sharedProperties.GetBackPressed = false;
-				animator.SetBool("isWalkingBackward", false);	
-			}
-			
-		}	
-		if (Input.GetKeyUp(KeyCode.LeftArrow)){
-			if (character.side == Character.Side.P2){
-				sharedProperties.GetForwardPressed = false;
-				animator.SetBool("isWalkingForward", false);	
-			}
-			else{
-				sharedProperties.GetBackPressed = false;
-				animator.SetBool("isWalkingBackward", false);	
-			}
-		}
 	}
 	
 	void AttacksInput(){		

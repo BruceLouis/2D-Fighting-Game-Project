@@ -5,8 +5,11 @@ using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class Opponent : MonoBehaviour {
-	
-	public GameObject mugShotObject;
+
+    delegate void AIBehavior();
+    AIBehavior aiBehavior;
+
+    public GameObject mugShotObject;
 	public GameObject[] streetFighterCharacters;
 	public Text nameText;
 	public Sprite kenMugShot, feiLongMugShot, balrogMugShot, akumaMugShot;
@@ -69,25 +72,29 @@ public class Opponent : MonoBehaviour {
 			mugShot.sprite = feiLongMugShot;
 			characterName = "Fei Long";
 			nameText.text = characterName;
-		}	
+            aiBehavior = feiLongAI.Behaviors;
+        }	
 		else if (character.GetComponent<Ken>() != null){
 			kenAI = GetComponentInChildren<KenAI>();
 			mugShot.sprite = kenMugShot;
 			characterName = "Ken";
 			nameText.text = characterName;
-		}		
+            aiBehavior = kenAI.Behaviors;
+        }		
 		else if (character.GetComponent<Balrog>() != null){
 			balrogAI = GetComponentInChildren<BalrogAI>();
 			mugShot.sprite = balrogMugShot;
 			characterName = "Balrog";
 			nameText.text = characterName;
-		}		
+            aiBehavior = balrogAI.Behaviors;
+        }		
 		else if (character.GetComponent<Akuma>() != null){
 			akumaAI = GetComponentInChildren<AkumaAI>();
 			mugShot.sprite = akumaMugShot;
 			characterName = "Akuma";
 			nameText.text = characterName;
-		}
+            aiBehavior = akumaAI.Behaviors;
+        }
 		
 		projectileP2Parent = GameObject.Find("ProjectileP2Parent");
 		if (projectileP2Parent == null){
@@ -113,20 +120,9 @@ public class Opponent : MonoBehaviour {
 			if (!isAI){
 				PunchBagControls();
 			}
-			else{				
-				if (character.GetComponent<Ken>() != null){
-					kenAI.Behaviors();
-				}	
-				else if (character.GetComponent<FeiLong>() != null){
-					feiLongAI.Behaviors();
-				}
-				else if (character.GetComponent<Balrog>() != null){
-					balrogAI.Behaviors();
-				}
-				else if (character.GetComponent<Akuma>() != null){
-					akumaAI.Behaviors();
-				}
-			}
+			else{
+                aiBehavior();
+            }
 		}
 		else{	
 			if (SceneManager.GetActiveScene().name == "Game"){
