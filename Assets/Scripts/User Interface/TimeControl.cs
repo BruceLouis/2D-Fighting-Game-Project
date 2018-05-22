@@ -38,13 +38,12 @@ public class TimeControl : MonoBehaviour {
 		audioSource = GetComponent<AudioSource>();		
 		
 		gameTimer = 99;
-		internalTimer = 50;
 		restartTimer = 2f;
 		KOedTimer = 150;
 		introTimer = 1.75f;
 		countDownTimer = 3;
-		announcementPlayed = false;
 
+		announcementPlayed = false;
         countDownStarted = false;
         gameTimerCountingDown = false;
 
@@ -65,20 +64,7 @@ public class TimeControl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
-		//if (gameState != GameState.introPose){
-		//	internalTimer--;		
-		//}		
-		//if (internalTimer <= 0){
-		//	switch(gameState){
-		//		case GameState.fight:
-		//			gameTimer--;
-		//			internalTimer = 75;
-		//			break;
-		//	}
-		//}
-		
-		
+			
 		if (gameState == GameState.introPose){
 			StartCoroutine(IntroPoseState(introTimer));
 		}
@@ -134,7 +120,7 @@ public class TimeControl : MonoBehaviour {
 			Time.timeScale = 0.5f;
 			slowDownTimer--;
 		}
-		if (slowDownTimer <= 0 && !inSuperStartup[0] && !inSuperStartup[1] && !demonKO){
+		if (slowDownTimer <= 0 && !inSuperStartup[0] && !inSuperStartup[1] && !demonKO && !superKO){
 			slowDown = false;
 			Time.timeScale = 1f;
 		}		
@@ -170,7 +156,7 @@ public class TimeControl : MonoBehaviour {
 	IEnumerator SuperKO(){
 		Time.timeScale = 0.2f;
 		superKOPanel.SetActive(true);
-		yield return new WaitForSeconds(2f);
+		yield return new WaitForSecondsRealtime(2f);
 		superKO = false;
 		Time.timeScale = 1f;
 		KOedTimer = 25;

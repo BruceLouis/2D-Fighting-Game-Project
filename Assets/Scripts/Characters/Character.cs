@@ -398,6 +398,7 @@ public class Character : MonoBehaviour {
 		SetDamage (dmg);
 		if (GetHealth () <= 0) {
 			animator.Play ("KOBlendTree", 0);
+            TimeControl.slowDown = true;
 			TimeControl.slowDownTimer = 100;
 		}
 		if (side == Side.P2) {

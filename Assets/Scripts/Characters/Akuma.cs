@@ -22,8 +22,6 @@ public class Akuma : MonoBehaviour {
 		character = GetComponent<Character>();
 		animator = GetComponent<Animator>();
 		physicsbody = GetComponent<Rigidbody2D>();
-//		hurricaneActive = animator.GetBool("hurricaneKickActive");
-//		diveKickActive = animator.GetBool("diveKickActive");
 	}
 	
 	void FixedUpdate (){
@@ -58,7 +56,7 @@ public class Akuma : MonoBehaviour {
 		character.GetSuper += 4.5f;
 		switch(animator.GetInteger("hadoukenPunchType")){
 		case 0:
-			if (character.side == Character.Side.P1){
+			if (character.transform.localScale.x == 1){
 				rigidbody.velocity = new Vector2(2.25f, 0f);
 			}
 			else {
@@ -68,7 +66,7 @@ public class Akuma : MonoBehaviour {
 			break;
 			
 		case 1:
-			if (character.side == Character.Side.P1){
+			if (character.transform.localScale.x == 1){
 				rigidbody.velocity = new Vector2(2.75f, 0f);
 			}
 			else {
@@ -78,7 +76,7 @@ public class Akuma : MonoBehaviour {
 			break;
 			
 		default:
-			if (character.side == Character.Side.P1){
+			if (character.transform.localScale.x == 1){
 				rigidbody.velocity = new Vector2(3.25f, 0f);
 			}
 			else {

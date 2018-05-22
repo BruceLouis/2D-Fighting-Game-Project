@@ -135,6 +135,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &114951692178455450
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -155,6 +156,7 @@ MonoBehaviour:
   blockSpark: {fileID: 1939279163534822, guid: d4837423e51622a4ead581e63e5b5796, type: 2}
   connectedSound: {fileID: 8300000, guid: a10abd942a725c148a4a762d20a3bf84, type: 3}
   blockedSound: {fileID: 8300000, guid: 3c84103b068e99143b5cdd36b43590bf, type: 3}
+  moveType: 2
 --- !u!212 &212190784571813794
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -168,6 +170,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:

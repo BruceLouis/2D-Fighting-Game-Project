@@ -53,7 +53,7 @@ public class Ken : MonoBehaviour {
 			hadouken.gameObject.tag = "Player2";
 			hadouken.transform.parent = GameObject.Find("ProjectileP2Parent").transform;
 		} 
-		if (character.side == Character.Side.P1){
+		if (character.transform.localScale.x == 1){
 			hadouken.transform.position = transform.position + offset;
 		}
 		else{
@@ -61,7 +61,7 @@ public class Ken : MonoBehaviour {
 		}
 		switch(animator.GetInteger("hadoukenPunchType")){
 			case 0:
-				if (character.side == Character.Side.P1){
+				if (character.transform.localScale.x == 1){
 					rigidbody.velocity = new Vector2(2f, 0f);
 				}
 				else {
@@ -71,7 +71,7 @@ public class Ken : MonoBehaviour {
 				break;
 		
 			case 1:
-				if (character.side == Character.Side.P1){
+				if (character.transform.localScale.x == 1){
 					rigidbody.velocity = new Vector2(2.5f, 0f);
 				}
 				else {
@@ -81,7 +81,7 @@ public class Ken : MonoBehaviour {
 				break;
 		
 			default:
-				if (character.side == Character.Side.P1){
+				if (character.transform.localScale.x == 1){
 					rigidbody.velocity = new Vector2(3f, 0f);
 				}
 				else {
