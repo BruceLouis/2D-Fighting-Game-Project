@@ -16,7 +16,7 @@ public class Player : MonoBehaviour {
 	public GameObject mugShotObject;
 	public GameObject[] streetFighterCharacters;
 	public Text nameText;
-	public Sprite kenMugShot, feiLongMugShot, balrogMugShot, akumaMugShot;
+	public Sprite kenMugShot, feiLongMugShot, balrogMugShot, akumaMugShot, sagatMugShot;
     public bool isAI, doInitiateCharacter;
 
     private TimeControl timeControl;
@@ -40,6 +40,7 @@ public class Player : MonoBehaviour {
 	private FeiLongAI feiLongAI;
 	private BalrogAI balrogAI;
 	private AkumaAI akumaAI;
+	private SagatAI sagatAI;
 	
 	private bool pressedForward, pressedBackward, pressedCrouch, pressedUp, introPlayed;
 	private float distance, distanceFromOpponent;	
@@ -104,6 +105,13 @@ public class Player : MonoBehaviour {
 			characterName = "Akuma";
 			nameText.text = characterName;
             aiBehavior = akumaAI.Behaviors;
+        }
+		else if (character.GetComponent<Sagat>() != null){
+			sagatAI = GetComponentInChildren<SagatAI>();
+			mugShot.sprite = sagatMugShot;
+			characterName = "Sagat";
+			nameText.text = characterName;
+            aiBehavior = sagatAI.Behaviors;
         }
 		
 		projectileP1Parent = GameObject.Find("ProjectileP1Parent");
@@ -185,7 +193,6 @@ public class Player : MonoBehaviour {
             }
         }
 
-
         DirectionsReleased();
     }
 	
@@ -225,71 +232,55 @@ public class Player : MonoBehaviour {
 			pressedUp = true;
 		}
 
-        if (Input.GetKey(KeyCode.DownArrow))
-        {
+        if (Input.GetKey(KeyCode.DownArrow)){
             sharedProperties.GetDownPressed = true;
         }
 
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            if (character.side == Character.Side.P1)
-            {
+        if (Input.GetKey(KeyCode.RightArrow)){
+            if (character.side == Character.Side.P1){
                 sharedProperties.GetForwardPressed = true;
             }
-            else
-            {
+            else{
                 sharedProperties.GetBackPressed = true;
             }
         }
 
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            if (character.side == Character.Side.P2)
-            {
+        if (Input.GetKey(KeyCode.LeftArrow)){
+            if (character.side == Character.Side.P2){
                 sharedProperties.GetForwardPressed = true;
             }
-            else
-            {
+            else{
                 sharedProperties.GetBackPressed = true;
             }
         }
     }
 
-    void DirectionsReleased()
-    {
-        if (Input.GetKeyUp(KeyCode.DownArrow))
-        {
+    void DirectionsReleased(){
+        if (Input.GetKeyUp(KeyCode.DownArrow)){
             sharedProperties.GetDownPressed = false;
         }
 
-        if (Input.GetKeyUp(KeyCode.UpArrow))
-        {
+        if (Input.GetKeyUp(KeyCode.UpArrow)){
             pressedUp = false;
         }
 
-        if (Input.GetKeyUp(KeyCode.RightArrow))
-        {
-            if (character.side == Character.Side.P1)
-            {
+        if (Input.GetKeyUp(KeyCode.RightArrow)){
+            if (character.side == Character.Side.P1){
                 sharedProperties.GetForwardPressed = false;
                 animator.SetBool("isWalkingForward", false);
             }
-            else
-            {
+            else{
                 sharedProperties.GetBackPressed = false;
                 animator.SetBool("isWalkingBackward", false);
             }
 
         }
-        if (Input.GetKeyUp(KeyCode.LeftArrow))
-        {
-            if (character.side == Character.Side.P2)
-            {
+        if (Input.GetKeyUp(KeyCode.LeftArrow)){
+            if (character.side == Character.Side.P2){
                 sharedProperties.GetForwardPressed = false;
                 animator.SetBool("isWalkingForward", false);
             }
-            else
-            {
+            else{
                 sharedProperties.GetBackPressed = false;
                 animator.SetBool("isWalkingBackward", false);
             }
@@ -438,7 +429,7 @@ public class Player : MonoBehaviour {
 			if (CheckMotionSuperSequence () && animator.GetBool ("isAirborne") == false && character.GetSuper >= 100f){
 				CharacterCompletesMotionSuper ("Ken", "Shinryuken"); 
 			}
-			if (CheckHadoukenSequence () && animator.GetBool ("isAirborne") == false && projectileP1Parent.transform.childCount <= 0) {
+			else if (CheckHadoukenSequence () && animator.GetBool ("isAirborne") == false && projectileP1Parent.transform.childCount <= 0) {
 				ShotoCompletesHadouken ("Ken", punchType);
 			}
 			else if (CheckShoryukenSequence () && animator.GetBool ("isAirborne") == false) {
@@ -500,8 +491,23 @@ public class Player : MonoBehaviour {
 				punch();
 				character.AttackState ();
 			}
-		}
-	}
+        }
+        else if (character.GetComponent<Sagat>() != null){
+			if (CheckMotionSuperSequence () && animator.GetBool ("isAirborne") == false && character.GetSuper >= 100f){
+              CharacterCompletesMotionSuper("Sagat", "TigerCannon");
+			}
+			else if (CheckHadoukenSequence () && animator.GetBool ("isAirborne") == false && projectileP1Parent.transform.childCount <= 0) {
+                SagatCompletesUpperTigerShot(punchType);
+            }
+			else if (CheckShoryukenSequence () && animator.GetBool ("isAirborne") == false) {
+				SagatCompletesTigerUppercut (punchStrength, punchType);
+			}
+            else if (animator.GetBool ("isAttacking") == false) {
+			    punch();
+			    character.AttackState ();
+            }
+        }
+    }
 
 	void KickCommands (AttackStrength kick, int kickType, string kickStrength){
 		if (character.GetComponent<Ken> () != null) {
@@ -551,8 +557,20 @@ public class Player : MonoBehaviour {
 				kick();
 				character.AttackState ();
 			}
-		}
-	}
+        }
+        else if (character.GetComponent<Sagat>() != null){
+			if (CheckHadoukenSequence () && animator.GetBool ("isAirborne") == false && projectileP1Parent.transform.childCount <= 0) {
+				SagatCompletesLowerTigerShot (kickType);
+			}
+			else if (CheckShoryukenSequence () && animator.GetBool ("isAirborne") == false) {
+                SagatCompletesTigerKnee (kickType);
+			}
+			else if (animator.GetBool ("isAttacking") == false) {
+				kick();
+				character.AttackState ();
+			}
+        }
+    }
 	
 	void CharacterCompletesMotionSuper (string fighter, string superName){
 		Debug.Log ("Super inputed");
@@ -743,8 +761,54 @@ public class Player : MonoBehaviour {
 			chargeSystem.ResetTurnPunch();
 		}
 	}
-	
-	bool CheckHadoukenSequence(){
+
+    void SagatCompletesUpperTigerShot(int buttonType){
+        Debug.Log("Hadouken inputed");
+        if (animator.GetBool("isAttacking") == false){
+            character.AttackState();
+            animator.Play("SagatUpperTigerShot", 0);
+        }
+        animator.SetTrigger("upperTigerShotInputed");
+        animator.SetInteger("upperTigerShotType", buttonType);
+        animator.SetInteger("tigerShotOwner", 1);
+        comboSystem.ResetHadoukenSequence();
+    }
+
+    void SagatCompletesLowerTigerShot(int buttonType){
+        Debug.Log("Hadouken inputed");
+        if (animator.GetBool("isAttacking") == false){
+            character.AttackState();
+            animator.Play("SagatLowerTigerShot", 0);
+        }
+        animator.SetTrigger("lowerTigerShotInputed");
+        animator.SetInteger("lowerTigerShotType", buttonType);
+        animator.SetInteger("tigerShotOwner", 1);
+        comboSystem.ResetHadoukenSequence();
+    }
+
+    void SagatCompletesTigerUppercut (string punchName, int punchType){
+		Debug.Log ("Shoryuken inputed");
+		if (animator.GetBool ("isAttacking") == false) {
+			character.AttackState ();
+			animator.Play ("SagatTigerUppercut" + punchName, 0);
+		}
+		animator.SetTrigger ("tigerUppercutInputed");
+		animator.SetInteger ("tigerUppercutPunchType", punchType);
+		comboSystem.ResetShoryukenSequence ();
+	}
+
+	void SagatCompletesTigerKnee (int kickType){
+		Debug.Log ("Shoryuken inputed");
+		if (animator.GetBool ("isAttacking") == false) {
+			character.AttackState ();
+			animator.Play ("SagatTigerKnee", 0);
+		}
+		animator.SetTrigger ("tigerKneeInputed");
+		animator.SetInteger ("tigerKneeKickType", kickType);
+		comboSystem.ResetShoryukenSequence ();
+	}
+
+    bool CheckHadoukenSequence(){
 		for (int i=0; i<comboSystem.GetHadoukenSequence().Length; i++){
 			if (comboSystem.GetHadoukenSequence()[i] == false){
 				return false;

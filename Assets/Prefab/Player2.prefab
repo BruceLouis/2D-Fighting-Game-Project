@@ -76,6 +76,7 @@ MonoBehaviour:
   feiLongMugShot: {fileID: 21300000, guid: e7cb0cb8d48489b4ebe6f7e8488ea3a8, type: 3}
   balrogMugShot: {fileID: 21300000, guid: 2fe8d91dae7c87c4f89b08700ea83ac0, type: 3}
   akumaMugShot: {fileID: 21300000, guid: 4e48469390830f047a9e25f35701b31e, type: 3}
+  sagatMugShot: {fileID: 21300000, guid: c916c44b1f779f947aef40eba83fcf39, type: 3}
   isAI: 1
   doInitiateCharacter: 1
 --- !u!114 &114798463087345360

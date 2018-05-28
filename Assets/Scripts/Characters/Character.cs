@@ -17,7 +17,7 @@ public class Character : MonoBehaviour {
     [HideInInspector]
     public MoveType moveType;
 
-    public enum HitType {normal, sweep, rekkaKnockdown, shoryuken, hurricaneKick, rekka, dashLow, akumaHurricaneKick};
+    public enum HitType {normal, sweep, normalKnockDown, shoryuken, hurricaneKick, rekka, dashLow, akumaHurricaneKick};
     [HideInInspector]
     public HitType hitType;
 
@@ -73,6 +73,34 @@ public class Character : MonoBehaviour {
 		
 	}
 	
+				
+	//when character lands on the ground without getting hit
+	void OnCollisionEnter2D(Collision2D collision){
+		if (collision.gameObject.GetComponent<Ground>()	&& animator.GetBool("isMidAirHit") == false && animator.GetFloat("yVelocity") <= 0){
+			animator.SetBool("isAirborne", false);
+			if (gameObject.GetComponent<Ken>() != null || gameObject.GetComponent<Akuma>() != null){
+				animator.SetBool("shoryukenActive", false);
+			}
+			else if (gameObject.GetComponent<FeiLong>() != null){
+				if (animator.GetBool("rekkaKunActive") == true){
+					physicsbody.velocity = new Vector2(0f, physicsbody.velocity.y);
+				}
+				animator.SetBool("shienKyakuActive", false);
+				animator.SetBool("rekkaKunActive", false);
+			}				
+			else if (gameObject.GetComponent<Balrog>() != null){	
+				animator.SetBool("isHeadButting", false);
+			}						
+			else if (gameObject.GetComponent<Sagat>() != null){	
+				animator.SetBool("tigerUppercutActive", false);
+				if (animator.GetBool("tigerKneeActive") == true){
+					physicsbody.velocity = new Vector2(0f, physicsbody.velocity.y);
+				}
+				animator.SetBool("tigerKneeActive", false);
+			}				
+		}
+	}
+
 	public void AttackState(){
 		animator.SetBool("isAttacking", true);
 		animator.SetBool("isWalkingBackward", false);
@@ -217,7 +245,7 @@ public class Character : MonoBehaviour {
 				else{
 					animator.Play("JumpNeutralRoundhouse",0);
 				}			
-				MoveProperties(40f, 8.5f, 12f, 55f, 1, 0, 1);
+				MoveProperties(40f, 8.5f, 6f, 55f, 1, 0, 1);
 			}	
 		}
 	}
@@ -240,10 +268,20 @@ public class Character : MonoBehaviour {
 	    	&& animator.GetBool("isThrown") == false && animator.GetBool("isMidAirRecovering") == false
 		   	&& animator.GetBool("isLanding") == false && animator.GetBool("isLiftingOff") == true){			
 			if (transform.localScale.x == 1){
-				physicsbody.velocity = new Vector2(x, 4.5f);
+                if (GetComponent<Sagat>() != null){
+				    physicsbody.velocity = new Vector2(x, 3.75f);
+                }
+                else{
+				    physicsbody.velocity = new Vector2(x, 4.5f);
+                }
 			}
 			else{
-				physicsbody.velocity = new Vector2(-x, 4.5f);
+                if (GetComponent<Sagat>() != null){
+				    physicsbody.velocity = new Vector2(-x, 3.75f);
+                }
+                else{
+				    physicsbody.velocity = new Vector2(-x, 4.5f);
+                }
 			}
 		}
 	}
@@ -308,6 +346,10 @@ public class Character : MonoBehaviour {
 	public void TossedByAkuma(){
 		YouGonnaGetTossed (60f, 3f, 4f);
 	}
+    
+	public void TossedBySagat(){
+		YouGonnaGetTossed (20f, 3f, 4f);
+	}
 
 	public void MoveProperties(	float hitstun, float blockstun, float pushback, float damage, 
 								int moveTypeInt, int hitTypeInt, int sparkTypeInt, float superBuilt = 3f){
@@ -338,7 +380,7 @@ public class Character : MonoBehaviour {
 				hitType = HitType.sweep;
 				break;
 			case 2:
-				hitType = HitType.rekkaKnockdown;
+				hitType = HitType.normalKnockDown;
 				break;
 			case 3:
 				hitType = HitType.shoryuken;
@@ -394,6 +436,36 @@ public class Character : MonoBehaviour {
 		Instantiate(landingDust, transform.position + offset, Quaternion.Euler(new Vector3(-90f, 0f, 0f)));
 	}	
 	
+	public void SuperStartUp(){
+		if (gameObject.tag == "Player1"){
+			TimeControl.inSuperStartup[0] = true;
+		}
+		else if (gameObject.tag == "Player2"){
+			TimeControl.inSuperStartup[1] = true;
+		}
+		
+		Vector3 offset = Vector3.zero;
+		GetComponentInChildren<SpriteRenderer>().sortingLayerName = "Effects";
+		GetSuper = 0f;
+		if (GetComponent<Akuma>() != null){
+            offset = SetOffset(offset, 0.1f, 0.25f);
+        }
+        else if (GetComponent<Ken>() != null){
+            offset = SetOffset(offset, 0.1f, -0.2f);
+		}
+		else if (GetComponent<FeiLong>() != null){
+            offset = SetOffset(offset, 0.5f, 0.25f);
+		}
+		else if (GetComponent<Balrog>() != null){
+            offset = SetOffset(offset, -0.4f, 0f);
+		}
+        else if (GetComponent<Sagat>() != null){
+            offset = SetOffset(offset, -0.2f, 0.2f);
+		}
+		GameObject newSuperEffect = Instantiate(superEffect, transform.position + offset, Quaternion.identity) as GameObject;
+		newSuperEffect.tag = gameObject.tag;
+	}
+    
 	void YouGonnaGetTossed (float dmg, float x, float y){
 		SetDamage (dmg);
 		if (GetHealth () <= 0) {
@@ -410,54 +482,17 @@ public class Character : MonoBehaviour {
 		animator.SetBool ("isAirborne", true);
 	}	
 	
-	public void SuperStartUp(){
-		if (gameObject.tag == "Player1"){
-			TimeControl.inSuperStartup[0] = true;
-		}
-		else if (gameObject.tag == "Player2"){
-			TimeControl.inSuperStartup[1] = true;
-		}
-		
-		Vector3 offset = Vector3.zero;
-		GetComponentInChildren<SpriteRenderer>().sortingLayerName = "Effects";
-		GetSuper = 0f;
-		if (GetComponent<Akuma>() != null){
-			if (side == Side.P1){
-				offset = new Vector3(0.1f, 0.25f, 0f);
-			}
-			else{
-				offset = new Vector3(-0.1f, 0.25f, 0f);
-			}
-		}
-		else if (GetComponent<Ken>() != null){
-			if (side == Side.P1){
-				offset = new Vector3(0.1f, -0.2f, 0f);
-			}
-			else{
-				offset = new Vector3(-0.1f, -0.2f, 0f);
-			}
-		}
-		else if (GetComponent<FeiLong>() != null){
-			if (side == Side.P1){
-				offset = new Vector3(0.5f, 0.25f, 0f);
-			}
-			else{
-				offset = new Vector3(-0.5f, 0.25f, 0f);
-			}
-		}
-		else if (GetComponent<Balrog>() != null){
-			if (side == Side.P1){
-				offset = new Vector3(-0.4f, 0f, 0f);
-			}
-			else{
-				offset = new Vector3(0.4f, 0f, 0f);
-			}
-		}
-		GameObject newSuperEffect = Instantiate(superEffect, transform.position + offset, Quaternion.identity) as GameObject;
-		newSuperEffect.tag = gameObject.tag;
-	}	
-		
-	public void CreateDemonSparks(){
+    Vector3 SetOffset(Vector3 vector, float x, float y){
+        if (side == Side.P1){
+            vector = new Vector3(x, y, 0f);
+        }
+        else{
+            vector = new Vector3(-x, y, 0f);
+        }
+        return vector;
+    }
+
+    public void CreateDemonSparks(){
 		float x = Random.Range (-0.25f, 0.25f);
 		float y = Random.Range (-0.25f, 0.25f);
 		Vector3 offset = new Vector3 (x, y, 0f);
@@ -608,26 +643,5 @@ public class Character : MonoBehaviour {
 	
 	public bool GetKOed(){
 		return isKO;
-	}
-				
-	//when character lands on the ground without getting hit
-	void OnCollisionEnter2D(Collision2D collision){
-		if (collision.gameObject.GetComponent<Ground>()	&& animator.GetBool("isMidAirHit") == false && animator.GetFloat("yVelocity") <= 0){
-			animator.SetBool("isAirborne", false);
-			if (gameObject.GetComponent<Ken>() != null || gameObject.GetComponent<Akuma>() != null){
-				animator.SetBool("shoryukenActive", false);
-			}
-			else if (gameObject.GetComponent<FeiLong>() != null){
-				if (animator.GetBool("rekkaKunActive") == true){
-					physicsbody.velocity = new Vector2(0f, physicsbody.velocity.y);
-				}
-				animator.SetBool("shienKyakuActive", false);
-				animator.SetBool("rekkaKunActive", false);
-			}				
-			else if (gameObject.GetComponent<Balrog>() != null){	
-				animator.SetBool("isHeadButting", false);
-			}				
-		}
-	}
-		
+	}		
 }

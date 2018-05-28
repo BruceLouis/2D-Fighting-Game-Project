@@ -24,7 +24,6 @@ public class HitBox : MonoBehaviour {
 //		Vector2 hitLocaterStart, hitLocaterEnd;
 		
 		if (hurtBox && !hurtBox.GetHurtBoxCollided()){
-			
 			hurtBox.SetHurtBoxCollided(true);
 			cancellable = true;
 			TimeControl.slowDown = true;
@@ -139,7 +138,7 @@ public class HitBox : MonoBehaviour {
 		}
 		else{
 			if (anim.GetBool("isAirborne") == true){
-				if (receiver.GetHealth () <= 0){	
+				if (receiver.GetHealth () <= 0f){	
 					if (attacker.GetComponent<FeiLong>() != null){				
 						SuperKO (attacker.GetComponent<FeiLong>().GetRekkaShinkenActive);
 					}
@@ -167,7 +166,7 @@ public class HitBox : MonoBehaviour {
 			}
 			else{
 			
-				if (receiver.GetHealth () <= 0){	
+				if (receiver.GetHealth () <= 0f){	
 					if (attacker.GetComponent<FeiLong>() != null){				
 						SuperKO (attacker.GetComponent<FeiLong>().GetRekkaShinkenActive);
 					}
@@ -222,7 +221,7 @@ public class HitBox : MonoBehaviour {
 				receiver.side = Character.Side.P1;
 				receiver.SideSwitch();
 			}
-			if (receiver.GetHealth () <= 0){				
+			if (receiver.GetHealth () <= 0f){				
 				GotKOed (receiver, recAnim, receiverRigid);
 			}
 			else{
@@ -230,9 +229,9 @@ public class HitBox : MonoBehaviour {
 				recAnim.Play("Trip",0,0f);
 			}
 		}
-		else if (attacker.GetHitType() == Character.HitType.rekkaKnockdown){
+		else if (attacker.GetHitType() == Character.HitType.normalKnockDown){
 			recAnim.Play("KnockDownBlendTree",0,0f);
-			if (receiver.GetHealth () <= 0){	
+			if (receiver.GetHealth () <= 0f){	
 				if (attacker.GetComponent<Ken>() != null){
 					SuperKO (attacker.GetComponent<Ken>().GetShinryukenActive);
 				}
@@ -280,10 +279,23 @@ public class HitBox : MonoBehaviour {
 			else if (attacker.GetComponent<Ken>() != null){
 				GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 1f, 3f);
 			}
+			else if (attacker.GetComponent<Sagat>() != null){	
+				switch(attAnim.GetInteger("tigerKneeKickType")){
+					case 0:
+						GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 2.5f, 3f);
+						break;
+					case 1:
+						GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 3f, 3f);
+						break;		
+					default:
+						GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 3.5f, 3f);
+						break;										
+				}		
+			}		
 		}
 		else if (attacker.GetHitType() == Character.HitType.shoryuken){
 			recAnim.Play("KnockDownBlendTree",0,0f);
-			if (receiver.GetHealth () <= 0){	
+			if (receiver.GetHealth () <= 0f){	
 				TimeControl.slowDownTimer = KOSlowDown;		
 			}
 			else{		
@@ -331,9 +343,22 @@ public class HitBox : MonoBehaviour {
 			else if (attacker.GetComponent<Balrog>() != null){
 				GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 2f, 3f);
 			}
+			else if (attacker.GetComponent<Sagat>() != null){				
+				switch(attAnim.GetInteger("tigerUppercutPunchType")){
+				case 0:
+					GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 1f, 4f);
+					break;
+				case 1:
+					GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 1.25f, 4.75f);
+					break;		
+				default:
+					GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 1.5f, 5.5f);
+					break;										
+				}		
+			}
 		}
 		else if (attacker.GetHitType() == Character.HitType.akumaHurricaneKick){
-			if (receiver.GetHealth () <= 0){	
+			if (receiver.GetHealth () <= 0f){	
 				if (attacker.GetComponent<Ken>() != null){
 					SuperKO (attacker.GetComponent<Ken>().GetShinryukenActive);
 				}
@@ -365,7 +390,7 @@ public class HitBox : MonoBehaviour {
 	
 	void PushBack(Character attacker, Rigidbody2D receiverRigid, Rigidbody2D attackerRigid){						
 		if (attacker.GetHitType() != Character.HitType.hurricaneKick && attacker.GetHitType() != Character.HitType.rekka
-			&& attacker.GetHitType() != Character.HitType.akumaHurricaneKick && attacker.GetHitType() != Character.HitType.rekkaKnockdown 
+			&& attacker.GetHitType() != Character.HitType.akumaHurricaneKick && attacker.GetHitType() != Character.HitType.normalKnockDown 
 			&& attacker.GetHitType() != Character.HitType.dashLow){
 			if (attacker.side == Character.Side.P1){
 				if (rightEdgeDistance > 0.25f){
@@ -394,7 +419,7 @@ public class HitBox : MonoBehaviour {
 			else{
 				receiverRigid.velocity = new Vector2(-attacker.GetEnforcePushBack() * 0.15f, 0f);		
 			}
-			if (attacker.GetHitType() == Character.HitType.rekka || attacker.GetHitType() == Character.HitType.rekkaKnockdown){
+			if (attacker.GetHitType() == Character.HitType.rekka || attacker.GetHitType() == Character.HitType.normalKnockDown){
 				attackerRigid.velocity *= 0.6f;
 			}
 		}

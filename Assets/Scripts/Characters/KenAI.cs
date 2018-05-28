@@ -278,7 +278,6 @@ public class KenAI : MonoBehaviour {
 			AIcontrols.AICrouch ();
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
-			decisionTimer = 0f;
 		}
 		else if (decision <= 75 && decision > 70) {
 			AIcontrols.AIStand ();
@@ -695,8 +694,25 @@ public class KenAI : MonoBehaviour {
 					animator.Play("KenShoryukenFierce",0);
 					animator.SetInteger("shoryukenPunchType", 2);
 				}
-			}
-		}
+                //switch (shoryukenPunch)
+                //{
+                //    case 0:
+                //        animator.Play("KenShoryukenJab", 0);
+                //        animator.SetInteger("shoryukenPunchType", 0);
+                //        break;
+
+                //    case 1:
+                //        animator.Play("KenShoryukenStrong", 0);
+                //        animator.SetInteger("shoryukenPunchType", 1);
+                //        break;
+
+                //    default:
+                //        animator.Play("KenShoryukenFierce", 0);
+                //        animator.SetInteger("shoryukenPunchType", 2);
+                //        break;
+                //}
+            }
+        }
 	}
 	
 	void AIHadoukens(){		

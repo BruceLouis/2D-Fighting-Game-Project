@@ -12,7 +12,7 @@ public class Opponent : MonoBehaviour {
     public GameObject mugShotObject;
 	public GameObject[] streetFighterCharacters;
 	public Text nameText;
-	public Sprite kenMugShot, feiLongMugShot, balrogMugShot, akumaMugShot;
+	public Sprite kenMugShot, feiLongMugShot, balrogMugShot, akumaMugShot, sagatMugShot;
 	public bool isAI, doInitiateCharacter;
 	
 	private TimeControl timeControl;
@@ -33,6 +33,7 @@ public class Opponent : MonoBehaviour {
 	private FeiLongAI feiLongAI;
 	private BalrogAI balrogAI;
 	private AkumaAI akumaAI;
+	private SagatAI sagatAI;
 	
 	private bool pressedForward, pressedBackward, pressedCrouch, introPlayed;
 	private float distance, distanceFromPlayer;
@@ -95,8 +96,16 @@ public class Opponent : MonoBehaviour {
 			nameText.text = characterName;
             aiBehavior = akumaAI.Behaviors;
         }
-		
-		projectileP2Parent = GameObject.Find("ProjectileP2Parent");
+        else if (character.GetComponent<Sagat>() != null)
+        {
+			sagatAI = GetComponentInChildren<SagatAI>();
+            mugShot.sprite = sagatMugShot;
+            characterName = "Sagat";
+            nameText.text = characterName;
+            aiBehavior = sagatAI.Behaviors;
+        }
+
+        projectileP2Parent = GameObject.Find("ProjectileP2Parent");
 		if (projectileP2Parent == null){
 			projectileP2Parent = new GameObject("ProjectileP2Parent");
 		}		
@@ -293,6 +302,13 @@ public class Opponent : MonoBehaviour {
 				if (animator.GetBool ("isAttacking") == false) {
 					character.AttackState ();
 					animator.Play ("FeiLongRekkaShinken", 0);
+				}
+				animator.SetTrigger ("motionSuperInputed");
+			}
+			else if (character.GetComponent<Sagat>() != null){		
+				if (animator.GetBool ("isAttacking") == false) {
+					character.AttackState ();
+					animator.Play ("SagatTigerCannon", 0);
 				}
 				animator.SetTrigger ("motionSuperInputed");
 			}

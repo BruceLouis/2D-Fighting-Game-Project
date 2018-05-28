@@ -13,8 +13,9 @@ public class Projectile : MonoBehaviour {
 	public AudioClip connectedSound;
 	public AudioClip blockedSound;
 
-    private enum MoveType { low, mid, high};
-    [SerializeField] MoveType moveType;
+    public enum MoveType { low, mid, high};
+    [HideInInspector]
+    public MoveType moveType = MoveType.high;
 	
 	private ComboCounter comboCounter;
 	private Animator animator;
@@ -54,22 +55,22 @@ public class Projectile : MonoBehaviour {
 		else{
 			recRigid.velocity = new Vector2(2f, 4f);
 		}
-	}
-		
-	void OnTriggerEnter2D(Collider2D collider){
-		HurtBox hurtBox = collider.gameObject.GetComponentInParent<HurtBox>();	
-		Animator hurtCharAnimator = collider.gameObject.GetComponentInParent<Animator>();	
-		Projectile otherProjectile = collider.gameObject.GetComponent<Projectile>();
-		if (hurtBox && hurtBox.gameObject.tag != gameObject.tag && !hurtBox.GetHurtBoxCollided()){	
-		
-			hurtBox.SetHurtBoxCollided(true);
-			Character hurtCharacter = hurtBox.GetComponentInParent<Character>();
-			Rigidbody2D hurtPhysicsbody = hurtCharacter.GetComponent<Rigidbody2D>();
-			animator.SetBool("madeContact", true);	
-			
-			if (hurtCharacter.GetBackPressed() == true && hurtCharAnimator.GetBool("isAttacking") == false
-			    && hurtCharAnimator.GetBool("isLiftingOff") == false && hurtCharAnimator.GetBool("isAirborne") == false
-			    && hurtCharAnimator.GetBool("isInHitStun") == false){
+    }
+
+    void OnTriggerEnter2D(Collider2D collider){
+        HurtBox hurtBox = collider.gameObject.GetComponentInParent<HurtBox>();
+        Animator hurtCharAnimator = collider.gameObject.GetComponentInParent<Animator>();
+        Projectile otherProjectile = collider.gameObject.GetComponent<Projectile>();
+        if (hurtBox && hurtBox.gameObject.tag != gameObject.tag && !hurtBox.GetHurtBoxCollided() && !animator.GetBool("madeContact")){
+
+            hurtBox.SetHurtBoxCollided(true);
+            Character hurtCharacter = hurtBox.GetComponentInParent<Character>();
+            Rigidbody2D hurtPhysicsbody = hurtCharacter.GetComponent<Rigidbody2D>();
+            animator.SetBool("madeContact", true);
+
+            if (hurtCharacter.GetBackPressed() == true && hurtCharAnimator.GetBool("isAttacking") == false
+                && hurtCharAnimator.GetBool("isLiftingOff") == false && hurtCharAnimator.GetBool("isAirborne") == false
+                && hurtCharAnimator.GetBool("isInHitStun") == false){
                 //if attack is blocked
                 if ((moveType == MoveType.low && hurtCharAnimator.GetBool("isCrouching") == false)
                     || (moveType == MoveType.mid && hurtCharAnimator.GetBool("isStanding") == false)){
@@ -84,10 +85,10 @@ public class Projectile : MonoBehaviour {
             }
 
         }
-		if (otherProjectile || collider.gameObject.GetComponent<Ground>()){		
-			animator.SetBool("madeContact", true);
-		}
-	}
+        if (otherProjectile || collider.gameObject.GetComponent<Ground>() && !animator.GetBool("madeContact")){
+            animator.SetBool("madeContact", true);
+        }
+    }
 
     void ProjectileLanded(Animator hurtCharAnimator, Character hurtCharacter, Rigidbody2D hurtPhysicsbody){
         TimeControl.slowDown = true;
@@ -107,7 +108,7 @@ public class Projectile : MonoBehaviour {
                 comboCounter.ResetComboFinishedTimer();
             }
         }
-        if (hurtCharacter.GetHealth() <= 0){
+        if (hurtCharacter.GetHealth() <= 0f){
             CharacterKOed(hurtCharacter, hurtPhysicsbody, hurtCharAnimator);
         }
         else{

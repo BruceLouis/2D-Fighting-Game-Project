@@ -18,7 +18,11 @@ public class Thrown : StateMachineBehaviour {
 		animator.ResetTrigger("shoryukenInputed");	
 		animator.ResetTrigger("reverseShoryukenInputed");	
 		animator.ResetTrigger("hadoukenInputed");
-		animator.ResetTrigger("hurricaneKickInputed");
+        animator.ResetTrigger("upperTigerShotInputed");
+        animator.ResetTrigger("lowerTigerShotInputed");
+        animator.ResetTrigger("tigerUppercutInputed");
+        animator.ResetTrigger("tigerKneeInputed");
+        animator.ResetTrigger("hurricaneKickInputed");
 		animator.ResetTrigger("rollInputed");
 		animator.ResetTrigger("dashStraightInputed");
 		animator.ResetTrigger("dashLowInputed");	

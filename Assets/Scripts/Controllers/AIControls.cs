@@ -110,6 +110,21 @@ public class AIControls : MonoBehaviour {
 			AIStand();
 		}
 	}
+
+    public void AIRoundhouse(int cutOff, int maxNum){
+		int crouchOrStand = Random.Range(0, maxNum);
+		if (GetConditions()){			
+			character.AttackState();
+			if (crouchOrStand <= cutOff){
+				AICrouch();
+			}	
+			else{
+				AIStand();
+			}	
+			character.CharacterRoundhouse();
+			AIStand();
+		}
+	}
 	
 	public void AIFierce(int maxNum, int standNum){
 		int crouchOrStand = Random.Range(0, maxNum);

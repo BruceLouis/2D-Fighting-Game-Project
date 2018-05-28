@@ -63,6 +63,9 @@ public class SharedProperties : MonoBehaviour {
 			else if (throwingCharacter.GetComponent<Akuma>() != null){
 				ThrowSnapPoint (throwingCharacter, thrownCharacter, 0.55f);
 			}
+            else if (throwingCharacter.GetComponent<Sagat>() != null){
+				ThrowSnapPoint (throwingCharacter, thrownCharacter, 0.4f);
+			}
 		}
 	}	
 	

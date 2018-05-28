@@ -45,6 +45,9 @@ public class ThrowBox : MonoBehaviour {
 					else if (throwingCharacter.GetComponent<Akuma>() != null){
 						animator.Play("ThrownByAkuma");
 					}
+                    else if (throwingCharacter.GetComponent<Sagat>() != null){
+						animator.Play("ThrownBySagat");
+					}
 				}
 				else{
 					animator.Play("DemonedByAkuma");
