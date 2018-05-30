@@ -52,8 +52,11 @@ public class Character : MonoBehaviour {
 			animator.SetBool("isAirborne", true);
 			animator.SetBool("isStanding", false);
 			animator.SetBool("isLiftingOff", false);
-		}
-	}
+        }
+        if (TimeControl.gameState == TimeControl.GameState.KOHappened && GetComponentInChildren<HurtBox>() != null){
+            GetComponentInChildren<HurtBox>().gameObject.SetActive(false);
+        }
+    }
 	
 	// Update is called once per frame
 	void Update(){
@@ -69,8 +72,7 @@ public class Character : MonoBehaviour {
 		animator.SetFloat("yVelocity", physicsbody.velocity.y);	
 						
 		leftEdgeDistance = Mathf.Abs(CameraControl.leftBGEdge) + transform.position.x; 
-		rightEdgeDistance = CameraControl.rightBGEdge - transform.position.x; 
-		
+		rightEdgeDistance = CameraControl.rightBGEdge - transform.position.x; 		
 	}
 	
 				

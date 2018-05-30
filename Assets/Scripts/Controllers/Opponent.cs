@@ -15,7 +15,6 @@ public class Opponent : MonoBehaviour {
 	public Sprite kenMugShot, feiLongMugShot, balrogMugShot, akumaMugShot, sagatMugShot;
 	public bool isAI, doInitiateCharacter;
 	
-	private TimeControl timeControl;
 	private Animator animator;
 	private Player player;
 	private Character playerCharacter;
@@ -60,7 +59,6 @@ public class Opponent : MonoBehaviour {
 	// Use this for initialization
 	void Start () {		
 		
-		timeControl = FindObjectOfType<TimeControl>();
 		player = FindObjectOfType<Player>();
 		playerCharacter = player.GetComponentInChildren<Character>();
 		physicsbody = GetComponentInChildren<Rigidbody2D>();	
@@ -116,11 +114,11 @@ public class Opponent : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
-		if (timeControl.gameState == TimeControl.GameState.introPose && !introPlayed){
+		if (TimeControl.gameState == TimeControl.GameState.introPose && !introPlayed){
 			animator.Play("IntroPose",0);
 			introPlayed = true;
 		}			
-		else if (timeControl.gameState == TimeControl.GameState.fight){
+		else if (TimeControl.gameState == TimeControl.GameState.fight){
 			
 			sharedProperties.IsThrown(animator, playerCharacter, character);		
 			

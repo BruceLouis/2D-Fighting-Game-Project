@@ -72,6 +72,7 @@ public class Sagat : MonoBehaviour {
 
         StartCoroutine(CreateTigerCannons(height, offset, tigerCannons, rigidbodies, tigerShotSprite));
 
+        GetComponentInChildren<SpriteRenderer>().sortingLayerName = "Characters";
         AudioSource.PlayClipAtPoint(tigerShotCreatedSound, transform.position);
         character.GetSuper = 0f;
     }

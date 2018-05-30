@@ -67,7 +67,7 @@ public class BalrogAI : MonoBehaviour {
 					if (playerCharacter.GetKnockDown() == true && playerCharacter.GetAirborne() == false){		
 						KnockDownFromFarDecisions ();
 					}
-					else if (playerCharacter.GetComponent<Ken>() != null){
+					else if (playerCharacter.GetComponent<Ken>() != null || playerCharacter.GetComponent<Sagat>() != null){
 						DecisionMade (5,1);
 						VsKenFromDistanceDecisions ();
 					}
@@ -79,7 +79,7 @@ public class BalrogAI : MonoBehaviour {
 					if (opponentCharacter.GetKnockDown() == true && opponentCharacter.GetAirborne() == false){	
 						KnockDownFromFarDecisions ();
 					}
-					else if (opponentCharacter.GetComponent<Ken>() != null){
+					else if (opponentCharacter.GetComponent<Ken>() != null || opponentCharacter.GetComponent<Sagat>() != null){
 						DecisionMade (5,1);
 						VsKenFromDistanceDecisions ();
 					}

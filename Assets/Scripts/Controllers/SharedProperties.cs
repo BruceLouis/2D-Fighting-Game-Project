@@ -13,12 +13,9 @@ public class SharedProperties : MonoBehaviour {
 	private Opponent opponent;
 	private Animator animator;
 	private Character character;
-	private TimeControl timeControl;
 	private bool isKOSoundPlayed, pressedForward, pressedBackward, pressedCrouch; 	
 	
-	void Start(){
-		timeControl = FindObjectOfType<TimeControl>();
-		
+	void Start(){		
 		if (GetComponent<Player>() != null){
 			player = GetComponent<Player>();
 		}
@@ -31,13 +28,13 @@ public class SharedProperties : MonoBehaviour {
 	}
 	
 	public void KOSequence (string winnerString){
-		if (timeControl.gameState == TimeControl.GameState.KOHappened){
+		if (TimeControl.gameState == TimeControl.GameState.KOHappened){
 			if (animator.GetBool ("isKOed") == true && !isKOSoundPlayed) {				
 				character.KOSound ();
 				isKOSoundPlayed = true;
 			}
 		}
-		if (timeControl.gameState == TimeControl.GameState.victoryPose && animator.GetBool ("isKOed") == false) {
+		if (TimeControl.gameState == TimeControl.GameState.victoryPose && animator.GetBool ("isKOed") == false) {
 			TimeControl.winner = winnerString;
 			animator.Play ("VictoryPose");
 		}

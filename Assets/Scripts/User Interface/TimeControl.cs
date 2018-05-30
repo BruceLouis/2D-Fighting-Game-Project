@@ -12,7 +12,7 @@ public class TimeControl : MonoBehaviour {
 	public static string winner;
 		
 	public enum GameState {introPose, countDown, fight, KOHappened, victoryPose};
-	public GameState gameState;
+	public static GameState gameState;
 	
 	public GameObject superPanel, shunGokuSatsuPanel, shunGokuSatsuKOPanel, superKOPanel;
 	

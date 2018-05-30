@@ -390,8 +390,7 @@ public class HitBox : MonoBehaviour {
 	
 	void PushBack(Character attacker, Rigidbody2D receiverRigid, Rigidbody2D attackerRigid){						
 		if (attacker.GetHitType() != Character.HitType.hurricaneKick && attacker.GetHitType() != Character.HitType.rekka
-			&& attacker.GetHitType() != Character.HitType.akumaHurricaneKick && attacker.GetHitType() != Character.HitType.normalKnockDown 
-			&& attacker.GetHitType() != Character.HitType.dashLow){
+			&& attacker.GetHitType() != Character.HitType.akumaHurricaneKick && attacker.GetHitType() != Character.HitType.normalKnockDown){
 			if (attacker.side == Character.Side.P1){
 				if (rightEdgeDistance > 0.25f){
 					// if close to the wall, pushback enforced on attacking character instead

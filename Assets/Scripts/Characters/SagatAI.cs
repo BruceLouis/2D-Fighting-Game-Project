@@ -53,7 +53,21 @@ public class SagatAI : MonoBehaviour
         antiAirTimer--;
         if (AIcontrols.FreeToMakeDecisions() && !TimeControl.inSuperStartup[0] && !TimeControl.inSuperStartup[1])
         {
-            if (sharedProperties.GetDistanceFromOtherFighter() >= 2f)
+            if (animator.GetBool("isAirborne") == true && animator.GetBool("isLiftingOff") == false)
+            {
+                decision = Random.Range(0, 100);
+                if (decision <= 3)
+                {
+                    AIcontrols.AIJumpFierce();
+                    sharedProperties.CharacterNeutralState();
+                }
+                else if (decision <= 6 && decision > 3)
+                {
+                    AIcontrols.AIJumpRoundhouse();
+                    sharedProperties.CharacterNeutralState();
+                }
+            }
+            else if (sharedProperties.GetDistanceFromOtherFighter() >= 2f)
             {
                 RegularFarRangeDecisions();
             }
@@ -245,7 +259,14 @@ public class SagatAI : MonoBehaviour
         }
         else if (decision <= 29 && decision > 27)
         {
-            AIcontrols.AIShort(2);
+            if (character.GetSuper >= 100f)
+            {
+                AITigerCannons();
+            }
+            else
+            {
+                AIcontrols.AIShort(2);
+            }
             sharedProperties.CharacterNeutralState();
             AIcontrols.DoesAIBlock();
             decisionTimer = 0f;
@@ -259,21 +280,42 @@ public class SagatAI : MonoBehaviour
         }
         else if (decision <= 35 && decision > 33)
         {
-            AIcontrols.AIFierce(2, 1);
+            if (character.GetSuper >= 100f)
+            {
+                AITigerCannons();
+            }
+            else
+            {
+                AIcontrols.AIFierce(2, 1);
+            }
             sharedProperties.CharacterNeutralState();
             AIcontrols.DoesAIBlock();
             decisionTimer = 0f;
         }
         else if (decision <= 37 && decision > 35)
         {
-            AIcontrols.AIForward(2);
+            if (character.GetSuper >= 100f)
+            {
+                AITigerCannons();
+            }
+            else
+            {
+                AIcontrols.AIForward(2);
+            }
             sharedProperties.CharacterNeutralState();
             AIcontrols.DoesAIBlock();
             decisionTimer = 0f;
         }
         else if (decision <= 39 && decision > 37)
         {
-            AIcontrols.AIStrong(40);
+            if (character.GetSuper >= 100f)
+            {
+                AITigerCannons();
+            }
+            else
+            {
+                AIcontrols.AIStrong(40);
+            }
             sharedProperties.CharacterNeutralState();
             AIcontrols.DoesAIBlock();
             decisionTimer = 0f;
@@ -409,14 +451,22 @@ public class SagatAI : MonoBehaviour
             AIcontrols.DoesAIBlock();
             decisionTimer = 0f;
         }
-        else if (decision <= 59 && decision > 54)
+        else if (decision <= 57 && decision > 54)
         {
             AIcontrols.AIFierce(2, 1);
             sharedProperties.CharacterNeutralState();
             AIcontrols.DoesAIBlock();
             decisionTimer = 0f;
         }
-        else if (decision <= 67 && decision > 59)
+
+        else if (decision <= 60 && decision > 57)
+        {
+            AIcontrols.AIThrow();
+            sharedProperties.CharacterNeutralState();
+            AIcontrols.DoesAIBlock();
+            decisionTimer = 0f;
+        }
+        else if (decision <= 67 && decision > 60)
         {
             AIcontrols.AIForward(4);
             sharedProperties.CharacterNeutralState();
