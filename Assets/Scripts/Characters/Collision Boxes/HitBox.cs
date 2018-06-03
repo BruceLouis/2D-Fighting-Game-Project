@@ -383,7 +383,15 @@ public class HitBox : MonoBehaviour {
 				}		
 			}	
 			else if (attacker.GetComponent<Ken>() != null){
-				GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 0f, 2f);
+				if (distance > 0.25f){
+				    GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, -1f, 2f);
+				}
+				else if (distance < -0.25f){
+				    GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, -1f, 2f);					
+				}
+                else{
+				    GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 0f, 2f);
+                }
 			}	
 		}
 	}

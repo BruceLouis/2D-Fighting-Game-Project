@@ -288,13 +288,11 @@ public class Opponent : MonoBehaviour {
 		}
 		if (Input.GetKeyDown(KeyCode.Alpha3)){
 			if (character.GetComponent<Ken>() != null){
-				if(animator.GetBool("isAttacking") == false && animator.GetBool("isAirborne") == false){				
-					character.AttackState();
-					animator.Play("KenHadouken",0);		
-					animator.SetInteger("hadoukenPunchType", Random.Range(0,3));
-					animator.SetInteger("hadoukenOwner", 2);
+				if (animator.GetBool ("isAttacking") == false) {
+					character.AttackState ();
+					animator.Play ("KenShinryuken", 0);
 				}
-				animator.SetTrigger("hadoukenInputed");
+				animator.SetTrigger ("motionSuperInputed");
 			}
 			else if (character.GetComponent<FeiLong>() != null){		
 				if (animator.GetBool ("isAttacking") == false) {
