@@ -56,8 +56,8 @@ public class TimeControl : MonoBehaviour {
 	void Start () {			
 		playerChar = player.GetComponentInChildren<Character>();
 		opponentChar = opponent.GetComponentInChildren<Character>();		
-//		gameState = GameState.introPose;	
-		gameState = GameState.fight;	
+		gameState = GameState.introPose;	
+//		gameState = GameState.fight;	
 		slowDown = false;	
 		inSuperStartup = new bool[2];	
 	}
