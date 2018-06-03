@@ -67,8 +67,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1131691572813040}
   m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0.2988, y: 0, z: 0}
+  m_LocalScale: {x: 1.663966, y: 1.3088499, z: 1}
   m_Children: []
   m_Father: {fileID: 4027549838922574}
   m_RootOrder: 0
@@ -105,7 +105,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.2922815, y: -0.038662314}
+  m_Offset: {x: 0.056556925, y: -0.03115511}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -116,7 +116,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.47112536, y: 0.123892546}
+  m_Size: {x: 0.28795096, y: 0.12689519}
   m_EdgeRadius: 0
 --- !u!95 &95781869852511112
 Animator:
@@ -151,6 +151,7 @@ MonoBehaviour:
   pushBack: 10
   hitStun: 40
   blockStun: 25
+  numHits: 5
   shoryukenSpark: {fileID: 1397779579624298, guid: 88f9da45535328247bfab00bd7afe920,
     type: 2}
   blockSpark: {fileID: 1939279163534822, guid: d4837423e51622a4ead581e63e5b5796, type: 2}
@@ -192,7 +193,7 @@ SpriteRenderer:
   m_SortingLayerID: -1144743011
   m_SortingLayer: 5
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300008, guid: 876fe8b31b71bb04b8b2eeb4b3d2a5d6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a3186200a09d1a4478e4e963ce50b421, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

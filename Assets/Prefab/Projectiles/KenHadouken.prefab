@@ -151,6 +151,7 @@ MonoBehaviour:
   pushBack: 10
   hitStun: 40
   blockStun: 25
+  numHits: 1
   shoryukenSpark: {fileID: 1397779579624298, guid: 88f9da45535328247bfab00bd7afe920,
     type: 2}
   blockSpark: {fileID: 1939279163534822, guid: d4837423e51622a4ead581e63e5b5796, type: 2}

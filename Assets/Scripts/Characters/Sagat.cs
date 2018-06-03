@@ -66,11 +66,22 @@ public class Sagat : MonoBehaviour {
     {
         Vector3 height = new Vector3(0f, 0.4f, 0f);
         Vector3 offset = new Vector3(0.9f, 0f, 0f);
-        GameObject[] tigerCannons = new GameObject[numTigerCannons];
-        Rigidbody2D[] rigidbodies = new Rigidbody2D[numTigerCannons];
-        SpriteRenderer[] tigerShotSprite = new SpriteRenderer[numTigerCannons];
+        //GameObject[] tigerCannons = new GameObject[numTigerCannons];
+        //Rigidbody2D[] rigidbodies = new Rigidbody2D[numTigerCannons];
+        //SpriteRenderer[] tigerShotSprite = new SpriteRenderer[numTigerCannons];
 
-        StartCoroutine(CreateTigerCannons(height, offset, tigerCannons, rigidbodies, tigerShotSprite));
+        //for (int i = 0; i < numTigerCannons; i++)
+        //{
+        //    tigerCannons[i] = Instantiate(superProjectile);
+        //    rigidbodies[i] = tigerCannons[i].GetComponent<Rigidbody2D>();
+        //    tigerShotSprite[i] = tigerCannons[i].GetComponentInChildren<SpriteRenderer>();
+        //    ProjectileInitialize(offset, height, tigerCannons[i]);
+        //    ProjectileVelocity(rigidbodies[i], tigerShotSprite[i], 3.75f);
+        //}
+
+        GameObject tigerCannon = Instantiate(superProjectile);
+        ProjectileInitialize(offset, height, tigerCannon);
+        ProjectileVelocity(tigerCannon.GetComponent<Rigidbody2D>(), tigerCannon.GetComponentInChildren<SpriteRenderer>(), 3.75f);
 
         GetComponentInChildren<SpriteRenderer>().sortingLayerName = "Characters";
         AudioSource.PlayClipAtPoint(tigerShotCreatedSound, transform.position);
@@ -113,20 +124,7 @@ public class Sagat : MonoBehaviour {
             projectile.transform.localScale = new Vector3(-1f, transform.localScale.y, transform.localScale.z);
         }
     }
-
-    IEnumerator CreateTigerCannons(Vector3 height, Vector3 offset, GameObject[] projectiles, Rigidbody2D[] rigidbodies, SpriteRenderer[] sprites)
-    {
-        for (int i = 0; i < numTigerCannons; i++)
-        {
-            projectiles[i] = Instantiate(superProjectile);
-            rigidbodies[i] = projectiles[i].GetComponent<Rigidbody2D>();
-            sprites[i] = projectiles[i].GetComponentInChildren<SpriteRenderer>();
-            ProjectileInitialize(offset, height, projectiles[i]);
-            ProjectileVelocity(rigidbodies[i], sprites[i], 3.75f);
-            yield return new WaitForSeconds(0.001f);
-        }
-    }
-
+    
     void SagatTigerUppercut()
     {
         uppercutType = animator.GetInteger("tigerUppercutPunchType");

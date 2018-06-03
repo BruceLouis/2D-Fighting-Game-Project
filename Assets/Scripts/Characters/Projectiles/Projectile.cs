@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour {
 
-	public float damage, pushBack;
-	public float hitStun, blockStun;
+	[SerializeField] float damage, pushBack;
+	[SerializeField] float hitStun, blockStun;
+    [SerializeField] int numHits;
 	
 	public GameObject shoryukenSpark;
 	public GameObject blockSpark;
@@ -57,16 +58,15 @@ public class Projectile : MonoBehaviour {
 		}
     }
 
-    void OnTriggerEnter2D(Collider2D collider){
+    void OnTriggerStay2D(Collider2D collider){
         HurtBox hurtBox = collider.gameObject.GetComponentInParent<HurtBox>();
         Animator hurtCharAnimator = collider.gameObject.GetComponentInParent<Animator>();
         Projectile otherProjectile = collider.gameObject.GetComponent<Projectile>();
         if (hurtBox && hurtBox.gameObject.tag != gameObject.tag && !hurtBox.GetHurtBoxCollided() && !animator.GetBool("madeContact")){
-
+            CountNumHits();
             hurtBox.SetHurtBoxCollided(true);
             Character hurtCharacter = hurtBox.GetComponentInParent<Character>();
             Rigidbody2D hurtPhysicsbody = hurtCharacter.GetComponent<Rigidbody2D>();
-            animator.SetBool("madeContact", true);
 
             if (hurtCharacter.GetBackPressed() == true && hurtCharAnimator.GetBool("isAttacking") == false
                 && hurtCharAnimator.GetBool("isLiftingOff") == false && hurtCharAnimator.GetBool("isAirborne") == false
@@ -86,6 +86,13 @@ public class Projectile : MonoBehaviour {
 
         }
         if (otherProjectile || collider.gameObject.GetComponent<Ground>() && !animator.GetBool("madeContact")){
+            CountNumHits();
+        }
+    }
+
+    void CountNumHits(){
+        numHits--;
+        if (numHits <= 0){
             animator.SetBool("madeContact", true);
         }
     }

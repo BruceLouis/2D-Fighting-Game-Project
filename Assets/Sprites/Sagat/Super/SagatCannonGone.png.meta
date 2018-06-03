@@ -1,23 +1,20 @@
 fileFormatVersion: 2
-guid: a69bbd9ec7e8a014ab9b67a1f710a3f4
+guid: a192b013269d2ac40b3a770f3e49b39e
 TextureImporter:
   fileIDToRecycleName:
-    21300000: SagatCannonGone_0
-    21300002: SagatCannonGone_1
-    21300004: SagatCannonGone_2
-    21300006: SagatCannonGone_3
-    21300008: SagatCannonGone_4
-    21300010: SagatCannonGone_5
-    21300012: SagatCannonGone_6
-    21300014: SagatCannonGone_7
-    21300016: SagatCannonGone_8
-    21300018: SagatCannonGone_9
-    21300020: SagatCannonGone_10
-    21300022: SagatCannonGone_11
-    21300024: SagatCannonGone_12
-    21300026: SagatCannonGone_13
-    21300028: SagatCannonGone_14
-    21300030: SagatCannonGone_15
+    21300000: SagatRealCannonGone_0
+    21300002: SagatRealCannonGone_1
+    21300004: SagatRealCannonGone_2
+    21300006: SagatRealCannonGone_3
+    21300008: SagatRealCannonGone_4
+    21300010: SagatRealCannonGone_5
+    21300012: SagatRealCannonGone_6
+    21300014: SagatRealCannonGone_7
+    21300016: SagatRealCannonGone_8
+    21300018: SagatRealCannonGone_9
+    21300020: SagatRealCannonGone_10
+    21300022: SagatRealCannonGone_11
+    21300024: SagatRealCannonGone_12
   externalObjects: {}
   serializedVersion: 5
   mipmaps:
@@ -120,13 +117,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: SagatCannonGone_0
+      name: SagatRealCannonGone_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 2053.125
-        width: 161
-        height: 136.875
+        y: 1680
+        width: 90
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -134,19 +131,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a847c13047e862d48a77df5a461c0ef2
+      spriteID: 8f63674f74857644fb9cdd3c4307d16f
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SagatCannonGone_1
+      name: SagatRealCannonGone_1
       rect:
         serializedVersion: 2
         x: 0
-        y: 1917.125
-        width: 161
-        height: 136.875
+        y: 1568
+        width: 90
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -154,19 +151,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a8acf64f57e4e45429cef27e5db5fb8c
+      spriteID: 42f9d759194970542b82e3c982ceb766
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SagatCannonGone_2
+      name: SagatRealCannonGone_2
       rect:
         serializedVersion: 2
         x: 0
-        y: 1781.125
-        width: 161
-        height: 136.875
+        y: 1456
+        width: 90
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -174,19 +171,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 05236d82f41c58742b602ba9e6ebc0c9
+      spriteID: 387ce682e178a3b4da3e97b751da0cd4
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SagatCannonGone_3
+      name: SagatRealCannonGone_3
       rect:
         serializedVersion: 2
         x: 0
-        y: 1645.125
-        width: 161
-        height: 136.875
+        y: 1344
+        width: 90
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -194,19 +191,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ef734edddff3d57418958f726e4065cf
+      spriteID: 10d1b61a7d476614fa194d76d8eb12b5
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SagatCannonGone_4
+      name: SagatRealCannonGone_4
       rect:
         serializedVersion: 2
         x: 0
-        y: 1509.125
-        width: 161
-        height: 136.875
+        y: 1232
+        width: 90
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -214,19 +211,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6b17487980e244e4487b4beecefcd711
+      spriteID: 1120c91cc6543744a8567a5b5ec983e6
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SagatCannonGone_5
+      name: SagatRealCannonGone_5
       rect:
         serializedVersion: 2
         x: 0
-        y: 1373.125
-        width: 161
-        height: 136.875
+        y: 1120
+        width: 90
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -234,19 +231,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0bbd506b5ea1f004180f9dbb5ef3deef
+      spriteID: 43e5c57e6feed4a428c6321cfb3c563b
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SagatCannonGone_6
+      name: SagatRealCannonGone_6
       rect:
         serializedVersion: 2
         x: 0
-        y: 1237.125
-        width: 161
-        height: 136.875
+        y: 1008
+        width: 90
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -254,19 +251,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 04d006021355d0e4b948a4719f6b6c79
+      spriteID: f8658d5b4b020ba4c9298a5476d98ab3
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SagatCannonGone_7
+      name: SagatRealCannonGone_7
       rect:
         serializedVersion: 2
         x: 0
-        y: 1101.125
-        width: 161
-        height: 136.875
+        y: 896
+        width: 90
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -274,19 +271,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ea4caf7de7ebc604fae04c2e4dafd3aa
+      spriteID: 305a8d99e2eb20e40a7bd83e989a0f0b
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SagatCannonGone_8
+      name: SagatRealCannonGone_8
       rect:
         serializedVersion: 2
         x: 0
-        y: 965.125
-        width: 161
-        height: 136.875
+        y: 784
+        width: 90
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -294,19 +291,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 475dfe6278959ca4c870477426b4a9aa
+      spriteID: badb6128229a85540a1ca7c5fde28e00
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SagatCannonGone_9
+      name: SagatRealCannonGone_9
       rect:
         serializedVersion: 2
         x: 0
-        y: 829.125
-        width: 161
-        height: 136.875
+        y: 672
+        width: 90
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -314,19 +311,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d14a1f8751e9d8247b8ec8ececcdb039
+      spriteID: 6d8219c2d46cc8c44b6fd9f0a83f7492
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SagatCannonGone_10
+      name: SagatRealCannonGone_10
       rect:
         serializedVersion: 2
         x: 0
-        y: 693.125
-        width: 161
-        height: 136.875
+        y: 560
+        width: 90
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -334,19 +331,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1bfe3c39f1b8df3499bb349690305b01
+      spriteID: 4a4fe3b7a427acb428dde6406e621584
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SagatCannonGone_11
+      name: SagatRealCannonGone_11
       rect:
         serializedVersion: 2
         x: 0
-        y: 557.125
-        width: 161
-        height: 136.875
+        y: 448
+        width: 90
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -354,19 +351,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 969e08b7386f208468e7df7457fc0756
+      spriteID: 26bf56663acb6a34e84f87de074df6ed
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SagatCannonGone_12
+      name: SagatRealCannonGone_12
       rect:
         serializedVersion: 2
         x: 0
-        y: 421.125
-        width: 161
-        height: 136.875
+        y: 336
+        width: 90
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -374,67 +371,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: efb03b5ece6580b4aa1ebf1247ce0cca
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SagatCannonGone_13
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 285.125
-        width: 161
-        height: 136.875
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ace1eb16861a77b4987c021d356e582f
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SagatCannonGone_14
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 149.125
-        width: 161
-        height: 136.875
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 20c49f3acb7824e44a56ca096ef061c9
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SagatCannonGone_15
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 13.125
-        width: 161
-        height: 136.875
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fd5103fae549c9b42982034fefe38f4f
+      spriteID: 71185d7d6277b034e9363897360e045d
       vertices: []
       indices: 
       edges: []
@@ -442,7 +379,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 0e603abde02794a4394ea217d71336eb
+    spriteID: a478c72473483eb40aab6aa9450a61f4
     vertices: []
     indices: 
     edges: []

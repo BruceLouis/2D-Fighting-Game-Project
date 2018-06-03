@@ -105,7 +105,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0030086637, y: 0.0005611181}
+  m_Offset: {x: 0.07450509, y: 0.0005611181}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -116,7 +116,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.27500808, y: 0.11408639}
+  m_Size: {x: 0.18921232, y: 0.11408639}
   m_EdgeRadius: 0
 --- !u!95 &95781869852511112
 Animator:
@@ -151,6 +151,7 @@ MonoBehaviour:
   pushBack: 10
   hitStun: 40
   blockStun: 25
+  numHits: 1
   shoryukenSpark: {fileID: 1397779579624298, guid: 88f9da45535328247bfab00bd7afe920,
     type: 2}
   blockSpark: {fileID: 1939279163534822, guid: d4837423e51622a4ead581e63e5b5796, type: 2}
