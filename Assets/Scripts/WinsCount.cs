@@ -6,14 +6,14 @@ using UnityEngine.SceneManagement;
 
 public class WinsCount : MonoBehaviour {
 
-    [SerializeField] Text akumaWinsText, balrogWinsText, feiLongWinsText, kenWinsText, sagatWinsText;
-    public int akumaWins, balrogWins, feiLongWins, kenWins, sagatWins;
+    [SerializeField] Text[] akumaRecordText, balrogRecordText, feiLongRecordText, kenRecordText, sagatRecordText;
+    private int[] akumaRecord = new int[2], balrogRecord = new int[2], feiLongRecord = new int[2], kenRecord = new int[2], sagatRecord = new int[2];
     
     private static WinsCount instance = null;
 
     private Player player;
     private Opponent opponent;
-    public bool updated;
+    private bool updated;
 
     void Awake()
     {
@@ -40,41 +40,43 @@ public class WinsCount : MonoBehaviour {
         {
             if (!player.GetComponentInChildren<Animator>().GetBool("isKOed"))
             {
-                CountWin(player.gameObject);
+                UpdateRecord(player.gameObject, 0);
+                UpdateRecord(opponent.gameObject, 1);
             }
             else if (!opponent.GetComponentInChildren<Animator>().GetBool("isKOed"))
             {
-                CountWin(opponent.gameObject);
+                UpdateRecord(opponent.gameObject, 0);
+                UpdateRecord(player.gameObject, 1);
             }
         }
     }
 
-    void CountWin(GameObject fighter)
+    void UpdateRecord(GameObject fighter, int winOrLoss)
     {
         if (fighter.GetComponentInChildren<Akuma>() != null)
         {
-            akumaWins++;
-            akumaWinsText.text = akumaWins.ToString();
+            akumaRecord[winOrLoss]++;
+            akumaRecordText[winOrLoss].text = akumaRecord[winOrLoss].ToString();
         }
         else if (fighter.GetComponentInChildren<Balrog>() != null)
         {
-            balrogWins++;
-            balrogWinsText.text = balrogWins.ToString();
+            balrogRecord[winOrLoss]++;
+            balrogRecordText[winOrLoss].text = balrogRecord[winOrLoss].ToString();
         }
         else if (fighter.GetComponentInChildren<FeiLong>() != null)
         {
-            feiLongWins++;
-            feiLongWinsText.text = feiLongWins.ToString();
+            feiLongRecord[winOrLoss]++;
+            feiLongRecordText[winOrLoss].text = feiLongRecord[winOrLoss].ToString();
         }
         else if (fighter.GetComponentInChildren<Ken>() != null)
         {
-            kenWins++;
-            kenWinsText.text = kenWins.ToString();
+            kenRecord[winOrLoss]++;
+            kenRecordText[winOrLoss].text = kenRecord[winOrLoss].ToString();
         }
         else if (fighter.GetComponentInChildren<Sagat>() != null)
         {
-            sagatWins++;
-            sagatWinsText.text = sagatWins.ToString();
+            sagatRecord[winOrLoss]++;
+            sagatRecordText[winOrLoss].text = sagatRecord[winOrLoss].ToString();
         }
         updated = true;
     }
@@ -83,7 +85,6 @@ public class WinsCount : MonoBehaviour {
     {
         player = FindObjectOfType<Player>();
         opponent = FindObjectOfType<Opponent>();
-        akumaWinsText.text = akumaWins.ToString();
         updated = false;
     }
 }
