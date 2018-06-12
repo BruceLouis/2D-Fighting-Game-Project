@@ -428,17 +428,19 @@ public class FeiLongAI : MonoBehaviour {
 			AIcontrols.DoesAIBlock ();
 		}
 		else if (decision <= 70 && decision > 60) {
-			if (character.GetSuper >= 100f){
-				AIRekkaShinkens();
-			}
-			else{
-				AIcontrols.AIFierce (10, 8);
-			}
+		    AIcontrols.AIFierce (10, 8);
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 		}
 		else {
-			AIShienKyakus ();
+            if (character.GetSuper >= 100f)
+            {
+                AIRekkaShinkens();
+            }
+            else
+            {
+                AIShienKyakus();
+            }
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 		}

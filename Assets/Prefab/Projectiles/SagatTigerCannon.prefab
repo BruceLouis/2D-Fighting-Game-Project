@@ -68,7 +68,7 @@ Transform:
   m_GameObject: {fileID: 1131691572813040}
   m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
   m_LocalPosition: {x: -0.2988, y: 0, z: 0}
-  m_LocalScale: {x: 1.663966, y: 1.3088499, z: 1}
+  m_LocalScale: {x: 1.663966, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 4027549838922574}
   m_RootOrder: 0
@@ -105,7 +105,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.056556925, y: -0.03115511}
+  m_Offset: {x: 0.0745628, y: -0.073168814}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -116,7 +116,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.28795096, y: 0.12689519}
+  m_Size: {x: 0.23993525, y: 0.28894794}
   m_EdgeRadius: 0
 --- !u!95 &95781869852511112
 Animator:
@@ -152,11 +152,13 @@ MonoBehaviour:
   hitStun: 40
   blockStun: 25
   numHits: 5
+  isSuper: 1
   shoryukenSpark: {fileID: 1397779579624298, guid: 88f9da45535328247bfab00bd7afe920,
     type: 2}
   blockSpark: {fileID: 1939279163534822, guid: d4837423e51622a4ead581e63e5b5796, type: 2}
   connectedSound: {fileID: 8300000, guid: a10abd942a725c148a4a762d20a3bf84, type: 3}
   blockedSound: {fileID: 8300000, guid: 3c84103b068e99143b5cdd36b43590bf, type: 3}
+  superKOSound: {fileID: 8300000, guid: 186d2cbea5732ba43af87d103df23852, type: 3}
   moveType: 2
 --- !u!212 &212190784571813794
 SpriteRenderer:

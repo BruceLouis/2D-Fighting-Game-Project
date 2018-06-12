@@ -64,7 +64,7 @@ public class HitBox : MonoBehaviour {
 				if (hurtCharAnim.GetBool("isAirborne") == false){
 					if (hurtCharacter.GetBackPressed() == true && hurtCharAnim.GetBool("isAttacking") == false
 					    && hurtCharAnim.GetBool("isLiftingOff") == false && hurtCharAnim.GetBool("isInHitStun") == false
-					    && hurtCharAnim.GetBool("isKnockedDown") == false){
+					    && hurtCharAnim.GetBool("isKnockedDown") == false && hurtCharAnim.GetBool("isLanding") == false){
 					    
 					    	
 						if ((hitCharacter.GetMoveType() == Character.MoveType.low && hurtCharAnim.GetBool("isCrouching") == false) 

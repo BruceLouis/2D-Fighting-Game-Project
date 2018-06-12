@@ -268,7 +268,8 @@ public class Character : MonoBehaviour {
 		if (animator.GetBool("isAirborne") == false && animator.GetBool("isInHitStun") == false 
 		    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isInBlockStun") == false
 	    	&& animator.GetBool("isThrown") == false && animator.GetBool("isMidAirRecovering") == false
-		   	&& animator.GetBool("isLanding") == false && animator.GetBool("isLiftingOff") == true){			
+		   	&& animator.GetBool("isLanding") == false && animator.GetBool("isLanding") == false 
+            && animator.GetBool("isLiftingOff") == true){			
 			if (transform.localScale.x == 1){
                 if (GetComponent<Sagat>() != null){
 				    physicsbody.velocity = new Vector2(x, 3.75f);
@@ -424,13 +425,19 @@ public class Character : MonoBehaviour {
 	}
 	
 	//will eventually replace all character specific takeoffvelocity methods
-	public void TakeOffVelocity (float x, float y){
-		if (transform.localScale.x == 1) {
-			physicsbody.velocity = new Vector2 (x, y);
-		}
-		else {
-			physicsbody.velocity = new Vector2 (-x, y);
-		}
+	public void TakeOffVelocity (float x, float y)
+    {
+        if (!animator.GetBool("isInHitStun") && !animator.GetBool("isKnockedDown"))
+        {
+            if (transform.localScale.x == 1)
+            {
+                physicsbody.velocity = new Vector2(x, y);
+            }
+            else
+            {
+                physicsbody.velocity = new Vector2(-x, y);
+            }
+        }
 	}	
 	
 	public void KnockedDownDust(){

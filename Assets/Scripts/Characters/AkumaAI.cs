@@ -438,15 +438,8 @@ public class AkumaAI : MonoBehaviour {
 			decisionTimer = 0f;
 		}
 		else if (decision <= 20 && decision > 10) {
-			if (character.GetSuper >= 100f){
-				AIShunGokuSatsus();
-				sharedProperties.CharacterNeutralState ();
-				AIcontrols.DoesAIBlock ();
-			}
-			else{
-				AIcontrols.AIPressedBackward ();
-				character.SetBackPressed (true);
-			}
+			AIcontrols.AIPressedBackward ();
+			character.SetBackPressed (true);
 		}
 		else if (decision <= 30 && decision > 20) {
 			AIcontrols.AIPressedForward ();
@@ -462,10 +455,20 @@ public class AkumaAI : MonoBehaviour {
 			AIHadoukenLimitsWithWalk();
 			decisionTimer = 0f;
 		}
-		else if (decision <= 60 && decision > 40) {
-			AIcontrols.AICrouch ();
-			sharedProperties.CharacterNeutralState ();
-			character.SetBackPressed (true);
+		else if (decision <= 60 && decision > 40)
+        {
+            if (character.GetSuper >= 100f)
+            {
+                AIShunGokuSatsus();
+                sharedProperties.CharacterNeutralState();
+                AIcontrols.DoesAIBlock();
+            }
+            else
+            {
+                AIcontrols.AICrouch();
+                AIcontrols.AIPressedBackward();
+                character.SetBackPressed(true);
+            }
 		}
 		else if (decision <= 70 && decision > 60) {
 			sharedProperties.CharacterNeutralState ();
@@ -615,9 +618,7 @@ public class AkumaAI : MonoBehaviour {
 			if (lastUsedNormal == LastUsedNormal.lForward || lastUsedNormal == LastUsedNormal.lFierce
 				|| lastUsedNormal == LastUsedNormal.lStrong){
 				if (whichSequence <= 2){
-					AIHadoukens ();
-					sharedProperties.CharacterNeutralState ();
-					AIcontrols.DoesAIBlock ();
+                    StartCoroutine(HadoukenEnder());
 				}
 				else if (whichSequence <= 3 && whichSequence > 2){
 					AIShoryukens ();
@@ -643,8 +644,8 @@ public class AkumaAI : MonoBehaviour {
 		}
 	}
 	
-	IEnumerator TatsuShoryukenSequence(){
-						
+	IEnumerator TatsuShoryukenSequence()
+    {						
 		inComboSequence = true;
 		
 		AIShortHurricaneKicks ();
@@ -663,6 +664,19 @@ public class AkumaAI : MonoBehaviour {
 		
 		inComboSequence = false;
 	}
+
+    IEnumerator HadoukenEnder()
+    {
+        inComboSequence = true;
+
+        AIHadoukens();
+        sharedProperties.CharacterNeutralState();
+        AIcontrols.DoesAIBlock();
+
+        yield return new WaitUntil(() => !animator.GetBool("isAttacking"));
+
+        inComboSequence = false;
+    }
 	
 	void AIShunGokuSatsus(){
 		if (AIcontrols.GetConditions()) {					

@@ -604,7 +604,14 @@ public class SagatAI : MonoBehaviour
         }
         else if (decision <= 90 && decision > 75)
         {
-            AIcontrols.AIRoundhouse(0,70);
+            if (character.GetSuper >= 100f)
+            {
+                AITigerCannons();
+            }
+            else
+            {
+                AIcontrols.AIRoundhouse(0, 70);
+            }
             sharedProperties.CharacterNeutralState();
             AIcontrols.DoesAIBlock();
         }

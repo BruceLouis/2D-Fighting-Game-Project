@@ -31,6 +31,7 @@ public class Sagat : MonoBehaviour {
         GameObject tigerShot = Instantiate(projectile);
 		Rigidbody2D rigidbody = tigerShot.GetComponent<Rigidbody2D>();
 		SpriteRenderer tigerShotSprite = tigerShot.GetComponentInChildren<SpriteRenderer>();
+        Projectile tigerShotProjectile = tigerShot.GetComponent<Projectile>();
 		AudioSource.PlayClipAtPoint(tigerShotCreatedSound, transform.position);
         if (upperOrLower == 0)
         {
@@ -49,15 +50,15 @@ public class Sagat : MonoBehaviour {
 		switch(attackType)
         {
             case 0:
-                ProjectileVelocity(rigidbody, tigerShotSprite, 1.75f);
+                ProjectileVelocity(rigidbody, tigerShotSprite, tigerShotProjectile, 1.75f);
                 break;
 
             case 1:
-                ProjectileVelocity(rigidbody, tigerShotSprite, 2.75f);
+                ProjectileVelocity(rigidbody, tigerShotSprite, tigerShotProjectile, 2.75f);
                 break;
 			
 		    default:
-                ProjectileVelocity(rigidbody, tigerShotSprite, 3.75f);
+                ProjectileVelocity(rigidbody, tigerShotSprite, tigerShotProjectile, 3.75f);
 			    break;
 		}		
 	}
@@ -66,37 +67,28 @@ public class Sagat : MonoBehaviour {
     {
         Vector3 height = new Vector3(0f, 0.4f, 0f);
         Vector3 offset = new Vector3(0.9f, 0f, 0f);
-        //GameObject[] tigerCannons = new GameObject[numTigerCannons];
-        //Rigidbody2D[] rigidbodies = new Rigidbody2D[numTigerCannons];
-        //SpriteRenderer[] tigerShotSprite = new SpriteRenderer[numTigerCannons];
-
-        //for (int i = 0; i < numTigerCannons; i++)
-        //{
-        //    tigerCannons[i] = Instantiate(superProjectile);
-        //    rigidbodies[i] = tigerCannons[i].GetComponent<Rigidbody2D>();
-        //    tigerShotSprite[i] = tigerCannons[i].GetComponentInChildren<SpriteRenderer>();
-        //    ProjectileInitialize(offset, height, tigerCannons[i]);
-        //    ProjectileVelocity(rigidbodies[i], tigerShotSprite[i], 3.75f);
-        //}
 
         GameObject tigerCannon = Instantiate(superProjectile);
         ProjectileInitialize(offset, height, tigerCannon);
-        ProjectileVelocity(tigerCannon.GetComponent<Rigidbody2D>(), tigerCannon.GetComponentInChildren<SpriteRenderer>(), 3.75f);
+        ProjectileVelocity( tigerCannon.GetComponent<Rigidbody2D>(), tigerCannon.GetComponentInChildren<SpriteRenderer>(), 
+                            tigerCannon.GetComponent<Projectile>(), 3.75f);
 
         GetComponentInChildren<SpriteRenderer>().sortingLayerName = "Characters";
         AudioSource.PlayClipAtPoint(tigerShotCreatedSound, transform.position);
         character.GetSuper = 0f;
     }
 
-    void ProjectileVelocity(Rigidbody2D rigidbody, SpriteRenderer tigerShotSprite, float speed)
+    void ProjectileVelocity(Rigidbody2D rigidbody, SpriteRenderer tigerShotSprite, Projectile projectileObject, float speed)
     {
         if (character.transform.localScale.x == 1)
         {
             rigidbody.velocity = new Vector2(speed, 0f);
+            projectileObject.XVelocity = speed;
         }
         else
         {
             rigidbody.velocity = new Vector2(-speed, 0f);
+            projectileObject.XVelocity = -speed;
         }
     }
 
@@ -171,13 +163,13 @@ public class Sagat : MonoBehaviour {
             switch (animator.GetInteger("tigerKneeKickType"))
             {
                 case 0:
-                    character.MoveProperties(50f, 20f, 10f, 50f, 2, 2, 1);
+                    character.MoveProperties(50f, 20f, 10f, 30f, 2, 4, 1);
                     break;
                 case 1:
-                    character.MoveProperties(50f, 25f, 10f, 55f, 2, 2, 1);
+                    character.MoveProperties(50f, 25f, 10f, 30f, 2, 4, 1);
                     break;
                 default:
-                    character.MoveProperties(50f, 25f, 10f, 60f, 2, 2, 1);
+                    character.MoveProperties(50f, 25f, 10f, 30f, 2, 4, 1);
                     break;
             }
         }
@@ -189,12 +181,15 @@ public class Sagat : MonoBehaviour {
         {
             case 0:
                 character.TakeOffVelocity(1.5f, 2.5f);
+                character.MoveProperties(50f, 20f, 10f, 40f, 2, 2, 1);
                 break;
             case 1:
                 character.TakeOffVelocity(2f, 2.5f);
+                character.MoveProperties(50f, 25f, 10f, 45f, 2, 2, 1);
                 break;
             default:
                 character.TakeOffVelocity(2.5f, 2.5f);
+                character.MoveProperties(50f, 25f, 10f, 50f, 2, 2, 1);
                 break;
         }
         character.PlayNormalAttackSound();

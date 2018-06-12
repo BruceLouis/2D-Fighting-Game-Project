@@ -572,11 +572,25 @@ public class KenAI : MonoBehaviour {
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 		}
-		else {
-			AIcontrols.AIFierce (2, 0);
+		else if (decision <= 80 && decision > 60)
+        {
+            if (character.GetSuper >= 100f)
+            {
+                AIShinryukens();
+            }
+            else
+            {
+                AIcontrols.AIFierce(2, 0);
+            }
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 		}
+        else
+        {
+            AIcontrols.AISweep();
+            sharedProperties.CharacterNeutralState();
+            AIcontrols.DoesAIBlock();
+        }
 	}
 
 	void MidRangeOtherFighterBlockedDecisions (){

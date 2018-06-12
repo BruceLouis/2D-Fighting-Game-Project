@@ -70,13 +70,13 @@ public class FeiLong : MonoBehaviour {
 	public void ShienKyakuLiftOff(){		
 		switch(animator.GetInteger("shienKyakuKickType")){
 			case 0:
-				FeiLongTakeOffVelocity(0f, 3f);
+				character.TakeOffVelocity(0f, 3f);
 				break;
 			case 1:
-				FeiLongTakeOffVelocity(0f, 4f);
+                character.TakeOffVelocity(0f, 4f);
 				break;
 			default:
-				FeiLongTakeOffVelocity(0f, 4.5f);
+                character.TakeOffVelocity(0f, 4.5f);
 				break;
 		}
 		Vector3 angle = new Vector3(-90f, 0f, 0f); 
@@ -105,13 +105,13 @@ public class FeiLong : MonoBehaviour {
 	public void RekkaKunLiftOff(){		
 		switch(animator.GetInteger("rekkaKunKickType")){
 			case 0:
-				FeiLongTakeOffVelocity (2.5f, 3f);
+                character.TakeOffVelocity (2.5f, 3f);
 				break;
 			case 1:
-				FeiLongTakeOffVelocity (3f, 3f);
+                character.TakeOffVelocity (3f, 3f);
 				break;
 			default:
-				FeiLongTakeOffVelocity (3.5f, 3f);
+                character.TakeOffVelocity (3.5f, 3f);
 				break;
 		}
 		character.PlayNormalAttackSound();
@@ -122,15 +122,15 @@ public class FeiLong : MonoBehaviour {
 			switch(animator.GetInteger("rekkaPunchType")){
 				case 0:
 					character.MoveProperties(40f, 30f, 15f, 20f, 2, 5, 1, 4f);
-					FeiLongTakeOffVelocity(2f, 0f);
+                    character.TakeOffVelocity(2f, 0f);
 					break;
 				case 1:
 					character.MoveProperties(40f, 30f, 15f, 25f, 2, 5, 1, 4f);
-					FeiLongTakeOffVelocity(2.5f, 0f);
+                    character.TakeOffVelocity(2.5f, 0f);
 					break;
 				default:
 					character.MoveProperties(40f, 30f, 15f, 30f, 2, 5, 1, 4f);
-					FeiLongTakeOffVelocity(3f, 0f);
+                    character.TakeOffVelocity(3f, 0f);
 					break;
 			}
 			character.PlayNormalAttackSound();
@@ -142,15 +142,15 @@ public class FeiLong : MonoBehaviour {
 			switch(animator.GetInteger("rekkaPunchType")){
 			 	case 0:
 					character.MoveProperties(40f, 20f, 15f, 35f, 2, 2, 2, 4.5f);
-					FeiLongTakeOffVelocity(2.5f, 0f);
+                    character.TakeOffVelocity(2.5f, 0f);
 					break;
 				case 1:
 					character.MoveProperties(50f, 22.5f, 20f, 40f, 2, 2, 2, 4.5f);
-					FeiLongTakeOffVelocity(3.5f, 0f);
+                    character.TakeOffVelocity(3.5f, 0f);
 					break;
 				default:
 					character.MoveProperties(60f, 25f, 20f, 50f, 2, 2, 2, 4.5f);
-					FeiLongTakeOffVelocity(4f, 0f);
+                    character.TakeOffVelocity(4f, 0f);
 					break;
 			}
 			character.PlayNormalAttackSound();
@@ -162,7 +162,7 @@ public class FeiLong : MonoBehaviour {
 			GetComponentInChildren<SpriteRenderer>().sortingLayerName = "Characters";
 			character.MoveProperties(40f, 40f, 15f, 50f, 2, 5, 1, 0f);
 			character.ResetHasntHit();
-			FeiLongTakeOffVelocity(3f, 0f);
+            character.TakeOffVelocity(3f, 0f);
 			switch(whichPunch){
 				case 0:				
 					AudioSource.PlayClipAtPoint(rekkaFirstSound,transform.position);	
@@ -188,20 +188,11 @@ public class FeiLong : MonoBehaviour {
 		if (animator.GetBool("isLiftingOff") == false){	
 			character.MoveProperties(60f, 25f, 20f, 100f, 2, 2, 2, 0f);
 			character.ResetHasntHit();
-			FeiLongTakeOffVelocity(4f, 0f);
+            character.TakeOffVelocity(4f, 0f);
 			AudioSource.PlayClipAtPoint(rekkaShinkenFifthSound,transform.position);	
 			character.PlayNormalAttackSound();
 		}
 	}	
-	
-	void FeiLongTakeOffVelocity (float x, float y){
-		if (character.transform.localScale.x == 1) {
-			physicsbody.velocity = new Vector2 (x, y);
-		}
-		else {
-			physicsbody.velocity = new Vector2 (-x, y);
-		}
-	}
 	
 	public void PlayRekkaFirstSound(){
 		AudioSource.PlayClipAtPoint(rekkaFirstSound, transform.position);

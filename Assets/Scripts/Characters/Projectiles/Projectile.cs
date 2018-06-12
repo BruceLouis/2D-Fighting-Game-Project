@@ -7,12 +7,10 @@ public class Projectile : MonoBehaviour {
 	[SerializeField] float damage, pushBack;
 	[SerializeField] float hitStun, blockStun;
     [SerializeField] int numHits;
+    [SerializeField] bool isSuper;
 	
-	public GameObject shoryukenSpark;
-	public GameObject blockSpark;
-	
-	public AudioClip connectedSound;
-	public AudioClip blockedSound;
+	[SerializeField] GameObject shoryukenSpark, blockSpark;	
+	[SerializeField] AudioClip connectedSound, blockedSound, superKOSound;
 
     public enum MoveType { low, mid, high};
     [HideInInspector]
@@ -21,7 +19,7 @@ public class Projectile : MonoBehaviour {
 	private ComboCounter comboCounter;
 	private Animator animator;
 	private Rigidbody2D physicsBody;
-    private float timer;
+    private float timer, xVelocity, yVelocity;
 
     void Start(){
 		animator = GetComponent<Animator>();
@@ -47,22 +45,40 @@ public class Projectile : MonoBehaviour {
 		}
 	}
 	
-	void CharacterKOed(Character receiver, Rigidbody2D recRigid, Animator recAnim){
-		TimeControl.slowDownTimer = 100f;				
+	void CharacterKOed(Character receiver, Rigidbody2D recRigid, Animator recAnim)
+    {
+        if (isSuper)
+        {
+            TimeControl.superKO = true;
+            AudioSource.PlayClipAtPoint(superKOSound, transform.position);
+        }
+        else
+        {
+            TimeControl.slowDownTimer = 100f;
+        }
 		recAnim.Play("KnockDownBlendTree", 0);
-		if (receiver.side == Character.Side.P1){
+		if (receiver.side == Character.Side.P1)
+        {
 			recRigid.velocity = new Vector2(-2f, 4f);
 		}
-		else{
+		else
+        {
 			recRigid.velocity = new Vector2(2f, 4f);
-		}
+        }
+        Instantiate(shoryukenSpark, transform.position, Quaternion.identity);
     }
 
     void OnTriggerStay2D(Collider2D collider){
+        Debug.Log(collider.name);
         HurtBox hurtBox = collider.gameObject.GetComponentInParent<HurtBox>();
         Animator hurtCharAnimator = collider.gameObject.GetComponentInParent<Animator>();
         Projectile otherProjectile = collider.gameObject.GetComponent<Projectile>();
-        if (hurtBox && hurtBox.gameObject.tag != gameObject.tag && !hurtBox.GetHurtBoxCollided() && !animator.GetBool("madeContact")){
+        if (otherProjectile || collider.gameObject.GetComponent<Ground>() && !animator.GetBool("madeContact"))
+        {
+            CountNumHits();
+            physicsBody.velocity = new Vector2(0f, 0f);
+        }
+        else if (hurtBox && hurtBox.gameObject.tag != gameObject.tag && !hurtBox.GetHurtBoxCollided() && !animator.GetBool("madeContact")){
             CountNumHits();
             hurtBox.SetHurtBoxCollided(true);
             Character hurtCharacter = hurtBox.GetComponentInParent<Character>();
@@ -85,8 +101,13 @@ public class Projectile : MonoBehaviour {
             }
 
         }
-        if (otherProjectile || collider.gameObject.GetComponent<Ground>() && !animator.GetBool("madeContact")){
-            CountNumHits();
+    }
+
+    void OnTriggerExit2D(Collider2D collision)
+    {
+        if (numHits > 0)
+        {
+            physicsBody.velocity = new Vector2(xVelocity, yVelocity);
         }
     }
 
@@ -122,12 +143,13 @@ public class Projectile : MonoBehaviour {
             TimeControl.slowDownTimer = 30f;
             timer = hitStun * 0.2f;
             if (hurtCharAnimator.GetBool("isAirborne") == true){
-                hurtCharAnimator.Play("KnockDownBlendTree", 0, 0f);
-                if (hurtCharacter.side == Character.Side.P2){
-                    hurtPhysicsbody.velocity = new Vector2(pushBack * 0.15f, 3f);
+                if (numHits > 1)
+                {
+                    AirPushBack(hurtCharAnimator, hurtCharacter, hurtPhysicsbody, "MidAirHit", 0.25f);
                 }
-                else{
-                    hurtPhysicsbody.velocity = new Vector2(-pushBack * 0.15f, 3f);
+                else
+                {
+                    AirPushBack(hurtCharAnimator, hurtCharacter, hurtPhysicsbody, "KnockDownBlendTree", 3f);
                 }
             }
             else{
@@ -150,6 +172,19 @@ public class Projectile : MonoBehaviour {
         }
     }
 
+    void AirPushBack(Animator hurtCharAnim, Character hurtChar, Rigidbody2D hurtRigidbody, string whichAnimation, float y)
+    {
+        hurtCharAnim.Play(whichAnimation, 0, 0f);
+        if (hurtChar.side == Character.Side.P2)
+        {
+            hurtRigidbody.velocity = new Vector2(pushBack * 0.15f, y);
+        }
+        else
+        {
+            hurtRigidbody.velocity = new Vector2(-pushBack * 0.15f, y);
+        }
+    }
+
     void ProjectileBlocked(Animator hurtCharAnimator, Character hurtCharacter, Rigidbody2D hurtPhysicsbody){
         AudioSource.PlayClipAtPoint(blockedSound, transform.position);
         timer = blockStun * 0.2f;
@@ -166,5 +201,17 @@ public class Projectile : MonoBehaviour {
         }
         hurtCharAnimator.SetFloat("blockStunTimer", timer);
         Instantiate(blockSpark, transform.position, Quaternion.identity);
+    }
+
+    public float XVelocity
+    {
+        get { return xVelocity; }
+        set { xVelocity = value; }
+    }
+
+    public float YVelocity
+    {
+        get { return yVelocity; }
+        set { yVelocity = value; }
     }
 }
