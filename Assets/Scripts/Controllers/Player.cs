@@ -375,15 +375,15 @@ public class Player : MonoBehaviour {
 			character.GetSuper = 0f;
 			comboSystem.ResetShunGokuSatsuSequence();
 		}
-		else{
+		else{            
 			if (Input.GetKeyDown(KeyCode.A)){	
 				attackStrength = character.CharacterJab;
 				if (character.GetComponent<FeiLong>() != null){
 					feiLongPunch = feiLong.FeiLongCloseJab;
 				}
 				PunchCommands (attackStrength, feiLongPunch, 0, "Jab");
-			}		
-			if (Input.GetKeyDown(KeyCode.S)){				
+            }
+            if (Input.GetKeyDown(KeyCode.S)){				
 				attackStrength = character.CharacterStrong;
 				if (character.GetComponent<FeiLong>() != null){
 					feiLongPunch = feiLong.FeiLongCloseStrong;

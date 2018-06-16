@@ -85,14 +85,14 @@ public class Balrog : MonoBehaviour {
 		Vector3 travelDistance;
 		if (character.side == Character.Side.P1){
 			travelDistance = new Vector3 (distanceTravel, 0f, 0f);
-            if (animator.GetBool("isAttacking"))
+            if (!animator.GetBool("isInHitStun") && !animator.GetBool("isKnockedDown"))
             {
                 physicsbody.velocity = new Vector2(4f, 0f);
             }
 		}
 		else{
 			travelDistance = new Vector3 (-distanceTravel, 0f, 0f);
-            if (animator.GetBool("isAttacking"))
+            if (!animator.GetBool("isInHitStun") && !animator.GetBool("isKnockedDown"))
             {
 			    physicsbody.velocity = new Vector2 (-4f,0f);
             }
@@ -136,13 +136,13 @@ public class Balrog : MonoBehaviour {
 	void DashLowProperties(){
 		switch(animator.GetInteger("dashRushPunchType")){
 			case 0:
-				character.MoveProperties(40f, 30f, 12f, 65f, 0, 6, 2, 4.5f);
+				character.MoveProperties(40f, 25f, 12f, 65f, 0, 6, 2, 4.5f);
 				break;
 			case 1:
-				character.MoveProperties(40f, 30f, 12f, 70f, 0, 6, 2, 4.5f);
+				character.MoveProperties(40f, 25f, 12f, 70f, 0, 6, 2, 4.5f);
 				break;
 			default:
-				character.MoveProperties(40f, 30f, 12f, 75f, 0, 6, 2, 4.5f);
+				character.MoveProperties(40f, 25f, 12f, 75f, 0, 6, 2, 4.5f);
 				break;
 		}
 	}

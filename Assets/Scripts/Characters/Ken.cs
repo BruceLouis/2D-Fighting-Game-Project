@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Ken : MonoBehaviour
 {
-    [SerializeField] GameObject projectile;
+    [SerializeField] GameObject projectile, kenFlame;
     [SerializeField] AudioClip hadoukenSound, shoryukenSound, shinryukenSound, flameSound;
     [SerializeField] AudioClip hurricaneKickSound, hadoukenCreatedSound, superStartSound;
 
@@ -25,6 +25,11 @@ public class Ken : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!animator.GetBool("shoryukenActive"))
+        {
+            kenFlame.SetActive(false);
+        }
+
         hurricaneActive = animator.GetBool("hurricaneKickActive");
         shinryukenActive = animator.GetBool("superActive");
         if (hurricaneActive)
@@ -117,7 +122,7 @@ public class Ken : MonoBehaviour
                     character.MoveProperties(40f, 25f, 7.5f, 85f, 2, 3, 2, 5f);
                     break;
                 default:
-                    character.MoveProperties(60f, 25f, 10f, 90f, 2, 3, 2, 5f);
+                    character.MoveProperties(60f, 25f, 5f, 40f, 2, 0, 2, 5f);
                     break;
             }
         }
@@ -136,6 +141,7 @@ public class Ken : MonoBehaviour
                 break;
 
             default:
+                character.MoveProperties(60f, 25f, 5f, 50f, 2, 3, 2, 5f);
                 character.TakeOffVelocity(2f, 5f);
                 break;
         }

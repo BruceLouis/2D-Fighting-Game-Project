@@ -13,7 +13,8 @@ public class ThrowBox : MonoBehaviour {
 		Animator animator = collider.gameObject.GetComponentInParent<Animator>();	
 		Animator selfAnimator = gameObject.GetComponentInParent<Animator>();
 		
-		if (hurtBox){	
+		if (hurtBox && !selfAnimator.GetBool("isInHitStun") && !selfAnimator.GetBool("isKnockedDown") && !selfAnimator.GetBool("isThrown"))
+        {	
 			Character grabbedCharacter = hurtBox.gameObject.GetComponentInParent<Character>();	
 			Character throwingCharacter = gameObject.GetComponentInParent<Character>();		
 			distance = grabbedCharacter.transform.position.x - throwingCharacter.transform.position.x;	

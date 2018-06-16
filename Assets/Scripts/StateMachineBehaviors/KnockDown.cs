@@ -14,8 +14,9 @@ public class KnockDown : StateMachineBehaviour {
 		animator.SetBool("isLiftingOff", false);
 		animator.SetBool("isWalkingBackward", false);
 		animator.SetBool("isWalkingForward", false);
-		animator.SetBool("isMidAirHit", false);		
-		animator.SetFloat("hitStunTimer", 0.0f);
+		animator.SetBool("isMidAirHit", false);
+        animator.SetBool("isLanding", false);
+        animator.SetFloat("hitStunTimer", 0.0f);
 		animator.SetInteger("hyakkishuAttackType", 0);
 		animator.ResetTrigger("shoryukenInputed");	
 		animator.ResetTrigger("reverseShoryukenInputed");	

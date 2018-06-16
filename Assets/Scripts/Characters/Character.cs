@@ -292,11 +292,11 @@ public class Character : MonoBehaviour {
 	public void AtTheCorner (){
 		physicsbody.isKinematic = true;
 		// if he's near the right corner & travelling towards the right corner facing the right corner on p1 side
-		if (GetRightEdgeDistance () < 0.5f && transform.localScale.x == 1) {
+		if (GetRightEdgeDistance () < 0.25f && transform.localScale.x == 1) {
 			physicsbody.velocity = new Vector2 (0f, physicsbody.velocity.y);
 		}
 		// if he's near the left corner & travelling towards the left corner facing the left corner on p2 side
-		if (GetLeftEdgeDistance () < 0.5f && transform.localScale.x == -1) {
+		if (GetLeftEdgeDistance () < 0.25f && transform.localScale.x == -1) {
 			physicsbody.velocity = new Vector2 (0f, physicsbody.velocity.y);
 		}
 	}
@@ -424,7 +424,6 @@ public class Character : MonoBehaviour {
 		}
 	}
 	
-	//will eventually replace all character specific takeoffvelocity methods
 	public void TakeOffVelocity (float x, float y)
     {
         if (!animator.GetBool("isInHitStun") && !animator.GetBool("isKnockedDown"))
@@ -439,6 +438,14 @@ public class Character : MonoBehaviour {
             }
         }
 	}	
+
+    public void SlowXVelocity()
+    {
+        if (!animator.GetBool("isInHitStun") && !animator.GetBool("isKnockedDown"))
+        {
+            physicsbody.velocity = new Vector2(0f, physicsbody.velocity.y);
+        }
+    }
 	
 	public void KnockedDownDust(){
 		Vector3 offset = new Vector3(0f, -0.4f, 0f);

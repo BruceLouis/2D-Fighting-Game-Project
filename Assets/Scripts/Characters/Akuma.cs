@@ -16,7 +16,7 @@ public class Akuma : MonoBehaviour
 
     private int shoryukenType;
     private float hadoukenAngle, amountTimeTravelledTimer;
-    private bool hurricaneActive, diveKickActive;
+    private bool hurricaneActive, diveKickActive, hyakkishuActive;
 
     // Use this for initialization
     void Start()
@@ -30,6 +30,7 @@ public class Akuma : MonoBehaviour
     {
         hurricaneActive = animator.GetBool("hurricaneKickActive");
         diveKickActive = animator.GetBool("diveKickActive");
+        hyakkishuActive = animator.GetBool("hyakkishuActive");
         if (hurricaneActive)
         {
             character.AtTheCorner();
@@ -46,11 +47,21 @@ public class Akuma : MonoBehaviour
         }
         else if (diveKickActive)
         {
+            character.AtTheCorner();
             physicsbody.isKinematic = true;
         }
         else
         {
             physicsbody.isKinematic = false;
+        }
+
+        if (hyakkishuActive && animator.GetBool("isAirborne"))
+        {
+            physicsbody.gravityScale = 2f;
+        }
+        else
+        {
+            physicsbody.gravityScale = 1f;
         }
     }
 
@@ -227,18 +238,18 @@ public class Akuma : MonoBehaviour
         if (animator.GetBool("isAirborne") == false && animator.GetBool("isInHitStun") == false
             && animator.GetBool("isKnockedDown") == false && animator.GetBool("isInBlockStun") == false
             && animator.GetBool("isThrown") == false && animator.GetBool("isMidAirRecovering") == false
-            && animator.GetBool("isLanding") == false && animator.GetBool("isLiftingOff") == true)
+            && animator.GetBool("isLiftingOff") == true)
         {
             switch (animator.GetInteger("hyakkishuKickType"))
             {
                 case 0:
-                    character.TakeOffVelocity(1f, 4.5f);
+                    character.TakeOffVelocity(1f, 6f);
                     break;
                 case 1:
-                    character.TakeOffVelocity(1.5f, 4.5f);
+                    character.TakeOffVelocity(2f, 6f);
                     break;
                 default:
-                    character.TakeOffVelocity(2f, 4.5f);
+                    character.TakeOffVelocity(3f, 6f);
                     break;
             }
         }

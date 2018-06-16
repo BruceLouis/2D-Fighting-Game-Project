@@ -10,7 +10,7 @@ public class TimeControl : MonoBehaviour {
 	public static bool[] inSuperStartup;
 	public static float slowDownTimer;	
 	public static string winner;
-		
+
 	public enum GameState {introPose, countDown, fight, KOHappened, victoryPose};
 	public static GameState gameState;
 	
@@ -20,7 +20,7 @@ public class TimeControl : MonoBehaviour {
 	public AudioClip threeSound, twoSound, oneSound, fightSound, youLoseSound, youWinSound;
 	public AudioClip[] winQuotes;
 	
-	private int gameTimer, internalTimer, countDownTimer, KOslowTimer, KOedTimer;
+	private int gameTimer, internalTimer, KOslowTimer, KOedTimer;
     private bool countDownStarted, gameTimerCountingDown, announcementPlayed;
     private float introTimer, restartTimer;
 	private AudioSource audioSource;
@@ -41,7 +41,6 @@ public class TimeControl : MonoBehaviour {
 		restartTimer = 2f;
 		KOedTimer = 150;
 		introTimer = 1.75f;
-		countDownTimer = 3;
 
 		announcementPlayed = false;
         countDownStarted = false;
@@ -197,53 +196,33 @@ public class TimeControl : MonoBehaviour {
 		levelManager.LoadLevel(SceneManager.GetActiveScene ().name);
 	}
     
-    IEnumerator CountDownCommence(){
+    IEnumerator CountDownCommence()
+    {
         countDownStarted = true;
 
-		if (!audioSource.isPlaying && !announcementPlayed) {
-			audioSource.PlayOneShot (threeSound, 0.7f);
-			announcementPlayed = true;
-		}
-		countDownText.text = countDownTimer.ToString();
+        CountedDown(threeSound, "3");
 
         yield return new WaitForSecondsRealtime(1f);
 
-        announcementPlayed = false;
-        if (!audioSource.isPlaying && !announcementPlayed) {
-			audioSource.PlayOneShot (twoSound, 0.7f);
-			announcementPlayed = true;
-		}
-        countDownTimer--;
-        countDownText.text = countDownTimer.ToString();
+        CountedDown(twoSound, "2");
 
         yield return new WaitForSecondsRealtime(1f);
 
-        announcementPlayed = false;
-        if (!audioSource.isPlaying && !announcementPlayed) {
-			audioSource.PlayOneShot (oneSound, 0.7f);
-			announcementPlayed = true;
-		}
-        countDownTimer--;
-        countDownText.text = countDownTimer.ToString();
+        CountedDown(oneSound, "1");
 
         yield return new WaitForSecondsRealtime(1f);
 
-        announcementPlayed = false;
-        if (!audioSource.isPlaying && !announcementPlayed) {
-			audioSource.PlayOneShot (fightSound, 0.7f);
-			announcementPlayed = true;
-		}
-        countDownTimer--;
-        countDownText.text = "FIGHT";
+        CountedDown(fightSound, "FIGHT");
 
         yield return new WaitForSecondsRealtime(1f);
-        
-		gameState = GameState.fight;
-		countDownText.text = "";
+
+        gameState = GameState.fight;
+        countDownText.text = "";
 
         announcementPlayed = false;
         countDownStarted = false;
     }
+
 
     IEnumerator InGameTimer(){
         gameTimerCountingDown = true;
@@ -251,6 +230,17 @@ public class TimeControl : MonoBehaviour {
         gameTimer--;
         gameTimerText.text = gameTimer.ToString();
         gameTimerCountingDown = false;
+    }
+
+    void CountedDown(AudioClip audioClip, string text)
+    {
+        announcementPlayed = false;
+        if (!audioSource.isPlaying && !announcementPlayed)
+        {
+            audioSource.PlayOneShot(audioClip, 0.7f);
+            announcementPlayed = true;
+        }
+        countDownText.text = text;
     }
 
     void PlayWinnerClip(AudioClip clip){

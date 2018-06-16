@@ -2,50 +2,57 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Projectile : MonoBehaviour {
+public class Projectile : MonoBehaviour
+{
 
-	[SerializeField] float damage, pushBack;
-	[SerializeField] float hitStun, blockStun;
+    [SerializeField] float damage, pushBack;
+    [SerializeField] float hitStun, blockStun;
     [SerializeField] int numHits;
     [SerializeField] bool isSuper;
-	
-	[SerializeField] GameObject shoryukenSpark, blockSpark;	
-	[SerializeField] AudioClip connectedSound, blockedSound, superKOSound;
 
-    public enum MoveType { low, mid, high};
+    [SerializeField] GameObject shoryukenSpark, blockSpark;
+    [SerializeField] AudioClip connectedSound, blockedSound, superKOSound;
+
+    public enum MoveType { low, mid, high };
     [HideInInspector]
     public MoveType moveType = MoveType.high;
-	
-	private ComboCounter comboCounter;
-	private Animator animator;
-	private Rigidbody2D physicsBody;
+
+    private ComboCounter comboCounter;
+    private Animator animator;
+    private Rigidbody2D physicsBody;
     private float timer, xVelocity, yVelocity;
 
-    void Start(){
-		animator = GetComponent<Animator>();
-		physicsBody = GetComponent<Rigidbody2D>();
-		comboCounter = FindObjectOfType<ComboCounter>();
-		animator.SetBool("madeContact", false); 
-	}
-	
-	void StopMovingProjectile(){
-		physicsBody.velocity = new Vector2(0f,0f);
-	}	
-	
-	void DestroyProjectile(){
-		Destroy(gameObject);
-	}
-	
-	void PushBack(Character receiver, Rigidbody2D rigid){
-		if (receiver.side == Character.Side.P2){			
-			rigid.velocity = new Vector2(pushBack * 0.2f, 0f);		
-		}
-		else{
-			rigid.velocity = new Vector2(-pushBack * 0.2f, 0f);				
-		}
-	}
-	
-	void CharacterKOed(Character receiver, Rigidbody2D recRigid, Animator recAnim)
+    void Start()
+    {
+        animator = GetComponent<Animator>();
+        physicsBody = GetComponent<Rigidbody2D>();
+        comboCounter = FindObjectOfType<ComboCounter>();
+        animator.SetBool("madeContact", false);
+    }
+
+    void StopMovingProjectile()
+    {
+        physicsBody.velocity = new Vector2(0f, 0f);
+    }
+
+    void DestroyProjectile()
+    {
+        Destroy(gameObject);
+    }
+
+    void PushBack(Rigidbody2D rigid)
+    {
+        if (xVelocity >= 0f)
+        {
+            rigid.velocity = new Vector2(pushBack * 0.2f, 0f);
+        }
+        else
+        {
+            rigid.velocity = new Vector2(-pushBack * 0.2f, 0f);
+        }
+    }
+
+    void CharacterKOed(Character receiver, Rigidbody2D recRigid, Animator recAnim)
     {
         if (isSuper)
         {
@@ -56,20 +63,20 @@ public class Projectile : MonoBehaviour {
         {
             TimeControl.slowDownTimer = 100f;
         }
-		recAnim.Play("KnockDownBlendTree", 0);
-		if (receiver.side == Character.Side.P1)
+        recAnim.Play("KnockDownBlendTree", 0);
+        if (receiver.side == Character.Side.P1)
         {
-			recRigid.velocity = new Vector2(-2f, 4f);
-		}
-		else
+            recRigid.velocity = new Vector2(-2f, 4f);
+        }
+        else
         {
-			recRigid.velocity = new Vector2(2f, 4f);
+            recRigid.velocity = new Vector2(2f, 4f);
         }
         Instantiate(shoryukenSpark, transform.position, Quaternion.identity);
     }
 
-    void OnTriggerStay2D(Collider2D collider){
-        Debug.Log(collider.name);
+    void OnTriggerStay2D(Collider2D collider)
+    {
         HurtBox hurtBox = collider.gameObject.GetComponentInParent<HurtBox>();
         Animator hurtCharAnimator = collider.gameObject.GetComponentInParent<Animator>();
         Projectile otherProjectile = collider.gameObject.GetComponent<Projectile>();
@@ -78,7 +85,8 @@ public class Projectile : MonoBehaviour {
             CountNumHits();
             physicsBody.velocity = new Vector2(0f, 0f);
         }
-        else if (hurtBox && hurtBox.gameObject.tag != gameObject.tag && !hurtBox.GetHurtBoxCollided() && !animator.GetBool("madeContact")){
+        else if (hurtBox && hurtBox.gameObject.tag != gameObject.tag && !hurtBox.GetHurtBoxCollided() && !animator.GetBool("madeContact"))
+        {
             CountNumHits();
             hurtBox.SetHurtBoxCollided(true);
             Character hurtCharacter = hurtBox.GetComponentInParent<Character>();
@@ -86,20 +94,24 @@ public class Projectile : MonoBehaviour {
 
             if (hurtCharacter.GetBackPressed() == true && hurtCharAnimator.GetBool("isAttacking") == false
                 && hurtCharAnimator.GetBool("isLiftingOff") == false && hurtCharAnimator.GetBool("isAirborne") == false
-                && hurtCharAnimator.GetBool("isInHitStun") == false){
+                && hurtCharAnimator.GetBool("isInHitStun") == false)
+            {
                 //if attack is blocked
                 if ((moveType == MoveType.low && hurtCharAnimator.GetBool("isCrouching") == false)
-                    || (moveType == MoveType.mid && hurtCharAnimator.GetBool("isStanding") == false)){
+                    || (moveType == MoveType.mid && hurtCharAnimator.GetBool("isStanding") == false))
+                {
                     ProjectileLanded(hurtCharAnimator, hurtCharacter, hurtPhysicsbody);
                 }
-                else{
+                else
+                {
                     ProjectileBlocked(hurtCharAnimator, hurtCharacter, hurtPhysicsbody);
                 }
             }
-            else{
+            else
+            {
                 ProjectileLanded(hurtCharAnimator, hurtCharacter, hurtPhysicsbody);
             }
-
+            hurtCharacter.GetSuper += 1.5f;
         }
     }
 
@@ -111,60 +123,75 @@ public class Projectile : MonoBehaviour {
         }
     }
 
-    void CountNumHits(){
+    void CountNumHits()
+    {
         numHits--;
-        if (numHits <= 0){
+        if (numHits <= 0)
+        {
             animator.SetBool("madeContact", true);
         }
     }
 
-    void ProjectileLanded(Animator hurtCharAnimator, Character hurtCharacter, Rigidbody2D hurtPhysicsbody){
+    void ProjectileLanded(Animator hurtCharAnimator, Character hurtCharacter, Rigidbody2D hurtPhysicsbody)
+    {
         TimeControl.slowDown = true;
         AudioSource.PlayClipAtPoint(connectedSound, transform.position);
         hurtCharacter.SetDamage(damage);
-        if (gameObject.tag == "Player1"){
-            if (hurtCharAnimator.GetBool("isInHitStun")){
+        if (gameObject.tag == "Player1")
+        {
+            if (hurtCharAnimator.GetBool("isInHitStun"))
+            {
                 comboCounter.GetComboCountP1++;
                 comboCounter.GetStartTimer = false;
                 comboCounter.ResetComboFinishedTimer();
             }
         }
-        else if (gameObject.tag == "Player2"){
-            if (hurtCharAnimator.GetBool("isInHitStun")){
+        else if (gameObject.tag == "Player2")
+        {
+            if (hurtCharAnimator.GetBool("isInHitStun"))
+            {
                 comboCounter.GetComboCountP2++;
                 comboCounter.GetStartTimer = false;
                 comboCounter.ResetComboFinishedTimer();
             }
         }
-        if (hurtCharacter.GetHealth() <= 0f){
+        if (hurtCharacter.GetHealth() <= 0f)
+        {
             CharacterKOed(hurtCharacter, hurtPhysicsbody, hurtCharAnimator);
         }
-        else{
+        else
+        {
             TimeControl.slowDownTimer = 30f;
             timer = hitStun * 0.2f;
-            if (hurtCharAnimator.GetBool("isAirborne") == true){
+            if (hurtCharAnimator.GetBool("isAirborne") == true)
+            {
                 if (numHits > 1)
                 {
-                    AirPushBack(hurtCharAnimator, hurtCharacter, hurtPhysicsbody, "MidAirHit", 0.25f);
+                    AirPushBack(hurtCharAnimator, hurtPhysicsbody, "MidAirHit", 0.25f);
                 }
                 else
                 {
-                    AirPushBack(hurtCharAnimator, hurtCharacter, hurtPhysicsbody, "KnockDownBlendTree", 3f);
+                    AirPushBack(hurtCharAnimator, hurtPhysicsbody, "KnockDownBlendTree", 3f);
                 }
             }
-            else{
-                if (hurtCharAnimator.GetBool("isCrouching") == true){
+            else
+            {
+                if (hurtCharAnimator.GetBool("isCrouching") == true)
+                {
                     hurtCharAnimator.Play("CrouchHit", 0, 0f);
                 }
-                else{
-                    if (moveType == MoveType.low){
+                else
+                {
+                    if (moveType == MoveType.low)
+                    {
                         hurtCharAnimator.Play("LowHit", 0, 0f);
                     }
-                    else{
+                    else
+                    {
                         hurtCharAnimator.Play("HighHit", 0, 0f);
                     }
                 }
-                PushBack(hurtCharacter, hurtPhysicsbody);
+                PushBack(hurtPhysicsbody);
             }
             hurtCharAnimator.SetBool("isInHitStun", true);
             hurtCharAnimator.SetFloat("hitStunTimer", timer);
@@ -172,10 +199,10 @@ public class Projectile : MonoBehaviour {
         }
     }
 
-    void AirPushBack(Animator hurtCharAnim, Character hurtChar, Rigidbody2D hurtRigidbody, string whichAnimation, float y)
+    void AirPushBack(Animator hurtCharAnim, Rigidbody2D hurtRigidbody, string whichAnimation, float y)
     {
         hurtCharAnim.Play(whichAnimation, 0, 0f);
-        if (hurtChar.side == Character.Side.P2)
+        if (xVelocity >= 0f)
         {
             hurtRigidbody.velocity = new Vector2(pushBack * 0.15f, y);
         }
@@ -185,19 +212,20 @@ public class Projectile : MonoBehaviour {
         }
     }
 
-    void ProjectileBlocked(Animator hurtCharAnimator, Character hurtCharacter, Rigidbody2D hurtPhysicsbody){
+    void ProjectileBlocked(Animator hurtCharAnimator, Character hurtCharacter, Rigidbody2D hurtPhysicsbody)
+    {
         AudioSource.PlayClipAtPoint(blockedSound, transform.position);
         timer = blockStun * 0.2f;
         hurtCharAnimator.SetBool("isInBlockStun", true);
         if (hurtCharAnimator.GetBool("isStanding") == true)
         {
             hurtCharAnimator.Play("StandBlockStun", 0, 0f);
-            PushBack(hurtCharacter, hurtPhysicsbody);
+            PushBack(hurtPhysicsbody);
         }
         else if (hurtCharAnimator.GetBool("isCrouching") == true)
         {
             hurtCharAnimator.Play("CrouchBlockStun", 0, 0f);
-            PushBack(hurtCharacter, hurtPhysicsbody);
+            PushBack(hurtPhysicsbody);
         }
         hurtCharAnimator.SetFloat("blockStunTimer", timer);
         Instantiate(blockSpark, transform.position, Quaternion.identity);

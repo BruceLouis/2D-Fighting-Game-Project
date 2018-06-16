@@ -226,7 +226,7 @@ public class AkumaAI : MonoBehaviour {
 			decisionTimer = 0f;
 		}
 		else{
-			AIHyakkishus (1, 3);
+			AIHyakkishus (0, 2);
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 			decisionTimer = 0f;		
@@ -311,7 +311,7 @@ public class AkumaAI : MonoBehaviour {
 			character.SetBackPressed (true);
 		}
 		else {
-			AIHyakkishus (1, 3);
+			AIHyakkishus (0, 3);
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 			decisionTimer = 0f;
@@ -341,7 +341,7 @@ public class AkumaAI : MonoBehaviour {
 			decisionTimer = 0f;
 		}
 		else if (decision <= 72 && decision > 56) {
-			AIHyakkishus (0, 2);
+			AIHyakkishus (1, 3);
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 			decisionTimer = 0f;

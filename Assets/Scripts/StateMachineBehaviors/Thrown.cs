@@ -10,7 +10,8 @@ public class Thrown : StateMachineBehaviour {
 		animator.SetBool("isWalkingBackward", false);
 		animator.SetBool("isWalkingForward", false);
 		animator.SetBool("isLiftingOff", false);
-		animator.SetBool("hurricaneKickActive", false);
+        animator.SetBool("isLanding", false);
+        animator.SetBool("hurricaneKickActive", false);
 		animator.SetBool("isRolling", false);
 		animator.SetBool("isMidAirHit", false);		
 		animator.SetBool("isThrown", true);

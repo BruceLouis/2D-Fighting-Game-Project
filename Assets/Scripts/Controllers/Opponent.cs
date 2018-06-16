@@ -308,7 +308,13 @@ public class Opponent : MonoBehaviour {
 				}
 				animator.SetTrigger ("motionSuperInputed");
 			}
-		}	
+            else if (character.GetComponent<Akuma>() != null)
+            {
+                character.AttackState();
+                animator.Play("AkumaShunGokuSatsuStartup", 0);
+            }
+
+        }	
 		if (Input.GetKeyDown(KeyCode.Alpha4)){
 			if (character.GetComponent<Ken>() != null){
 				if (animator.GetBool("isAttacking") == false && animator.GetBool("isAirborne") == false){
