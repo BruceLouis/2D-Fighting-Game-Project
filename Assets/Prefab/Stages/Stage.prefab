@@ -267,9 +267,11 @@ MonoBehaviour:
   backgrounds:
   - {fileID: 21300000, guid: ec063f3e4b48d674ea96f0d3dc17974e, type: 3}
   - {fileID: 21300000, guid: 5071ff00d3b8b0246ac10d568c9f03a2, type: 3}
+  - {fileID: 21300000, guid: af35d42c7e42aa34abc73d392fa0035a, type: 3}
   foregrounds:
   - {fileID: 21300000, guid: 392f6e8aa8dd7914a8f1a3a3ce0b11d7, type: 3}
   - {fileID: 21300000, guid: 13231d8890549d24b8e494f072e8495e, type: 3}
+  - {fileID: 21300000, guid: 116e98db9597d834cb19a7739d96e5fa, type: 3}
   mist1: {fileID: 198846703761465212, guid: 71ee80a329bec70468e9747e34c2fc25, type: 2}
   mist2: {fileID: 198348280706765250, guid: 29b6aac501432b946af55fb73dca02e1, type: 2}
 --- !u!114 &114788813876671228
@@ -296,6 +298,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
@@ -340,6 +343,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
