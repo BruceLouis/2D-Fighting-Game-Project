@@ -34,7 +34,7 @@ public class KnockDown : StateMachineBehaviour {
 		animator.ResetTrigger("headButtInputed");
 		animator.ResetTrigger("hyakkishuInputed");
 		animator.ResetTrigger("motionSuperInputed");
-	}
+    }
 
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
 	//override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {

@@ -4,6 +4,28 @@ using UnityEngine;
 
 public class HitBox : MonoBehaviour {
 
+    /*
+     * The hitbox is the collision box where the character actually does damage to the other fighter.
+     * The hitbox must interact with the hurtbox in order to do damage.
+     * The basic gist of hitbox interaction with the hurtbox works in this way:
+     *      1. check to see if hitbox has collided with any other collision boxes
+     *      2. check to see if the collided collision box is a hurtbox
+     *      3. if the hurtbox character is blocking, hurtbox character goes into blockstun
+     *          a. set the blockstun timer, this blockstun timer determines how long he is in blockstun for
+     *          b. set hurtbox character's state to blocking
+     *          c. set the animation of the hurtbox character to blocking
+     *          d. enforce pushback, pushback being how far the attack pushes the other character back on hit
+     *          e. play the blocked sound 
+     *          f. instantiate blocked sparks
+     *      4. if the hurtbox character is not blocking, hurtbox character goes into hitstun
+     *          a. set the hitstun timer
+     *          b. set the damage done onto the hurtbox character 
+     *          c. set animation to show he got hurt
+     *          d. enforce pushback
+     *          e. play got hit sound
+     *          f. instantiate got hit sparks
+     */
+
 	delegate bool GetActiveSuper();
 	
 	[SerializeField] GameObject hitSpark, bigHitSpark, shoryukenSpark, blockSpark;		

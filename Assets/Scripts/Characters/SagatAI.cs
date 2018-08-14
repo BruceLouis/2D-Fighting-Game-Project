@@ -238,26 +238,26 @@ public class SagatAI : MonoBehaviour
             AIcontrols.AIPressedForward();
             character.SetBackPressed(false);
         }
-        else if (decision <= 15 && decision > 10)
+        else if (decision <= 15)
         {
             AIcontrols.AIPressedBackward();
             character.SetBackPressed(true);
         }
-        else if (decision <= 25 && decision > 15)
+        else if (decision <= 25)
         {
             AITigerKnees();
             sharedProperties.CharacterNeutralState();
             AIcontrols.DoesAIBlock();
             decisionTimer = 0f;
         }
-        else if (decision <= 27 && decision > 25)
+        else if (decision <= 27)
         {
             AIcontrols.AIJab(2);
             sharedProperties.CharacterNeutralState();
             AIcontrols.DoesAIBlock();
             decisionTimer = 0f;
         }
-        else if (decision <= 29 && decision > 27)
+        else if (decision <= 29)
         {
             if (character.GetSuper >= 100f)
             {
@@ -271,14 +271,14 @@ public class SagatAI : MonoBehaviour
             AIcontrols.DoesAIBlock();
             decisionTimer = 0f;
         }
-        else if (decision <= 33 && decision > 29)
+        else if (decision <= 33)
         {
             AIcontrols.AIRoundhouse(1, 10);
             sharedProperties.CharacterNeutralState();
             AIcontrols.DoesAIBlock();
             decisionTimer = 0f;
         }
-        else if (decision <= 35 && decision > 33)
+        else if (decision <= 35)
         {
             if (character.GetSuper >= 100f)
             {
@@ -292,7 +292,7 @@ public class SagatAI : MonoBehaviour
             AIcontrols.DoesAIBlock();
             decisionTimer = 0f;
         }
-        else if (decision <= 37 && decision > 35)
+        else if (decision <= 37)
         {
             if (character.GetSuper >= 100f)
             {
@@ -306,7 +306,7 @@ public class SagatAI : MonoBehaviour
             AIcontrols.DoesAIBlock();
             decisionTimer = 0f;
         }
-        else if (decision <= 39 && decision > 37)
+        else if (decision <= 39)
         {
             if (character.GetSuper >= 100f)
             {
@@ -320,26 +320,26 @@ public class SagatAI : MonoBehaviour
             AIcontrols.DoesAIBlock();
             decisionTimer = 0f;
         }
-        else if (decision <= 41 && decision > 39)
+        else if (decision <= 41)
         {
             AIcontrols.AIPressedForward();
             AIcontrols.AIJump();
             character.SetBackPressed(false);
         }
-        else if (decision <= 44 && decision > 41)
+        else if (decision <= 44)
         {
             sharedProperties.CharacterNeutralState();
             AIcontrols.AIJump();
             character.SetBackPressed(false);
         }
-        else if (decision <= 45 && decision > 44)
+        else if (decision <= 45)
         {
             AIcontrols.AIPressedBackward();
             AIcontrols.AIJump();
             character.SetBackPressed(true);
         }
 
-        else if (decision <= 60 && decision > 45)
+        else if (decision <= 60)
         {
             if (playerController != null)
             {
@@ -419,39 +419,39 @@ public class SagatAI : MonoBehaviour
             AIcontrols.AIPressedForward();
             character.SetBackPressed(false);
         }
-        else if (decision <= 15 && decision > 10)
+        else if (decision <= 15)
         {
             AIcontrols.AIPressedBackward();
             character.SetBackPressed(true);
         }
-        else if (decision <= 35 && decision > 15)
+        else if (decision <= 35)
         {
             AIcontrols.AICrouch();
             sharedProperties.CharacterNeutralState();
             AIcontrols.DoesAIBlock();
         }
-        else if (decision <= 42 && decision > 35)
+        else if (decision <= 42)
         {
             AIcontrols.AIJab(4);
             sharedProperties.CharacterNeutralState();
             AIcontrols.DoesAIBlock();
             decisionTimer = 0f;
         }
-        else if (decision <= 49 && decision > 42)
+        else if (decision <= 49)
         {
             AIcontrols.AIShort(2);
             sharedProperties.CharacterNeutralState();
             AIcontrols.DoesAIBlock();
             decisionTimer = 0f;
         }
-        else if (decision <= 54 && decision > 49)
+        else if (decision <= 54)
         {
             AIcontrols.AIRoundhouse(1, 10);
             sharedProperties.CharacterNeutralState();
             AIcontrols.DoesAIBlock();
             decisionTimer = 0f;
         }
-        else if (decision <= 57 && decision > 54)
+        else if (decision <= 57)
         {
             AIcontrols.AIFierce(2, 1);
             sharedProperties.CharacterNeutralState();
@@ -459,67 +459,67 @@ public class SagatAI : MonoBehaviour
             decisionTimer = 0f;
         }
 
-        else if (decision <= 60 && decision > 57)
+        else if (decision <= 60)
         {
             AIcontrols.AIThrow();
             sharedProperties.CharacterNeutralState();
             AIcontrols.DoesAIBlock();
             decisionTimer = 0f;
         }
-        else if (decision <= 67 && decision > 60)
+        else if (decision <= 67)
         {
             AIcontrols.AIForward(4);
             sharedProperties.CharacterNeutralState();
             AIcontrols.DoesAIBlock();
             decisionTimer = 0f;
         }
-        else if (decision <= 74 && decision > 67)
+        else if (decision <= 74)
         {
             AIcontrols.AIStrong(40);
             sharedProperties.CharacterNeutralState();
             AIcontrols.DoesAIBlock();
             decisionTimer = 0f;
         }
-        else if (decision <= 76 && decision > 74)
+        else if (decision <= 76)
         {
             AIcontrols.AIPressedForward();
             AIcontrols.AIJump();
             character.SetBackPressed(false);
             decisionTimer = 0f;
         }
-        else if (decision <= 79 && decision > 76)
+        else if (decision <= 79)
         {
             sharedProperties.CharacterNeutralState();
             AIcontrols.AIJump();
             character.SetBackPressed(false);
             decisionTimer = 0f;
         }
-        else if (decision <= 81 && decision > 79)
+        else if (decision <= 81)
         {
             AIcontrols.AIPressedBackward();
             AIcontrols.AIJump();
             character.SetBackPressed(true);
             decisionTimer = 0f;
         }
-        else if (decision <= 85 && decision > 81)
+        else if (decision <= 85 && !animator.GetBool("isAttacking"))
         {
             AITigerKnees();
             sharedProperties.CharacterNeutralState();
             AIcontrols.DoesAIBlock();
             decisionTimer = 0f;
         }
-        else if (decision <= 90 && decision > 85)
+        else if (decision <= 90 && !animator.GetBool("isAttacking"))
         {
             AITigerUppercuts();
             sharedProperties.CharacterNeutralState();
             AIcontrols.DoesAIBlock();
             decisionTimer = 0f;
         }
-        else if (decision <= 93 && decision > 90)
+        else if (decision <= 93)
         {
             if (playerController != null)
             {
-                if (playerController.GetProjectileP1Parent().transform.childCount <= 0)
+                if (playerController.GetProjectileP1Parent().transform.childCount <= 0 && !animator.GetBool("isAttacking"))
                 {
                     AITigerShots("Upper", 6);
                     AIcontrols.DoesAIBlock();
@@ -535,7 +535,7 @@ public class SagatAI : MonoBehaviour
             }
             else if (opponentController != null)
             {
-                if (opponentController.GetProjectileP2Parent().transform.childCount <= 0)
+                if (opponentController.GetProjectileP2Parent().transform.childCount <= 0 && !animator.GetBool("isAttacking"))
                 {
                     AITigerShots("Upper", 6);
                     AIcontrols.DoesAIBlock();
@@ -554,7 +554,7 @@ public class SagatAI : MonoBehaviour
         {
             if (playerController != null)
             {
-                if (playerController.GetProjectileP1Parent().transform.childCount <= 0)
+                if (playerController.GetProjectileP1Parent().transform.childCount <= 0 && !animator.GetBool("isAttacking"))
                 {
                     AITigerShots("Lower", 10);
                     AIcontrols.DoesAIBlock();
@@ -570,7 +570,7 @@ public class SagatAI : MonoBehaviour
             }
             else if (opponentController != null)
             {
-                if (opponentController.GetProjectileP2Parent().transform.childCount <= 0)
+                if (opponentController.GetProjectileP2Parent().transform.childCount <= 0 && !animator.GetBool("isAttacking"))
                 {
                     AITigerShots("Lower", 10);
                     AIcontrols.DoesAIBlock();
@@ -596,13 +596,13 @@ public class SagatAI : MonoBehaviour
             sharedProperties.CharacterNeutralState();
             AIcontrols.DoesAIBlock();
         }
-        else if (decision <= 75 && decision > 50)
+        else if (decision <= 75)
         {
             AITigerKnees();
             sharedProperties.CharacterNeutralState();
             AIcontrols.DoesAIBlock();
         }
-        else if (decision <= 90 && decision > 75)
+        else if (decision <= 90)
         {
             if (character.GetSuper >= 100f)
             {
@@ -626,7 +626,7 @@ public class SagatAI : MonoBehaviour
     void CloseRangeOtherFighterBlockedDecisions()
     {
         decision = Random.Range(0, 100);
-        if (decision <= 30)
+        if (decision <= 10)
         {
             if (playerController != null)
             {
@@ -661,13 +661,13 @@ public class SagatAI : MonoBehaviour
                 }
             }
         }
-        else if (decision <= 45 && decision > 30)
+        else if (decision <= 30)
         {
             AIcontrols.AIForward(2);
             sharedProperties.CharacterNeutralState();
             AIcontrols.DoesAIBlock();
         }
-        else if (decision <= 55 && decision > 45)
+        else if (decision <= 20)
         {
             if (character.GetSuper >= 100f)
             {
@@ -680,19 +680,19 @@ public class SagatAI : MonoBehaviour
             sharedProperties.CharacterNeutralState();
             AIcontrols.DoesAIBlock();
         }
-        else if (decision <= 65 && decision > 55)
+        else if (decision <= 40)
         {
             AIcontrols.AIJab(2);
             sharedProperties.CharacterNeutralState();
             AIcontrols.DoesAIBlock();
         }
-        else if (decision <= 75 && decision > 65)
+        else if (decision <= 60)
         {
             AIcontrols.AIShort(10);
             sharedProperties.CharacterNeutralState();
             AIcontrols.DoesAIBlock();
         }
-        else if (decision <= 85 && decision > 75)
+        else if (decision <= 65)
         {
             AITigerKnees();
             sharedProperties.CharacterNeutralState();

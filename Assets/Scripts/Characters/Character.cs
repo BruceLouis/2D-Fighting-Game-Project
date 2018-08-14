@@ -80,26 +80,12 @@ public class Character : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D collision){
 		if (collision.gameObject.GetComponent<Ground>()	&& animator.GetBool("isMidAirHit") == false && animator.GetFloat("yVelocity") <= 0){
 			animator.SetBool("isAirborne", false);
-			if (gameObject.GetComponent<Ken>() != null || gameObject.GetComponent<Akuma>() != null){
-				animator.SetBool("shoryukenActive", false);
-			}
-			else if (gameObject.GetComponent<FeiLong>() != null){
-				if (animator.GetBool("rekkaKunActive") == true){
-					physicsbody.velocity = new Vector2(0f, physicsbody.velocity.y);
-				}
-				animator.SetBool("shienKyakuActive", false);
-				animator.SetBool("rekkaKunActive", false);
-			}				
-			else if (gameObject.GetComponent<Balrog>() != null){	
-				animator.SetBool("isHeadButting", false);
-			}						
-			else if (gameObject.GetComponent<Sagat>() != null){	
-				animator.SetBool("tigerUppercutActive", false);
-				if (animator.GetBool("tigerKneeActive") == true){
-					physicsbody.velocity = new Vector2(0f, physicsbody.velocity.y);
-				}
-				animator.SetBool("tigerKneeActive", false);
-			}				
+			animator.SetBool("shoryukenActive", false);
+			animator.SetBool("shienKyakuActive", false);
+			animator.SetBool("rekkaKunActive", false);
+			animator.SetBool("isHeadButting", false);
+			animator.SetBool("tigerUppercutActive", false);
+			animator.SetBool("tigerKneeActive", false);			
 		}
 	}
 
@@ -507,7 +493,7 @@ public class Character : MonoBehaviour {
         }
         return vector;
     }
-
+    
     public void CreateDemonSparks(){
 		float x = Random.Range (-0.25f, 0.25f);
 		float y = Random.Range (-0.25f, 0.25f);

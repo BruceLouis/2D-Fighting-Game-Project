@@ -153,79 +153,85 @@ public class AkumaAI : MonoBehaviour {
 			sharedProperties.CharacterNeutralState ();
 			character.SetBackPressed (true);
 		}
-		else if (decision <= 27 && decision > 20) {
+		else if (decision <= 27) {
 			AIcontrols.AILowForward();			
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 			decisionTimer = 0f;
 		}				
-		else if (decision <= 30 && decision > 27) {
-			AIcontrols.AIJab (2);
-			sharedProperties.CharacterNeutralState ();
-			AIcontrols.DoesAIBlock ();
-			decisionTimer = 0f;
-		}
-		else if (decision <= 37 && decision > 30) {
+		else if (decision <= 30)
+        {
+            AIcontrols.AISweep();
+            sharedProperties.CharacterNeutralState();
+            AIcontrols.DoesAIBlock();
+            decisionTimer = 0f;
+        }
+		else if (decision <= 33) {
 			AIcontrols.AIShort (15);
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 			decisionTimer = 0f;
 		}
-		else if (decision <= 43 && decision > 37) {
+		else if (decision <= 43) {
 			AIcontrols.AIStrong(50);			
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 			decisionTimer = 0f;
 		}
-		else if (decision <= 53 && decision > 43) {
-			AIcontrols.AISweep ();
+		else if (decision <= 53)
+        {
+            AIcontrols.AIJab(2);
+            sharedProperties.CharacterNeutralState();
+            AIcontrols.DoesAIBlock();
+            decisionTimer = 0f;
+		}
+		else if (decision <= 59)
+        {
+            if (character.GetSuper >= 100f)
+            {
+                AIShunGokuSatsus();
+            }
+            else
+            {
+                AIcontrols.AIThrow();
+            }
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 			decisionTimer = 0f;
 		}
-		else if (decision <= 59 && decision > 53) {
-			AIcontrols.AIThrow ();
-			sharedProperties.CharacterNeutralState ();
-			AIcontrols.DoesAIBlock ();
-			decisionTimer = 0f;
-		}
-		else if (decision <= 64 && decision > 59) {
-			if (character.GetSuper >= 100f){
-				AIShunGokuSatsus();
-			}
-			else{
-				AIHadoukenLimitsWithAttack(AIcontrols.AILowForward);
-			}
-			sharedProperties.CharacterNeutralState ();
-			AIcontrols.DoesAIBlock ();
-		}
-		else if (decision <= 69 && decision > 64) {
+		else if (decision <= 64) {
+			AIHadoukenLimitsWithAttack(AIcontrols.AILowForward);
+            decisionTimer = 0f;
+        }
+		else if (decision <= 69) {
 			AIcontrols.AIPressedForward ();
 			character.SetBackPressed (false);
 		}
-		else if (decision <= 73 && decision > 69) {
+		else if (decision <= 73) {
 			AIcontrols.AIPressedForward ();
 			AIcontrols.AIJump ();
 			character.SetBackPressed (false);
 			decisionTimer = 0f;
 		}
-		else if (decision <= 79 && decision > 73) {
+		else if (decision <= 79) {
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.AIJump ();
 			AIcontrols.DoesAIBlock ();
 			decisionTimer = 0f;		
 		}
-		else if (decision <= 82 && decision > 79){
+		else if (decision <= 82){
 			AIcontrols.AIPressedBackward ();
 			character.SetBackPressed (true);
 		}	
-		else if (decision <= 87 && decision > 82){
+		else if (decision <= 87 && !animator.GetBool("isAttacking"))
+        {
 			AIJabShoryuken ();
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 			decisionTimer = 0f;
 		}
-		else{
+		else
+        {
 			AIHyakkishus (0, 2);
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
@@ -239,29 +245,29 @@ public class AkumaAI : MonoBehaviour {
 			AIcontrols.AIPressedForward ();
 			character.SetBackPressed (false);
 		}
-		else if (decision <= 40 && decision > 30) {			
+		else if (decision <= 33 && !animator.GetBool("isAttacking")) {			
 			AIHadoukenLimitsWithAttack(AIcontrols.AISweep);
 			decisionTimer = 0f;
 		}
-		else if (decision <= 42 && decision > 40) {
+		else if (decision <= 38) {
 			AIcontrols.AIForward (10);
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 			decisionTimer = 0f;
 		}
-		else if (decision <= 44 && decision > 42) {
+		else if (decision <= 43) {
 			AIcontrols.AIStrong (10);
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 			decisionTimer = 0f;
 		}
-		else if (decision <= 50 && decision > 44) {
+		else if (decision <= 50) {
 			AIcontrols.AICrouch ();
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 			decisionTimer = 0f;
 		}
-		else if (decision <= 55 && decision > 50) {
+		else if (decision <= 55) {
 			if (character.GetSuper >= 100f){
 				AIShunGokuSatsus();
 				sharedProperties.CharacterNeutralState ();
@@ -273,48 +279,48 @@ public class AkumaAI : MonoBehaviour {
 				character.SetBackPressed (false);
 			}
 		}
-		else if (decision <= 65 && decision > 55) {
+		else if (decision <= 65) {
 			AIcontrols.AIPressedForward ();
 			AIcontrols.AIJump ();
 			character.SetBackPressed (false);
 		}		
-		else if (decision <= 75 && decision > 65) {
+		else if (decision <= 75) {
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.AIJump ();
 			AIcontrols.DoesAIBlock ();
 		}		
-		else if (decision <= 81 && decision > 75) {
+		else if (decision <= 81) {
 			AIcontrols.AIPressedBackward ();
 			AIcontrols.AIJump ();
 			AIcontrols.DoesAIBlock ();
 		}		
-		else if (decision <= 83 && decision > 81) {
+		else if (decision <= 83) {
 			AIcontrols.AISweep ();
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 			decisionTimer = 0f;
 		}
-		else if (decision <= 84 && decision > 83) {
+		else if (decision <= 87) {
 			AIcontrols.AIShort (10);
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 			decisionTimer = 0f;
 		}
-		else if (decision <= 85 && decision > 84) {
+		else if (decision <= 92) {
 			AIcontrols.AIJab (2);
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 			decisionTimer = 0f;
 		}
-		else if (decision <= 89 && decision > 85) {
-			AIcontrols.AIPressedBackward ();
-			character.SetBackPressed (true);
-		}
-		else {
+		else if (decision <= 95 && !animator.GetBool("isAttacking")) {
 			AIHyakkishus (0, 3);
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 			decisionTimer = 0f;
+		}
+		else {
+			AIcontrols.AIPressedBackward ();
+			character.SetBackPressed (true);
 		}
 	}
 	
@@ -324,41 +330,41 @@ public class AkumaAI : MonoBehaviour {
 			AIcontrols.AIPressedForward ();
 			character.SetBackPressed (false);
 		}
-		else if (decision <= 35 && decision > 30) {
+		else if (decision <= 35) {
 			AIcontrols.AIPressedBackward ();
 			character.SetBackPressed (true);
 		}		
-		else if (decision <= 41 && decision > 35) {
+		else if (decision <= 41) {
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.AIJump ();
 			AIcontrols.DoesAIBlock ();
 			decisionTimer = 0f;
 		}
-		else if (decision <= 56 && decision > 41) {
+		else if (decision <= 56) {
 			AIcontrols.AIPressedForward ();
 			AIcontrols.AIJump ();
 			character.SetBackPressed (false);
 			decisionTimer = 0f;
 		}
-		else if (decision <= 72 && decision > 56) {
+		else if (decision <= 72) {
 			AIHyakkishus (1, 3);
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 			decisionTimer = 0f;
 		}
-		else if (decision <= 74 && decision > 72) {
+		else if (decision <= 74) {
 			AIcontrols.AIShort (15);
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 			decisionTimer = 0f;
 		}
-		else if (decision <= 76 && decision > 74) {
+		else if (decision <= 76) {
 			AIcontrols.AIJab (2);
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 			decisionTimer = 0f;
 		}
-		else if (decision <= 80 && decision > 76){
+		else if (decision <= 80){
 			AIcontrols.AIPressedBackward ();
 			AIcontrols.AIJump ();
 			character.SetBackPressed (false);
@@ -376,23 +382,23 @@ public class AkumaAI : MonoBehaviour {
 			sharedProperties.CharacterNeutralState ();
 			character.SetBackPressed (true);
 		}
-		else if (decision <= 22 && decision > 20) {
+		else if (decision <= 22) {
 			AIcontrols.AIJab (2);
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 			decisionTimer = 0f;
 		}
-		else if (decision <= 24 && decision > 22) {
+		else if (decision <= 24) {
 			AIcontrols.AIShort (10);
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 			decisionTimer = 0f;
 		}
-		else if (decision <= 36 && decision > 24) {
+		else if (decision <= 36) {
 			AIcontrols.AIPressedForward ();
 			character.SetBackPressed (false);
 		}
-		else if (decision <= 42 && decision > 36) {
+		else if (decision <= 42) {
 			if (character.GetSuper >= 100f){
 				AIShunGokuSatsus();
 				sharedProperties.CharacterNeutralState ();
@@ -405,13 +411,13 @@ public class AkumaAI : MonoBehaviour {
 			}
 			decisionTimer = 0f;
 		}
-		else if (decision <= 55 && decision > 42) {
+		else if (decision <= 55) {
 			AIcontrols.AIPressedForward ();
 			AIcontrols.AIJump ();
 			character.SetBackPressed (false);
 			decisionTimer = 0f;
 		}
-		else if (decision <= 75 && decision > 55) {			
+		else if (decision <= 75) {			
 			AIHadoukenLimitsWithAttack(AIcontrols.AISweep);
 			decisionTimer = 0f;
 		}
@@ -431,31 +437,31 @@ public class AkumaAI : MonoBehaviour {
 			AIcontrols.DoesAIBlock ();
 			decisionTimer = 0f;
 		}
-		else if (decision <= 10 && decision > 5) {
+		else if (decision <= 10) {
 			AIcontrols.AIShort (10);
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 			decisionTimer = 0f;
 		}
-		else if (decision <= 20 && decision > 10) {
+		else if (decision <= 20) {
 			AIcontrols.AIPressedBackward ();
 			character.SetBackPressed (true);
 		}
-		else if (decision <= 30 && decision > 20) {
+		else if (decision <= 30) {
 			AIcontrols.AIPressedForward ();
 			character.SetBackPressed (false);
 		}		
-		else if (decision <= 35 && decision > 30) {
+		else if (decision <= 35) {
 			AIcontrols.AIPressedForward ();
 			AIcontrols.AIJump ();
 			character.SetBackPressed (false);
 			decisionTimer = 0f;
 		}
-		else if (decision <= 40 && decision > 35) {			
+		else if (decision <= 40) {			
 			AIHadoukenLimitsWithWalk();
 			decisionTimer = 0f;
 		}
-		else if (decision <= 60 && decision > 40)
+		else if (decision <= 60)
         {
             if (character.GetSuper >= 100f)
             {
@@ -470,13 +476,13 @@ public class AkumaAI : MonoBehaviour {
                 character.SetBackPressed(true);
             }
 		}
-		else if (decision <= 70 && decision > 60) {
+		else if (decision <= 70) {
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.AIJump ();
 			character.SetBackPressed (false);
 			decisionTimer = 0f;
 		}
-		else if (decision <= 75 && decision > 70) {
+		else if (decision <= 75) {
 			AIcontrols.AIPressedBackward ();
 			AIcontrols.AIJump ();
 			character.SetBackPressed (false);
@@ -510,11 +516,11 @@ public class AkumaAI : MonoBehaviour {
 			AIcontrols.AIJumpFierce();
 			sharedProperties.CharacterNeutralState();
 		}
-		else if (decision <= 6 && decision > 3){
+		else if (decision <= 6){
 			AIcontrols.AIJumpRoundhouse();
 			sharedProperties.CharacterNeutralState();
 		}				
-		else if (decision <= 15 && decision > 6){
+		else if (decision <= 15){
 			if (playerController != null) {
 				if (playerController.GetProjectileP1Parent ().transform.childCount <= 0) {
 					AIAirHadoukens ();
@@ -545,30 +551,36 @@ public class AkumaAI : MonoBehaviour {
 	
 	void MidRangeOtherFighterBlockedDecisions (){		
 		decision = Random.Range(0,100);
-		if (decision <= 30) {			
+		if (decision <= 15)
+        {			
 			AIHadoukenLimitsWithAttack (AIcontrols.AISweep);
-		}
-		else if (decision <= 35 && decision > 30) {
+        }
+        else if (decision <= 25)
+        {
+            AIHyakkishus(1, 3);
+            sharedProperties.CharacterNeutralState();
+            AIcontrols.DoesAIBlock();
+        }
+        else if (decision <= 40)
+        {
 			AIcontrols.AILowForward ();
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 		}
-		else if (decision <= 40 && decision > 35) {
+		else if (decision <= 60)
+        {
 			AIcontrols.AIStrong (10);
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 		}
-		else if (decision <= 50 && decision > 40) {
+		else if (decision <= 65)
+        {
 			AIcontrols.AISweep ();
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 		}
-		else if (decision <= 70 && decision > 50) {
-			AIHyakkishus (1, 3);
-			sharedProperties.CharacterNeutralState ();
-			AIcontrols.DoesAIBlock ();
-		}
-		else {
+		else
+        {
 			AIcontrols.AICrouch ();
 			sharedProperties.CharacterNeutralState ();
 			character.SetBackPressed (true);
@@ -577,31 +589,39 @@ public class AkumaAI : MonoBehaviour {
 	
 	void CloseRangeOtherFighterBlockedDecisions (){
 		decision = Random.Range(0,100);
-		if (decision <= 30) {
+		if (decision <= 10) {
 			AIHadoukenLimitsWithAttack(AIcontrols.AILowForward);
-		}
-		else if (decision <= 35 && decision > 30) {
+        }
+        else if (decision <= 20)
+        {
+            AIHyakkishus(0, 3);
+            sharedProperties.CharacterNeutralState();
+            AIcontrols.DoesAIBlock();
+        }
+        else if (decision <= 25)
+        {
+            AIJabShoryuken();
+            sharedProperties.CharacterNeutralState();
+            AIcontrols.DoesAIBlock();
+            decisionTimer = 0f;
+        }
+        else if (decision <= 35) {
 			AIcontrols.AILowForward ();
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 		}
-		else if (decision <= 40 && decision > 35) {
+		else if (decision <= 45) {
 			AIcontrols.AIStrong (10);
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 		}
-		else if (decision <= 45 && decision > 40) {
+		else if (decision <= 55) {
 			AIcontrols.AIJab (2);
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 		}
-		else if (decision <= 50 && decision > 45) {
+		else if (decision <= 65) {
 			AIcontrols.AIShort (10);
-			sharedProperties.CharacterNeutralState ();
-			AIcontrols.DoesAIBlock ();
-		}
-		else if (decision <= 70 && decision > 50) {
-			AIHyakkishus (0, 3);
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 		}

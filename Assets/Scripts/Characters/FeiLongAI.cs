@@ -213,13 +213,13 @@ public class FeiLongAI : MonoBehaviour {
 			AIcontrols.AIJump ();
 			character.SetBackPressed (false);
 		}
-		else if (decision <= 65 && decision > 55) {
+		else if (decision <= 65 && decision > 55 && !animator.GetBool("isAttacking")) {
 			AIRekkaKens ();
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 			decisionTimer = 0f;
 		}
-		else if (decision <= 75 && decision > 65) {
+		else if (decision <= 75 && decision > 65 && !animator.GetBool("isAttacking")) {
 			AIRekkaKuns ();
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
@@ -301,19 +301,19 @@ public class FeiLongAI : MonoBehaviour {
 			AIcontrols.DoesAIBlock ();
 			decisionTimer = 0f;
 		}
-		else if (decision <= 45 && decision > 40) {
+		else if (decision <= 45 && decision > 40 && !animator.GetBool("isAttacking")) {
 			AIRekkaKens ();
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 			decisionTimer = 0f;
 		}
-		else if (decision <= 48 && decision > 45) {
+		else if (decision <= 48 && decision > 45 && !animator.GetBool("isAttacking")) {
 			AIShortShienKyakus ();
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
 			decisionTimer = 0f;
 		}
-		else if (decision <= 50 && decision > 48) {
+		else if (decision <= 50 && decision > 48 && !animator.GetBool("isAttacking")) {
 			AIRekkaKuns ();
 			sharedProperties.CharacterNeutralState ();
 			AIcontrols.DoesAIBlock ();
@@ -382,42 +382,56 @@ public class FeiLongAI : MonoBehaviour {
 	}
 
 	void CloseRangeOtherFighterBlockedDecisions (){
-		decision = Random.Range(0,100); 
-		if (decision <= 30) {
-			AIcontrols.AIJab (8);
-			sharedProperties.CharacterNeutralState ();
-			AIcontrols.DoesAIBlock ();
-		}
-		else if (decision <= 50 && decision > 30) {
-			AIcontrols.AIStrong (2);
-			sharedProperties.CharacterNeutralState ();
-			AIcontrols.DoesAIBlock ();
-		}
-		else if (decision <= 60 && decision > 50) {
-			if (character.GetSuper >= 100f){
-				AIRekkaShinkens();
-			}
-			else{
-				AIcontrols.AIFierce (10, 8);
-			}
-			sharedProperties.CharacterNeutralState ();
-			AIcontrols.DoesAIBlock ();
-		}
-		else if (decision <= 80 && decision > 60) {
-			AIRekkaKens ();
-			sharedProperties.CharacterNeutralState ();
-			AIcontrols.DoesAIBlock ();
-		}
-		else if (decision <= 85 && decision > 80) {
-			AIShortShienKyakus ();
-			sharedProperties.CharacterNeutralState ();
-			AIcontrols.DoesAIBlock ();
-		}
-		else {
-			AIRekkaKuns ();
-			sharedProperties.CharacterNeutralState ();
-			AIcontrols.DoesAIBlock ();
-		}
+		decision = Random.Range(0,100);
+        if (decision <= 30)
+        {
+            AIcontrols.AIJab(8);
+            sharedProperties.CharacterNeutralState();
+            AIcontrols.DoesAIBlock();
+        }
+        else if (decision <= 50)
+        {
+            AIcontrols.AIStrong(2);
+            sharedProperties.CharacterNeutralState();
+            AIcontrols.DoesAIBlock();
+        }
+        else if (decision <= 60)
+        {
+            if (character.GetSuper >= 100f)
+            {
+                AIRekkaShinkens();
+            }
+            else
+            {
+                AIcontrols.AIFierce(10, 8);
+            }
+            sharedProperties.CharacterNeutralState();
+            AIcontrols.DoesAIBlock();
+        }
+        else if (decision <= 65)
+        {
+            AIRekkaKens();
+            sharedProperties.CharacterNeutralState();
+            AIcontrols.DoesAIBlock();
+        }
+        else if (decision <= 68)
+        {
+            AIShortShienKyakus();
+            sharedProperties.CharacterNeutralState();
+            AIcontrols.DoesAIBlock();
+        }
+        else if (decision <= 73)
+        {
+            AIRekkaKuns();
+            sharedProperties.CharacterNeutralState();
+            AIcontrols.DoesAIBlock();
+        }
+        else
+        {
+            AIcontrols.AICrouch();
+            sharedProperties.CharacterNeutralState();
+            character.SetBackPressed(true);
+        }
 	}
 
 	void CloseRangeOtherFighterGotHitDecisions (){
