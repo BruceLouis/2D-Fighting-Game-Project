@@ -255,7 +255,7 @@ public class Character : MonoBehaviour {
 		if (animator.GetBool("isAirborne") == false && animator.GetBool("isInHitStun") == false 
 		    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isInBlockStun") == false
 	    	&& animator.GetBool("isThrown") == false && animator.GetBool("isMidAirRecovering") == false
-		   	&& animator.GetBool("isLanding") == false && animator.GetBool("isLanding") == false 
+		   	&& animator.GetBool("isLanding") == false && animator.GetBool("isAttacking") == false 
             && animator.GetBool("isLiftingOff") == true){			
 			if (transform.localScale.x == 1){
                 if (GetComponent<Sagat>() != null){

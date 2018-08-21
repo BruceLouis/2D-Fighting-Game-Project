@@ -68,39 +68,24 @@ public class Opponent : MonoBehaviour {
 		if (character.GetComponent<FeiLong>() != null){
 			feiLong = GetComponentInChildren<FeiLong>();
 			feiLongAI = GetComponentInChildren<FeiLongAI>();
-			mugShot.sprite = feiLongMugShot;
-			characterName = "Fei Long";
-			nameText.text = characterName;
-            aiBehavior = feiLongAI.Behaviors;
+            CharacterInitialize(feiLongMugShot, "Fei Long", feiLongAI.Behaviors);
         }	
 		else if (character.GetComponent<Ken>() != null){
 			kenAI = GetComponentInChildren<KenAI>();
-			mugShot.sprite = kenMugShot;
-			characterName = "Ken";
-			nameText.text = characterName;
-            aiBehavior = kenAI.Behaviors;
+            CharacterInitialize(kenMugShot, "Ken", kenAI.Behaviors);
         }		
 		else if (character.GetComponent<Balrog>() != null){
 			balrogAI = GetComponentInChildren<BalrogAI>();
-			mugShot.sprite = balrogMugShot;
-			characterName = "Balrog";
-			nameText.text = characterName;
-            aiBehavior = balrogAI.Behaviors;
+            CharacterInitialize(balrogMugShot, "Balrog", balrogAI.Behaviors);
         }		
 		else if (character.GetComponent<Akuma>() != null){
 			akumaAI = GetComponentInChildren<AkumaAI>();
-			mugShot.sprite = akumaMugShot;
-			characterName = "Akuma";
-			nameText.text = characterName;
-            aiBehavior = akumaAI.Behaviors;
+            CharacterInitialize(akumaMugShot, "Akuma", akumaAI.Behaviors);
         }
         else if (character.GetComponent<Sagat>() != null)
         {
 			sagatAI = GetComponentInChildren<SagatAI>();
-            mugShot.sprite = sagatMugShot;
-            characterName = "Sagat";
-            nameText.text = characterName;
-            aiBehavior = sagatAI.Behaviors;
+            CharacterInitialize(sagatMugShot, "Sagat", sagatAI.Behaviors);
         }
 
         projectileP2Parent = GameObject.Find("ProjectileP2Parent");
@@ -159,8 +144,16 @@ public class Opponent : MonoBehaviour {
 		streetFighterCharacter.transform.parent = gameObject.transform;
 		streetFighterCharacter.transform.position = gameObject.transform.position;
 	}
-	
-	void SideSwitch(){		
+
+    void CharacterInitialize(Sprite mugShotArg, string name, AIBehavior behavior)
+    {
+        mugShot.sprite = mugShotArg;
+        characterName = name;
+        nameText.text = characterName;
+        aiBehavior = behavior;
+    }
+
+    void SideSwitch(){		
 		//determine which side			
 		if (animator.GetBool("isAttacking") == false){
 			if (distance < 0 && character.side == Character.Side.P1){			

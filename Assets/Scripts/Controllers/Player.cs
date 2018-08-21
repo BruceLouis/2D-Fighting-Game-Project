@@ -78,38 +78,25 @@ public class Player : MonoBehaviour {
 		if (character.GetComponent<FeiLong>() != null){
 			feiLong = GetComponentInChildren<FeiLong>();
 			feiLongAI = GetComponentInChildren<FeiLongAI>();
-			mugShot.sprite = feiLongMugShot;
-			characterName = "Fei Long";
-			nameText.text = characterName;
-            aiBehavior = feiLongAI.Behaviors;
+            CharacterInitialize(feiLongMugShot, "Fei Long", feiLongAI.Behaviors);
 		}
 		else if (character.GetComponent<Ken>() != null){
 			kenAI = GetComponentInChildren<KenAI>();
-			mugShot.sprite = kenMugShot;
-			characterName = "Ken";
-			nameText.text = characterName;
-            aiBehavior = kenAI.Behaviors;
+            CharacterInitialize(kenMugShot, "Ken", kenAI.Behaviors);
         }
-		else if (character.GetComponent<Balrog>() != null){
+		else if (character.GetComponent<Balrog>() != null)
+        {
 			balrogAI = GetComponentInChildren<BalrogAI>();
-			mugShot.sprite = balrogMugShot;
-			characterName = "Balrog";
-			nameText.text = characterName;
-            aiBehavior = balrogAI.Behaviors;
+            CharacterInitialize(balrogMugShot, "Balrog", balrogAI.Behaviors);
         }
-		else if (character.GetComponent<Akuma>() != null){
-			akumaAI = GetComponentInChildren<AkumaAI>();
-			mugShot.sprite = akumaMugShot;
-			characterName = "Akuma";
-			nameText.text = characterName;
-            aiBehavior = akumaAI.Behaviors;
+		else if (character.GetComponent<Akuma>() != null)
+        {
+            akumaAI = GetComponentInChildren<AkumaAI>();
+            CharacterInitialize(akumaMugShot, "Akuma", akumaAI.Behaviors);
         }
-		else if (character.GetComponent<Sagat>() != null){
+        else if (character.GetComponent<Sagat>() != null){
 			sagatAI = GetComponentInChildren<SagatAI>();
-			mugShot.sprite = sagatMugShot;
-			characterName = "Sagat";
-			nameText.text = characterName;
-            aiBehavior = sagatAI.Behaviors;
+            CharacterInitialize(sagatMugShot, "Sagat", sagatAI.Behaviors);
         }
 		
 		projectileP1Parent = GameObject.Find("ProjectileP1Parent");
@@ -120,9 +107,9 @@ public class Player : MonoBehaviour {
 		comboCounter = FindObjectOfType<ComboCounter>();
 		introPlayed = false;
 	}
-	
-	// Update is called once per frame
-	void Update () {
+    
+    // Update is called once per frame
+    void Update () {
 		
 		if (TimeControl.gameState == TimeControl.GameState.introPose && !introPlayed){
 			animator.Play("IntroPose",0);
@@ -161,8 +148,8 @@ public class Player : MonoBehaviour {
 		healthBar.SetHealth(character.GetHealth());	
 		superBar.SetSuper(character.GetSuper);	
 	}
-
-	void PlayerControls (){
+    
+    void PlayerControls (){
 
         if (!TimeControl.inSuperStartup[0] && !TimeControl.inSuperStartup[1]){
 		    CrouchOrStand ();
@@ -207,8 +194,16 @@ public class Player : MonoBehaviour {
 		streetFighterCharacter.transform.parent = gameObject.transform;
 		streetFighterCharacter.transform.position = gameObject.transform.position;
 	}
-		
-	void CrouchOrStand (){
+
+    void CharacterInitialize(Sprite mugShotArg, string name, AIBehavior behavior)
+    {
+        mugShot.sprite = mugShotArg;
+        characterName = name;
+        nameText.text = characterName;
+        aiBehavior = behavior;
+    }
+
+    void CrouchOrStand (){
 		if (animator.GetBool ("isAirborne") == false && animator.GetBool ("isThrown") == false
 		    && animator.GetBool ("throwTargetAcquired") == false && animator.GetBool ("isLiftingOff") == false) {
 			//crouch

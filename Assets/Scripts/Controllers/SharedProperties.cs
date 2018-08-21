@@ -70,11 +70,11 @@ public class SharedProperties : MonoBehaviour {
 		int decision = Random.Range (0, 100);
 		bool doesAIAntiAir = DoesAIAntiAir(decision, frequency);		
 		if (doesAIAntiAir){
-			Debug.Log (gameObject.name + " anti aired");
+//			Debug.Log (gameObject.name + " anti aired");
 			antiAir  ();
 		}
 		else{
-			Debug.Log (gameObject.name + " didnt anti air");
+//			Debug.Log (gameObject.name + " didnt anti air");
 			regularDecisions ();
 		}
 	}	

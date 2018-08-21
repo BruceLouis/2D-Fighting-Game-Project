@@ -239,6 +239,7 @@ public class Akuma : MonoBehaviour
             && animator.GetBool("isThrown") == false && animator.GetBool("isMidAirRecovering") == false
             && animator.GetBool("isLanding") == false && animator.GetBool("isLiftingOff") == true)
         {
+            Debug.Log("Got here");
             switch (animator.GetInteger("hyakkishuKickType"))
             {
                 case 0:
@@ -251,6 +252,18 @@ public class Akuma : MonoBehaviour
                     character.TakeOffVelocity(3f, 6f);
                     break;
             }
+        }
+        else
+        {
+            Debug.Log("Something went wrong");
+            Debug.Log("isAirborne: " + animator.GetBool("isAirborne"));
+            Debug.Log("isInHitStun: " + animator.GetBool("isInHitStun"));
+            Debug.Log("isKnockedDown: " + animator.GetBool("isKnockedDown"));
+            Debug.Log("isInBlockStun: " + animator.GetBool("isInBlockStun"));
+            Debug.Log("isThrown: " + animator.GetBool("isThrown"));
+            Debug.Log("isMidAirRecovering: " + animator.GetBool("isMidAirRecovering"));
+            Debug.Log("isLanding: " + animator.GetBool("isLanding"));
+            Debug.Log("isLiftingOff: " + animator.GetBool("isLiftingOff"));
         }
     }
 
