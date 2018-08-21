@@ -22,7 +22,7 @@ public class AkumaAI : MonoBehaviour {
 	private int decision;
 	private float decisionTimerInput, antiAirTimerInput;
 	
-	private bool inComboSequence;
+	private bool inComboSequence, hyakkishuDecisionChosen;
 	
 	// Use this for initialization
 	void Start () {
@@ -70,10 +70,10 @@ public class AkumaAI : MonoBehaviour {
 					AirborneAttacks();
 				}
 			}
-			else if (sharedProperties.GetDistanceFromOtherFighter() >= 2f){			
+			else if (sharedProperties.GetAbDistanceFromOtherFighter() >= 2f){			
 				RegularFarRangeDecisions();
 			}
-			else if (sharedProperties.GetDistanceFromOtherFighter() < 2f && sharedProperties.GetDistanceFromOtherFighter() >= 1f){	
+			else if (sharedProperties.GetAbDistanceFromOtherFighter() < 2f && sharedProperties.GetAbDistanceFromOtherFighter() >= 1f){	
 				if (player != null){
 					if (playerCharacter.GetBlockStunned() == true){
 						MidRangeOtherFighterBlockedDecisions ();
@@ -537,16 +537,11 @@ public class AkumaAI : MonoBehaviour {
 	}
 	
 	void HyakkishuDecisions(){
-		int hyakkishuType = Random.Range(0, 15);
-		if (hyakkishuType <= 2){
-			animator.SetInteger("hyakkishuAttackType", 0);
-		}
-		else if (hyakkishuType <= 4 && hyakkishuType > 2){
-			animator.SetInteger("hyakkishuAttackType", 1);
-		}
-		else {
-			animator.SetInteger("hyakkishuAttackType", 2);
-		}		
+		int hyakkishuType = Random.Range(0, 45);
+        if (!hyakkishuDecisionChosen)
+        {
+            StartCoroutine(HyakkishuCoroutine(hyakkishuType));
+        }
 	}
 	
 	void MidRangeOtherFighterBlockedDecisions (){		
@@ -696,6 +691,27 @@ public class AkumaAI : MonoBehaviour {
         yield return new WaitUntil(() => !animator.GetBool("isAttacking"));
 
         inComboSequence = false;
+    }
+
+    IEnumerator HyakkishuCoroutine(int num)
+    {
+        hyakkishuDecisionChosen = true;
+        if (num <= 3)
+        {
+            animator.SetInteger("hyakkishuAttackType", 0);
+        }
+        else if (num <= 10)
+        {
+            animator.SetInteger("hyakkishuAttackType", 1);
+        }
+        else
+        {
+            animator.SetInteger("hyakkishuAttackType", 2);
+        }
+
+        yield return new WaitUntil(() => !animator.GetBool("isAttacking"));
+
+        hyakkishuDecisionChosen = false;
     }
 	
 	void AIShunGokuSatsus(){

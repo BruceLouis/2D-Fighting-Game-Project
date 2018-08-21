@@ -55,14 +55,13 @@ public class Akuma : MonoBehaviour
             physicsbody.isKinematic = false;
         }
 
-        if (hyakkishuActive && animator.GetBool("isAirborne"))
-        {
-            physicsbody.gravityScale = 2f;
-        }
-        else
-        {
-            physicsbody.gravityScale = 1f;
-        }
+        HyakkishuGravityProperties();
+    }
+
+    void HyakkishuGravityProperties()
+    {
+//        physicsbody.gravityScale = hyakkishuActive && animator.GetBool("isAirborne") && !animator.GetBool("isLiftingOff") ? 2f : 1f;
+        physicsbody.gravityScale = hyakkishuActive ? 2f : 1f;
     }
 
     void HadoukenRelease()
@@ -238,7 +237,7 @@ public class Akuma : MonoBehaviour
         if (animator.GetBool("isAirborne") == false && animator.GetBool("isInHitStun") == false
             && animator.GetBool("isKnockedDown") == false && animator.GetBool("isInBlockStun") == false
             && animator.GetBool("isThrown") == false && animator.GetBool("isMidAirRecovering") == false
-            && animator.GetBool("isLiftingOff") == true)
+            && animator.GetBool("isLanding") == false && animator.GetBool("isLiftingOff") == true)
         {
             switch (animator.GetInteger("hyakkishuKickType"))
             {

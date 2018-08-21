@@ -62,7 +62,7 @@ public class BalrogAI : MonoBehaviour {
 				AIcontrols.AICharges();
 				character.SetBackPressed(true);
 			}				
-			else if (sharedProperties.GetDistanceFromOtherFighter() >= 2f){
+			else if (sharedProperties.GetAbDistanceFromOtherFighter() >= 2f){
 				if (player != null){
 					if (playerCharacter.GetKnockDown() == true && playerCharacter.GetAirborne() == false){		
 						KnockDownFromFarDecisions ();
@@ -88,7 +88,7 @@ public class BalrogAI : MonoBehaviour {
 					}
 				}
 			}
-			else if (sharedProperties.GetDistanceFromOtherFighter() >= 1f && sharedProperties.GetDistanceFromOtherFighter() < 2f){
+			else if (sharedProperties.GetAbDistanceFromOtherFighter() >= 1f && sharedProperties.GetAbDistanceFromOtherFighter() < 2f){
 				if (player != null){
 					if (playerCharacter.GetKnockDown() == true && playerCharacter.GetAirborne() == false){						
 						KnockDownFromMidRangeDecisions ();

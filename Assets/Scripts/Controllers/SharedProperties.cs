@@ -112,12 +112,20 @@ public class SharedProperties : MonoBehaviour {
 		set { pressedForward = value; }
 	}	
 	
-	public float GetDistanceFromOtherFighter(){
+	public float GetAbDistanceFromOtherFighter(){
 		if (opponent != null){
 			return Mathf.Abs(opponent.GetDistance());
 		}
 		else {
 			return Mathf.Abs(player.GetDistance());
+		}
+	}
+    public float GetDistanceFromOtherFighter(){
+		if (opponent != null){
+			return opponent.GetDistance();
+		}
+		else {
+			return player.GetDistance();
 		}
 	}		
 }

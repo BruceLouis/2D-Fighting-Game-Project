@@ -251,6 +251,7 @@ public class Character : MonoBehaviour {
 	}
 	
 	public void CharacterLiftOff(float x){
+        //need to get rid of that giant conditional and put it into a function that returns this instead
 		if (animator.GetBool("isAirborne") == false && animator.GetBool("isInHitStun") == false 
 		    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isInBlockStun") == false
 	    	&& animator.GetBool("isThrown") == false && animator.GetBool("isMidAirRecovering") == false
@@ -301,14 +302,11 @@ public class Character : MonoBehaviour {
 		animator.SetBool("isWalkingBackward", false);
 	}
 	
-	public void MidAirRecovery(){
-		if (transform.localScale.x == -1){
-			physicsbody.velocity = new Vector2(1.5f, 2f);
-		}
-		else{
-			physicsbody.velocity = new Vector2(-1.5f, 2f);
-		}
-	}	
+	public void MidAirRecovery()
+    {
+        float distance = GetComponentInParent<SharedProperties>().GetDistanceFromOtherFighter();
+        physicsbody.velocity = distance < 0f ? new Vector2(1.5f, 2f) : new Vector2(-1.5f, 2f); //will always roll away from the other character
+    }	
 	
 	public void Sweep(){
 		if (side == Side.P2){

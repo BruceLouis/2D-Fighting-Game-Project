@@ -64,7 +64,7 @@ public class FeiLongAI : MonoBehaviour {
 					sharedProperties.CharacterNeutralState();
 				}				
 			}
-			else if (sharedProperties.GetDistanceFromOtherFighter() < 1f){
+			else if (sharedProperties.GetAbDistanceFromOtherFighter() < 1f){
 				if (player != null){
 					if (playerCharacter.GetHitStunned() == true){
 						CloseRangeOtherFighterGotHitDecisions ();
@@ -112,7 +112,7 @@ public class FeiLongAI : MonoBehaviour {
 					}
 				}
 			}	
-			else if (sharedProperties.GetDistanceFromOtherFighter() < 2f && sharedProperties.GetDistanceFromOtherFighter() >= 1f){				
+			else if (sharedProperties.GetAbDistanceFromOtherFighter() < 2f && sharedProperties.GetAbDistanceFromOtherFighter() >= 1f){				
 				if (player != null){
 					if (playerCharacter.GetKnockDown() == true){				
 						KnockDownMidRangeDecisions ();

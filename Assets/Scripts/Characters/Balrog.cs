@@ -9,8 +9,6 @@ public class Balrog : MonoBehaviour {
 
 	private Character character;	
 	private Animator animator; 
-	private Player player;
-	private Opponent opponent;
 	private Rigidbody2D physicsbody;
 	private Vector3 startPos, endPos;
 	private float distanceFromOtherGuy;
@@ -21,22 +19,12 @@ public class Balrog : MonoBehaviour {
 		character = GetComponent<Character>();
 		animator = GetComponent<Animator>();
 		physicsbody = GetComponent<Rigidbody2D>();			
-		if (gameObject.tag == "Player1"){
-			player = GetComponentInParent<Player>();
-		}
-		else if (gameObject.tag == "Player2"){
-			opponent = GetComponentInParent<Opponent>();
-		}
 	}
 	
 	void Update () {
-		if (player != null){
-			distanceFromOtherGuy = player.GetDistanceFromOpponent();
-		}
-		else if (opponent != null){
-			distanceFromOtherGuy = opponent.GetDistanceFromPlayer();
-		}
-		if (animator.GetBool("isDashRushTravelling")){
+        distanceFromOtherGuy = GetComponentInParent<SharedProperties>().GetAbDistanceFromOtherFighter();
+        if (animator.GetBool("isDashRushTravelling") && !animator.GetBool("isInHitStun") && !animator.GetBool("isKnockedDown"))
+        {
 			physicsbody.isKinematic = true;		
 			if (Vector3.Distance(transform.position, endPos) <= 0.25f || distanceFromOtherGuy <= 0.75f){
 				animator.SetBool("didRushPunchGetThere", true);		

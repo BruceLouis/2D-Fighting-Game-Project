@@ -67,11 +67,11 @@ public class SagatAI : MonoBehaviour
                     sharedProperties.CharacterNeutralState();
                 }
             }
-            else if (sharedProperties.GetDistanceFromOtherFighter() >= 2f)
+            else if (sharedProperties.GetAbDistanceFromOtherFighter() >= 2f)
             {
                 RegularFarRangeDecisions();
             }
-            else if (sharedProperties.GetDistanceFromOtherFighter() >= 1f && sharedProperties.GetDistanceFromOtherFighter() < 2f)
+            else if (sharedProperties.GetAbDistanceFromOtherFighter() >= 1f && sharedProperties.GetAbDistanceFromOtherFighter() < 2f)
             {
                 RegularMidRangeDecisions();
             }

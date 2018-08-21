@@ -42,7 +42,7 @@ public class AIControls : MonoBehaviour {
 				AICrouch();
 			}	
 			if (character.GetComponent<FeiLong>() != null){						
-				if (sharedProperties.GetDistanceFromOtherFighter() < 0.75f && animator.GetBool("isStanding") == true){
+				if (sharedProperties.GetAbDistanceFromOtherFighter() < 0.75f && animator.GetBool("isStanding") == true){
 					feiLong.FeiLongCloseJab();
 				}
 				else{							
@@ -82,7 +82,7 @@ public class AIControls : MonoBehaviour {
 				AICrouch();
 			}	
 			if (character.GetComponent<FeiLong>() != null){						
-				if (sharedProperties.GetDistanceFromOtherFighter() < 0.75f && animator.GetBool("isStanding") == true){
+				if (sharedProperties.GetAbDistanceFromOtherFighter() < 0.75f && animator.GetBool("isStanding") == true){
 					feiLong.FeiLongCloseStrong();
 				}
 				else{							
@@ -137,7 +137,7 @@ public class AIControls : MonoBehaviour {
 				AICrouch();
 			}	
 			if (character.GetComponent<FeiLong>() != null){						
-				if (sharedProperties.GetDistanceFromOtherFighter() < 0.75f && animator.GetBool("isStanding") == true){
+				if (sharedProperties.GetAbDistanceFromOtherFighter() < 0.75f && animator.GetBool("isStanding") == true){
 					feiLong.FeiLongCloseFierce();
 				}
 				else{							

@@ -48,7 +48,8 @@ public class KenAI : MonoBehaviour {
 		decisionTimer--;
 		antiAirTimer--;
 		if (AIcontrols.FreeToMakeDecisions() && !TimeControl.inSuperStartup[0] && !TimeControl.inSuperStartup[1]){
-			if (animator.GetBool("isAirborne") == true && animator.GetBool("isLiftingOff") == false){
+			if (animator.GetBool("isAirborne") == true && animator.GetBool("isLiftingOff") == false)
+            {
 				decision = Random.Range(0,100);
 				if (decision <= 3){
 					AIcontrols.AIJumpFierce();
@@ -59,10 +60,12 @@ public class KenAI : MonoBehaviour {
 					sharedProperties.CharacterNeutralState();
 				}				
 			}
-			else if (sharedProperties.GetDistanceFromOtherFighter() >= 2f){			
+			else if (sharedProperties.GetAbDistanceFromOtherFighter() >= 2f)
+            {			
 				RegularFarRangeDecisions();
 			}
-			else if (sharedProperties.GetDistanceFromOtherFighter() < 2f && sharedProperties.GetDistanceFromOtherFighter() >= 1f){	
+			else if (sharedProperties.GetAbDistanceFromOtherFighter() < 2f && sharedProperties.GetAbDistanceFromOtherFighter() >= 1f)
+            {	
 				
 				if (player != null){
 					if (playerCharacter.GetBlockStunned() == true){
