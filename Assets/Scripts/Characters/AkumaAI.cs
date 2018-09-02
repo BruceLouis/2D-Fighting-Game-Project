@@ -2,6 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*  Akuma AI is to demon flip and use dive kicks a lot for his offense to get in. He also will
+ *  execute typical shoto tactics like hadoukens and shoryukens as anti air. The solution 
+ *  used to enable AIs to do their thing is having a system of generating a random number
+ *  between 0 to 99 and depending on the number, the AI will do that action. For example between
+ *  20 and 30 the Akuma AI will execute a hadouken, so if the random number hits 25, Akuma fires a fireball.
+ *  Akuma's AI decisions also depends on the distance from his opponent as well as the state of his opponent,
+ *  whether his opponent is airborne (for anti airing) or if he's hitstunned (continuing a combo) or if he's
+ *  in blockstun (continuing the pressure or blockstring).
+ */
+
 public class AkumaAI : MonoBehaviour {	
 	delegate void AIWhichAttack();
 	AIWhichAttack AIwhichAttack;
@@ -537,7 +547,7 @@ public class AkumaAI : MonoBehaviour {
 	}
 	
 	void HyakkishuDecisions(){
-		int hyakkishuType = Random.Range(0, 45);
+		int hyakkishuType = Random.Range(0, 60);
         if (!hyakkishuDecisionChosen)
         {
             StartCoroutine(HyakkishuCoroutine(hyakkishuType));
@@ -696,7 +706,7 @@ public class AkumaAI : MonoBehaviour {
     IEnumerator HyakkishuCoroutine(int num)
     {
         hyakkishuDecisionChosen = true;
-        if (num <= 3)
+        if (num <= 2)
         {
             animator.SetInteger("hyakkishuAttackType", 0);
         }

@@ -295,7 +295,7 @@ public class Player : MonoBehaviour {
 	void SideSwitch(){			
 		if (!isAI){
 			//determine which side
-			//again the reason for repeated code is so that AI doesn't just switch sides when its attacking willy nilly			
+			//the reason for repeated code is so that AI doesn't just switch sides when its attacking willy nilly			
 			if (distance < 0 && character.side == Character.Side.P1){			
 				character.side = Character.Side.P2;
 				sharedProperties.CharacterNeutralState();

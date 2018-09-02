@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*  The backbone of a character's functionality lies here. Attributes shared by all character
+ *  including walkspeed, health, the 6 normal attacks crouching, jumping or standing, their states
+ *  and plenty more are all implemented here. Most of the methods here are to be used in the animation
+ *  events in the Mechanim. 
+ */
+
 public class Character : MonoBehaviour {
 	
 	[SerializeField] float 		walkSpeed, health;
@@ -46,7 +52,7 @@ public class Character : MonoBehaviour {
 		}
 	}
 	
-	// Specifically for the gap between being airborne and lifting off	
+	// Fixed Update for the gap between being airborne and lifting off and to turn hurtbox off when a KO happens
 	void FixedUpdate(){
 		if (physicsbody.velocity.y != 0f && animator.GetBool("isLiftingOff")){
 			animator.SetBool("isAirborne", true);

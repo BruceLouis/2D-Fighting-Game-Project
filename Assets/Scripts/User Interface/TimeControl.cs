@@ -4,6 +4,15 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 
+/*  This is pretty much the game manager, where it controls the state of the rounds itself whether it's
+ *  the intro pose, the countdown before the round start, the actual fight and when someone is KOed and 
+ *  the fight ends. The time control also handles the timer within the actual fight, although right now
+ *  the timer is inconsequential as there is no time out victory. The time controlling game manager also
+ *  controls when the super panels become activated, which is when a character executes a super at the 
+ *  start of a super and when a character gets KOed by a super. All the timers here use co routines for
+ *  implementation except for the hitstun slowdown timer and KO slowdown timer.
+ */ 
+
 public class TimeControl : MonoBehaviour {
 
 	public static bool slowDown, gettingDemoned, demonKO, superKO;
