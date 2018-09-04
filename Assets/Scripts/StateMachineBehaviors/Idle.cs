@@ -10,7 +10,8 @@ public class Idle : StateMachineBehaviour {
 	//}
 	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex){
 		animator.SetBool("isAttacking", false);
-		animator.SetBool("isInHitStun", false);
+        animator.SetBool("isSweeping", false);
+        animator.SetBool("isInHitStun", false);
 		animator.SetBool("isInBlockStun", false);
         animator.SetBool("isLanding", false);
         animator.SetBool("throwTargetAcquired", false);

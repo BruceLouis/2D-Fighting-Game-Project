@@ -325,8 +325,21 @@ public class Opponent : MonoBehaviour {
 				animator.SetTrigger("shoryukenInputed");
 				animator.SetInteger("rekkaKunKickType", 2);
 			}
-		}	
-		if (Input.GetKey (KeyCode.Q)){	
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            if (character.GetComponent<Ken>() != null)
+            {
+                if (animator.GetBool("isAttacking") == false && animator.GetBool("isAirborne") == false)
+                {
+                    animator.Play("KenHadouken", 0);
+                    character.AttackState();
+                }
+                animator.SetTrigger("hadoukenInputed");
+                animator.SetInteger("hadoukenPunchType", 0);
+            }
+        }
+        if (Input.GetKey (KeyCode.Q)){	
 			
 			if (animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false 
 			    && animator.GetBool("isLiftingOff") == false && animator.GetBool("isAirborne") == false 

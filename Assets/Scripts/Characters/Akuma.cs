@@ -282,14 +282,7 @@ public class Akuma : MonoBehaviour
         amountTimeTravelledTimer = amountTimeTravelled;
         GetComponentInChildren<SpriteRenderer>().sortingLayerName = "Characters";
         AudioSource.PlayClipAtPoint(akumaDemonTravel, transform.position);
-        if (character.side == Character.Side.P1)
-        {
-            physicsbody.velocity = new Vector2(2.5f, 0f);
-        }
-        else
-        {
-            physicsbody.velocity = new Vector2(-2.5f, 0f);
-        }
+        physicsbody.velocity = character.side == Character.Side.P1 ? new Vector2(2.5f, 0f) : new Vector2(-2.5f, 0f);
         animator.SetBool("isShunGokuSatsuInMotion", true);
     }
 

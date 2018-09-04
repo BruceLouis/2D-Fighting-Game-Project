@@ -234,7 +234,8 @@ public class HitBox : MonoBehaviour {
 	
 	void OtherHitStunProperties(Character attacker, Character receiver, Animator recAnim, Animator attAnim, Vector3 sparkPlace, Rigidbody2D receiverRigid){		
 		Rigidbody2D attPhysicsbody = attacker.GetComponent<Rigidbody2D>();
-		if (attacker.GetHitType() == Character.HitType.sweep || attacker.GetHitType() == Character.HitType.dashLow){
+		if (    attacker.GetHitType() == Character.HitType.sweep || attacker.GetHitType() == Character.HitType.dashLow 
+                || attacker.GetHitType() == Character.HitType.bisonSweep){
 			if (attacker.side == Character.Side.P1){
 				receiver.side = Character.Side.P2;
 				receiver.SideSwitch();
@@ -420,7 +421,8 @@ public class HitBox : MonoBehaviour {
 	
 	void PushBack(Character attacker, Rigidbody2D receiverRigid, Rigidbody2D attackerRigid){						
 		if (attacker.GetHitType() != Character.HitType.hurricaneKick && attacker.GetHitType() != Character.HitType.rekka
-			&& attacker.GetHitType() != Character.HitType.akumaHurricaneKick && attacker.GetHitType() != Character.HitType.normalKnockDown){
+			&& attacker.GetHitType() != Character.HitType.akumaHurricaneKick && attacker.GetHitType() != Character.HitType.normalKnockDown
+            && attacker.GetHitType() != Character.HitType.bisonSweep){
 			if (attacker.side == Character.Side.P1){
 				if (rightEdgeDistance > 0.25f){
 					// if close to the wall, pushback enforced on attacking character instead

@@ -418,7 +418,8 @@ public class Player : MonoBehaviour {
 	}	
 
 	void PunchCommands (AttackStrength punch, FeiLongClosePunch feiLongPunches, int punchType, string punchStrength){
-		if (character.GetComponent<Ken> () != null) {
+		if (character.GetComponent<Ken> () != null)
+        {
 			if (CheckMotionSuperSequence () && animator.GetBool ("isAirborne") == false && character.GetSuper >= 100f){
 				CharacterCompletesMotionSuper ("Ken", "Shinryuken"); 
 			}
@@ -433,7 +434,8 @@ public class Player : MonoBehaviour {
 				punch();
 			}
 		}
-		else if (character.GetComponent<FeiLong> () != null) {
+		else if (character.GetComponent<FeiLong> () != null)
+        {
 			if (CheckMotionSuperSequence () && animator.GetBool ("isAirborne") == false && character.GetSuper >= 100f){
 				CharacterCompletesMotionSuper ("FeiLong", "RekkaShinken"); 
 			}
@@ -450,7 +452,8 @@ public class Player : MonoBehaviour {
 				character.AttackState ();
 			}
 		}
-		else if (character.GetComponent<Balrog> () != null) {
+		else if (character.GetComponent<Balrog> () != null)
+        {
 			if (CheckMotionSuperSequence () && animator.GetBool ("isAirborne") == false && character.GetSuper >= 100f){
 				CharacterCompletesMotionSuper ("Balrog", "GigatonPunch"); 
 			}
@@ -465,7 +468,8 @@ public class Player : MonoBehaviour {
 				character.AttackState ();
 			}
 		}
-		else if (character.GetComponent<Akuma> () != null) {
+		else if (character.GetComponent<Akuma> () != null)
+        {
 			if (CheckHadoukenSequence () && projectileP1Parent.transform.childCount <= 0) {
 				if (animator.GetBool ("isAirborne") == true) {
 					AkumaCompletesAirHadouken (punchType);
@@ -485,7 +489,8 @@ public class Player : MonoBehaviour {
 				character.AttackState ();
 			}
         }
-        else if (character.GetComponent<Sagat>() != null){
+        else if (character.GetComponent<Sagat>() != null)
+        {
 			if (CheckMotionSuperSequence () && animator.GetBool ("isAirborne") == false && character.GetSuper >= 100f){
               CharacterCompletesMotionSuper("Sagat", "TigerCannon");
 			}
@@ -498,6 +503,14 @@ public class Player : MonoBehaviour {
             else if (animator.GetBool ("isAttacking") == false) {
 			    punch();
 			    character.AttackState ();
+            }
+        }
+        else if (character.GetComponent<MBison>() != null)
+        {
+            if (animator.GetBool("isAttacking") == false)
+            {
+                punch();
+                character.AttackState();
             }
         }
     }
@@ -562,6 +575,14 @@ public class Player : MonoBehaviour {
 				kick();
 				character.AttackState ();
 			}
+        }
+        else if (character.GetComponent<MBison>() != null)
+        {
+            if (animator.GetBool("isAttacking") == false)
+            {
+                kick();
+                character.AttackState();
+            }
         }
     }
 	

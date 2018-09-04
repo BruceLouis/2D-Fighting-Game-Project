@@ -195,8 +195,8 @@ public class Projectile : MonoBehaviour
             }
             hurtCharAnimator.SetBool("isInHitStun", true);
             hurtCharAnimator.SetFloat("hitStunTimer", timer);
-            Instantiate(shoryukenSpark, transform.position, Quaternion.identity);
         }
+        Instantiate(shoryukenSpark, transform.position, Quaternion.identity);
     }
 
     void AirPushBack(Animator hurtCharAnim, Rigidbody2D hurtRigidbody, string whichAnimation, float y)

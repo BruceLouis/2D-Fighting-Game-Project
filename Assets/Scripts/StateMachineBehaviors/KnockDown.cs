@@ -9,6 +9,7 @@ public class KnockDown : StateMachineBehaviour {
 		animator.SetBool("isKnockedDown", true);
 		animator.SetBool("isRolling", false);
 		animator.SetBool("isAttacking", false);
+		animator.SetBool("isSweeping", false);
 		animator.SetBool("isInHitStun", false);
 		animator.SetBool("isThrown", false);
 		animator.SetBool("isLiftingOff", false);

@@ -23,7 +23,7 @@ public class Character : MonoBehaviour {
     [HideInInspector]
     public MoveType moveType;
 
-    public enum HitType {normal, sweep, normalKnockDown, shoryuken, hurricaneKick, rekka, dashLow, akumaHurricaneKick};
+    public enum HitType {normal, sweep, normalKnockDown, shoryuken, hurricaneKick, rekka, dashLow, akumaHurricaneKick, bisonSweep};
     [HideInInspector]
     public HitType hitType;
 
@@ -230,7 +230,14 @@ public class Character : MonoBehaviour {
 			}
 			else if (animator.GetBool("isCrouching")){
 				animator.Play("CrouchRoundhouse",0);
-				MoveProperties(40f, 20f, 12f, 60f, 0, 1, 1);
+                if (GetComponent<MBison>() != null)
+                {
+                    MoveProperties(40f, 20f, 12f, 60f, 0, 8, 1);
+                }
+                else
+                {
+                    MoveProperties(40f, 20f, 12f, 60f, 0, 1, 1);
+                }
 			}
 			else if (animator.GetBool("isAirborne")){
 				if (physicsbody.velocity.x != 0){
@@ -387,10 +394,13 @@ public class Character : MonoBehaviour {
 			case 6:
 				hitType = HitType.dashLow;
 				break;
-			default:
-				hitType = HitType.akumaHurricaneKick;
-				break;				
-		}
+            case 7:
+                hitType = HitType.akumaHurricaneKick;
+				break;
+            default:
+                hitType = HitType.bisonSweep;
+                break;
+        }
 		
 		switch(sparkTypeInt){
 			case 0:
