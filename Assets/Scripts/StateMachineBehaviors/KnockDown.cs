@@ -9,7 +9,6 @@ public class KnockDown : StateMachineBehaviour {
 		animator.SetBool("isKnockedDown", true);
 		animator.SetBool("isRolling", false);
 		animator.SetBool("isAttacking", false);
-		animator.SetBool("isSweeping", false);
 		animator.SetBool("isInHitStun", false);
 		animator.SetBool("isThrown", false);
 		animator.SetBool("isLiftingOff", false);
@@ -34,7 +33,9 @@ public class KnockDown : StateMachineBehaviour {
 		animator.ResetTrigger("turnPunchInputed");
 		animator.ResetTrigger("headButtInputed");
 		animator.ResetTrigger("hyakkishuInputed");
-		animator.ResetTrigger("motionSuperInputed");
+        animator.ResetTrigger("scissorKicksInputed");
+        animator.ResetTrigger("psychoCrusherInputed");
+        animator.ResetTrigger("motionSuperInputed");
     }
 
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

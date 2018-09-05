@@ -8,7 +8,6 @@ public class HitStun : StateMachineBehaviour {
 	 // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
 	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex){
 		animator.SetBool("isAttacking", false);
-        animator.SetBool("isSweeping", false);
         animator.SetBool("isWalkingBackward", false);
 		animator.SetBool("isWalkingForward", false);
 		animator.SetBool("isLiftingOff", false);

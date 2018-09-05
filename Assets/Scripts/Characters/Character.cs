@@ -23,7 +23,7 @@ public class Character : MonoBehaviour {
     [HideInInspector]
     public MoveType moveType;
 
-    public enum HitType {normal, sweep, normalKnockDown, shoryuken, hurricaneKick, rekka, dashLow, akumaHurricaneKick, bisonSweep};
+    public enum HitType {normal, sweep, normalKnockDown, shoryuken, hurricaneKick, rekka, dashLow, akumaHurricaneKick, bisonSweep, otherKnockDown};
     [HideInInspector]
     public HitType hitType;
 
@@ -92,6 +92,7 @@ public class Character : MonoBehaviour {
 			animator.SetBool("isHeadButting", false);
 			animator.SetBool("tigerUppercutActive", false);
 			animator.SetBool("tigerKneeActive", false);			
+			animator.SetBool("scissorKicksActive", false);			
 		}
 	}
 
@@ -397,8 +398,11 @@ public class Character : MonoBehaviour {
             case 7:
                 hitType = HitType.akumaHurricaneKick;
 				break;
-            default:
+            case 8:
                 hitType = HitType.bisonSweep;
+                break;
+            default:
+                hitType = HitType.otherKnockDown;
                 break;
         }
 		

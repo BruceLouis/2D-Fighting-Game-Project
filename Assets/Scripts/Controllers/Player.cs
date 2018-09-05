@@ -492,7 +492,7 @@ public class Player : MonoBehaviour {
         else if (character.GetComponent<Sagat>() != null)
         {
 			if (CheckMotionSuperSequence () && animator.GetBool ("isAirborne") == false && character.GetSuper >= 100f){
-              CharacterCompletesMotionSuper("Sagat", "TigerCannon");
+                CharacterCompletesMotionSuper("Sagat", "TigerCannon");
 			}
 			else if (CheckHadoukenSequence () && animator.GetBool ("isAirborne") == false && projectileP1Parent.transform.childCount <= 0) {
                 SagatCompletesUpperTigerShot(punchType);
@@ -507,7 +507,11 @@ public class Player : MonoBehaviour {
         }
         else if (character.GetComponent<MBison>() != null)
         {
-            if (animator.GetBool("isAttacking") == false)
+			if (chargeSystem.GetBackCharged() && !sharedProperties.GetBackPressed && animator.GetBool("isAirborne") == false)
+            {
+                MBisonCompletesPsychoCrusher(punchType);
+            }
+            else if (animator.GetBool("isAttacking") == false)
             {
                 punch();
                 character.AttackState();
@@ -578,7 +582,11 @@ public class Player : MonoBehaviour {
         }
         else if (character.GetComponent<MBison>() != null)
         {
-            if (animator.GetBool("isAttacking") == false)
+            if (chargeSystem.GetBackCharged() && !sharedProperties.GetBackPressed && animator.GetBool("isAirborne") == false && sharedProperties.GetForwardPressed)
+            {
+                MBisonCompletesScissorKick(kickStrength, kickType);
+            }
+            else if (animator.GetBool("isAttacking") == false)
             {
                 kick();
                 character.AttackState();
@@ -821,6 +829,34 @@ public class Player : MonoBehaviour {
 		animator.SetInteger ("tigerKneeKickType", kickType);
 		comboSystem.ResetShoryukenSequence ();
 	}
+    
+    void MBisonCompletesScissorKick(string kickName, int kickType)
+    {
+        Debug.Log("Scissor kicked");
+        if (animator.GetBool("isAttacking") == false)
+        {
+            character.AttackState();
+            animator.Play("MBisonScissorKicks" + kickName, 0);
+        }
+        animator.SetTrigger("scissorKicksInputed");
+        animator.SetInteger("scissorKicksKickType", kickType);
+        chargeSystem.SetBackCharged(false);
+        chargeSystem.ResetBackChargedProperties();
+    }
+
+    void MBisonCompletesPsychoCrusher(int punchType)
+    {
+        Debug.Log("Psycho crushered");
+        if (animator.GetBool("isAttacking") == false)
+        {
+            character.AttackState();
+            animator.Play("MBisonPsychoCrusherStartUp", 0);
+        }
+        animator.SetTrigger("psychoCrusherInputed");
+        animator.SetInteger("psychoCrusherPunchType", punchType);
+        chargeSystem.SetBackCharged(false);
+        chargeSystem.ResetBackChargedProperties();
+    }
 
     bool CheckHadoukenSequence(){
 		for (int i=0; i<comboSystem.GetHadoukenSequence().Length; i++){

@@ -7,7 +7,6 @@ public class Thrown : StateMachineBehaviour {
 	 // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
 	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 		animator.SetBool("isAttacking", false);
-        animator.SetBool("isSweeping", false);
         animator.SetBool("isWalkingBackward", false);
 		animator.SetBool("isWalkingForward", false);
 		animator.SetBool("isLiftingOff", false);
@@ -32,7 +31,9 @@ public class Thrown : StateMachineBehaviour {
 		animator.ResetTrigger("turnPunchInputed");
 		animator.ResetTrigger("headButtInputed");
 		animator.ResetTrigger("hyakkishuInputed");
-		animator.ResetTrigger("motionSuperInputed");
+        animator.ResetTrigger("scissorKicksInputed");
+        animator.ResetTrigger("psychoCrusherInputed");
+        animator.ResetTrigger("motionSuperInputed");
 	}
 
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

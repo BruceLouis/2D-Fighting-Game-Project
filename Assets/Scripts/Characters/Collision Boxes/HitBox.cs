@@ -231,198 +231,210 @@ public class HitBox : MonoBehaviour {
 		}
 		anim.SetFloat ("hitStunTimer", hitStunTimer);
 	}
-	
-	void OtherHitStunProperties(Character attacker, Character receiver, Animator recAnim, Animator attAnim, Vector3 sparkPlace, Rigidbody2D receiverRigid){		
-		Rigidbody2D attPhysicsbody = attacker.GetComponent<Rigidbody2D>();
-		if (    attacker.GetHitType() == Character.HitType.sweep || attacker.GetHitType() == Character.HitType.dashLow 
-                || attacker.GetHitType() == Character.HitType.bisonSweep){
-			if (attacker.side == Character.Side.P1){
-				receiver.side = Character.Side.P2;
-				receiver.SideSwitch();
-			}
-			else{
-				receiver.side = Character.Side.P1;
-				receiver.SideSwitch();
-			}
-			if (receiver.GetHealth () <= 0f){				
-				GotKOed (receiver, recAnim, receiverRigid);
-			}
-			else{
-				TimeControl.slowDownTimer = bigHitSlowDown;
-				recAnim.Play("Trip",0,0f);
-			}
-		}
-		else if (attacker.GetHitType() == Character.HitType.normalKnockDown){
-			recAnim.Play("KnockDownBlendTree",0,0f);
-			if (receiver.GetHealth () <= 0f){	
-				if (attacker.GetComponent<Ken>() != null){
-					SuperKO (attacker.GetComponent<Ken>().GetShinryukenActive);
-				}
-				else if (attacker.GetComponent<FeiLong>() != null){
-					SuperKO (attacker.GetComponent<FeiLong>().GetRekkaShinkenActive);
-				}
-				else if (attacker.GetComponent<Balrog>() != null){
-					SuperKO (attacker.GetComponent<Balrog>().GetGigatonPunchActive);
-				}			
-				TimeControl.slowDownTimer = KOSlowDown;		
-			}
-			else{		
-				TimeControl.slowDownTimer = bigHitSlowDown;
-			}
-			if (attacker.GetComponent<FeiLong>() != null){		
-				switch(attAnim.GetInteger("rekkaPunchType")){
-					case 0:
-						GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 2f, 4f);
-						break;
-					case 1:
-						GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 2.5f, 4f);
-						break;		
-					default:
-						GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 3f, 4f);
-						break;										
-				}		
-				attPhysicsbody.velocity *= 0.6f;
-			}
-			else if (attacker.GetComponent<Balrog>() != null){	
-				switch(attAnim.GetInteger("dashRushPunchType")){
-					case 0:
-						GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 2f, 4f);
-						break;
-					case 1:
-						GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 2.5f, 4f);
-						break;		
-					default:
-						GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 3f, 4f);
-						break;										
-				}		
-			}		
-			else if (attacker.GetComponent<Akuma>() != null){
-				GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 2f, 2f);
-			}
-			else if (attacker.GetComponent<Ken>() != null){
-				GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 1f, 3f);
-			}
-			else if (attacker.GetComponent<Sagat>() != null){	
-				switch(attAnim.GetInteger("tigerKneeKickType")){
-					case 0:
-						GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 2.5f, 3f);
-						break;
-					case 1:
-						GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 3f, 3f);
-						break;		
-					default:
-						GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 3.5f, 3f);
-						break;										
-				}		
-			}		
-		}
-		else if (attacker.GetHitType() == Character.HitType.shoryuken){
-			recAnim.Play("KnockDownBlendTree",0,0f);
-			if (receiver.GetHealth () <= 0f){	
-				TimeControl.slowDownTimer = KOSlowDown;		
-			}
-			else{		
-				TimeControl.slowDownTimer = bigHitSlowDown;
-			}
-			if (attacker.GetComponent<Ken>() != null){
-				switch(attAnim.GetInteger("shoryukenPunchType")){
-				case 0:
-					GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 1f, 4f);
-					break;
-				case 1:
-					GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 1.5f, 4.5f);
-					break;		
-				default:
-					GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 2f, 5.5f);
-					break;										
-				}		
-			}			
-			else if (attacker.GetComponent<Akuma>() != null){
-				switch(attAnim.GetInteger("shoryukenPunchType")){
-				case 0:
-					GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 1f, 4f);
-					break;
-				case 1:
-					GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 1.25f, 4.5f);
-					break;		
-				default:
-					GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 1.5f, 5f);
-					break;										
-				}		
-			}			
-			else if (attacker.GetComponent<FeiLong>() != null){				
-				switch(attAnim.GetInteger("shienKyakuKickType")){
-				case 0:
-					GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 0.5f, 4f);
-					break;
-				case 1:
-					GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 0.625f, 4.5f);
-					break;		
-				default:
-					GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 0.75f, 5f);
-					break;										
-				}		
-			}
-			else if (attacker.GetComponent<Balrog>() != null){
-				GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 2f, 3f);
-			}
-			else if (attacker.GetComponent<Sagat>() != null){				
-				switch(attAnim.GetInteger("tigerUppercutPunchType")){
-				case 0:
-					GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 1f, 4f);
-					break;
-				case 1:
-					GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 1.25f, 4.75f);
-					break;		
-				default:
-					GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 1.5f, 5.5f);
-					break;										
-				}		
-			}
-		}
-		else if (attacker.GetHitType() == Character.HitType.akumaHurricaneKick){
-			if (receiver.GetHealth () <= 0f){	
-				if (attacker.GetComponent<Ken>() != null){
-					SuperKO (attacker.GetComponent<Ken>().GetShinryukenActive);
-				}
-				TimeControl.slowDownTimer = KOSlowDown;					
-				recAnim.Play("KnockDownBlendTree",0,0f);
-			}
-			else{		
-				TimeControl.slowDownTimer = bigHitSlowDown;
-				recAnim.Play("MidAirHit",0,0f);
-			}
-			if (attacker.GetComponent<Akuma>() != null){
-				switch(attAnim.GetInteger("hurricaneKickType")){
-				case 0:
-					GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 0.75f, 3.75f);
-					break;
-				case 1:
-					GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 1.5f, 2.5f);
-					break;		
-				default:
-					GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 1.5f, 2.25f);
-					break;										
-				}		
-			}	
-			else if (attacker.GetComponent<Ken>() != null){
-				if (distance > 0.25f){
-				    GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, -1f, 2f);
-				}
-				else if (distance < -0.25f){
-				    GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, -1f, 2f);					
-				}
-                else{
-				    GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 0f, 2f);
+
+    void OtherHitStunProperties(Character attacker, Character receiver, Animator recAnim, Animator attAnim, Vector3 sparkPlace, Rigidbody2D receiverRigid) {
+        Rigidbody2D attPhysicsbody = attacker.GetComponent<Rigidbody2D>();
+        if (attacker.GetHitType() == Character.HitType.sweep || attacker.GetHitType() == Character.HitType.dashLow
+                || attacker.GetHitType() == Character.HitType.bisonSweep) {
+            if (attacker.side == Character.Side.P1) {
+                receiver.side = Character.Side.P2;
+                receiver.SideSwitch();
+            }
+            else {
+                receiver.side = Character.Side.P1;
+                receiver.SideSwitch();
+            }
+            if (receiver.GetHealth() <= 0f) {
+                GotKOed(receiver, recAnim, receiverRigid);
+            }
+            else {
+                TimeControl.slowDownTimer = bigHitSlowDown;
+                recAnim.Play("Trip", 0, 0f);
+            }
+        }
+        else if (attacker.GetHitType() == Character.HitType.normalKnockDown) {
+            recAnim.Play("KnockDownBlendTree", 0, 0f);
+            if (receiver.GetHealth() <= 0f) {
+                if (attacker.GetComponent<Ken>() != null) {
+                    SuperKO(attacker.GetComponent<Ken>().GetShinryukenActive);
                 }
-			}	
-		}
-	}
+                else if (attacker.GetComponent<FeiLong>() != null) {
+                    SuperKO(attacker.GetComponent<FeiLong>().GetRekkaShinkenActive);
+                }
+                else if (attacker.GetComponent<Balrog>() != null) {
+                    SuperKO(attacker.GetComponent<Balrog>().GetGigatonPunchActive);
+                }
+                TimeControl.slowDownTimer = KOSlowDown;
+            }
+            else {
+                TimeControl.slowDownTimer = bigHitSlowDown;
+            }
+            if (attacker.GetComponent<FeiLong>() != null) {
+                switch (attAnim.GetInteger("rekkaPunchType")) {
+                    case 0:
+                        GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 2f, 4f);
+                        break;
+                    case 1:
+                        GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 2.5f, 4f);
+                        break;
+                    default:
+                        GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 3f, 4f);
+                        break;
+                }
+                attPhysicsbody.velocity *= 0.6f;
+            }
+            else if (attacker.GetComponent<Balrog>() != null) {
+                switch (attAnim.GetInteger("dashRushPunchType")) {
+                    case 0:
+                        GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 2f, 4f);
+                        break;
+                    case 1:
+                        GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 2.5f, 4f);
+                        break;
+                    default:
+                        GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 3f, 4f);
+                        break;
+                }
+            }
+            else if (attacker.GetComponent<Akuma>() != null) {
+                GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 2f, 2f);
+            }
+            else if (attacker.GetComponent<Ken>() != null) {
+                GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 1f, 3f);
+            }
+            else if (attacker.GetComponent<Sagat>() != null) {
+                switch (attAnim.GetInteger("tigerKneeKickType")) {
+                    case 0:
+                        GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 2.5f, 3f);
+                        break;
+                    case 1:
+                        GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 3f, 3f);
+                        break;
+                    default:
+                        GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 3.5f, 3f);
+                        break;
+                }
+            }
+            else if (attacker.GetComponent<MBison>() != null)
+            {
+                GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 2.5f, 2.5f);
+            }
+        }
+        else if (attacker.GetHitType() == Character.HitType.shoryuken) {
+            recAnim.Play("KnockDownBlendTree", 0, 0f);
+            if (receiver.GetHealth() <= 0f) {
+                TimeControl.slowDownTimer = KOSlowDown;
+            }
+            else {
+                TimeControl.slowDownTimer = bigHitSlowDown;
+            }
+            if (attacker.GetComponent<Ken>() != null) {
+                switch (attAnim.GetInteger("shoryukenPunchType")) {
+                    case 0:
+                        GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 1f, 4f);
+                        break;
+                    case 1:
+                        GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 1.5f, 4.5f);
+                        break;
+                    default:
+                        GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 2f, 5.5f);
+                        break;
+                }
+            }
+            else if (attacker.GetComponent<Akuma>() != null) {
+                switch (attAnim.GetInteger("shoryukenPunchType")) {
+                    case 0:
+                        GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 1f, 4f);
+                        break;
+                    case 1:
+                        GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 1.25f, 4.5f);
+                        break;
+                    default:
+                        GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 1.5f, 5f);
+                        break;
+                }
+            }
+            else if (attacker.GetComponent<FeiLong>() != null) {
+                switch (attAnim.GetInteger("shienKyakuKickType")) {
+                    case 0:
+                        GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 0.5f, 4f);
+                        break;
+                    case 1:
+                        GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 0.625f, 4.5f);
+                        break;
+                    default:
+                        GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 0.75f, 5f);
+                        break;
+                }
+            }
+            else if (attacker.GetComponent<Balrog>() != null) {
+                GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 2f, 3f);
+            }
+            else if (attacker.GetComponent<Sagat>() != null) {
+                switch (attAnim.GetInteger("tigerUppercutPunchType")) {
+                    case 0:
+                        GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 1f, 4f);
+                        break;
+                    case 1:
+                        GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 1.25f, 4.75f);
+                        break;
+                    default:
+                        GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 1.5f, 5.5f);
+                        break;
+                }
+            }
+        }
+        else if (attacker.GetHitType() == Character.HitType.akumaHurricaneKick) {
+            if (receiver.GetHealth() <= 0f) {
+                if (attacker.GetComponent<Ken>() != null) {
+                    SuperKO(attacker.GetComponent<Ken>().GetShinryukenActive);
+                }
+                TimeControl.slowDownTimer = KOSlowDown;
+                recAnim.Play("KnockDownBlendTree", 0, 0f);
+            }
+            else {
+                TimeControl.slowDownTimer = bigHitSlowDown;
+                recAnim.Play("MidAirHit", 0, 0f);
+            }
+            if (attacker.GetComponent<Akuma>() != null) {
+                switch (attAnim.GetInteger("hurricaneKickType")) {
+                    case 0:
+                        GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 0.75f, 3.75f);
+                        break;
+                    case 1:
+                        GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 1.5f, 2.5f);
+                        break;
+                    default:
+                        GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 1.5f, 2.25f);
+                        break;
+                }
+            }
+            else if (attacker.GetComponent<Ken>() != null) {
+                if (distance > 0.25f) {
+                    GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, -1f, 2f);
+                }
+                else if (distance < -0.25f) {
+                    GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, -1f, 2f);
+                }
+                else {
+                    GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 0f, 2f);
+                }
+            }
+        }
+        else if (attacker.GetHitType() == Character.HitType.otherKnockDown)
+        {
+            recAnim.Play("KnockDownBlendTree", 0, 0f);
+            if (attacker.GetComponent<MBison>() != null)
+            {
+                GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 2f, 3f);
+            }
+        }
+    }
 	
 	void PushBack(Character attacker, Rigidbody2D receiverRigid, Rigidbody2D attackerRigid){						
 		if (attacker.GetHitType() != Character.HitType.hurricaneKick && attacker.GetHitType() != Character.HitType.rekka
 			&& attacker.GetHitType() != Character.HitType.akumaHurricaneKick && attacker.GetHitType() != Character.HitType.normalKnockDown
-            && attacker.GetHitType() != Character.HitType.bisonSweep){
+            && attacker.GetHitType() != Character.HitType.bisonSweep && attacker.GetHitType() != Character.HitType.otherKnockDown){
 			if (attacker.side == Character.Side.P1){
 				if (rightEdgeDistance > 0.25f){
 					// if close to the wall, pushback enforced on attacking character instead

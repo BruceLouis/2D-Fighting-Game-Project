@@ -10,7 +10,6 @@ public class Idle : StateMachineBehaviour {
 	//}
 	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex){
 		animator.SetBool("isAttacking", false);
-        animator.SetBool("isSweeping", false);
         animator.SetBool("isInHitStun", false);
 		animator.SetBool("isInBlockStun", false);
         animator.SetBool("isLanding", false);
@@ -35,8 +34,10 @@ public class Idle : StateMachineBehaviour {
 		animator.ResetTrigger("turnPunchInputed");
 		animator.ResetTrigger("headButtInputed");
 		animator.ResetTrigger("hyakkishuInputed");
-		animator.ResetTrigger("motionSuperInputed");
-	}
+		animator.ResetTrigger("scissorKicksInputed");
+		animator.ResetTrigger("psychoCrusherInputed");
+		animator.ResetTrigger("motionSuperInputed"); 
+    }
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
 	//override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 	//
