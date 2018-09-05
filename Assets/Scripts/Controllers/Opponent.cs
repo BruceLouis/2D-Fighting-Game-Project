@@ -369,8 +369,16 @@ public class Opponent : MonoBehaviour {
 					}
 					animator.SetTrigger("shoryukenInputed");
 					animator.SetInteger("shoryukenPunchType", 2);
-				}
-			}
+                }
+                else if (character.GetComponent<MBison>() != null)
+                {
+                    if (animator.GetBool("isAttacking") == false)
+                    {
+                        character.AttackState();
+                        animator.Play("MBisonHeadStomp", 0);
+                    }
+                }
+            }
 		}
 		if (Input.GetKey(KeyCode.L)){
 			animator.SetBool("isStanding", false);

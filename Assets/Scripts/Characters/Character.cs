@@ -93,6 +93,7 @@ public class Character : MonoBehaviour {
 			animator.SetBool("tigerUppercutActive", false);
 			animator.SetBool("tigerKneeActive", false);			
 			animator.SetBool("scissorKicksActive", false);			
+			animator.SetBool("headStompActive", false);			
 		}
 	}
 

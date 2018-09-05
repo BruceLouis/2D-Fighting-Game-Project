@@ -161,7 +161,8 @@ public class Player : MonoBehaviour {
 			    if (animator.GetBool ("isStanding") == true && animator.GetBool ("isAirborne") == false && animator.GetBool ("isAttacking") == false) {
 				    WalkPlayer ();
 				    if (pressedUp) {
-					    if (character.GetComponent<Balrog>() != null){
+					    if (character.GetComponent<Balrog>() != null || character.GetComponent<MBison>() != null)
+                        {
 						    //give balrog a window of time to input the headbutt before he jumps
 						    if (chargeSystem.downChargedWindow < (chargeSystem.GetDownChargedWindowInput()/2) && chargeSystem.GetDownCharged()) {
 							    CharacterJumping ();
@@ -511,6 +512,10 @@ public class Player : MonoBehaviour {
             {
                 MBisonCompletesPsychoCrusher(punchType);
             }
+            else if (animator.GetBool("reverseActive") == true)
+            {
+                animator.SetTrigger("somerSaultInputed");
+            }
             else if (animator.GetBool("isAttacking") == false)
             {
                 punch();
@@ -585,6 +590,10 @@ public class Player : MonoBehaviour {
             if (chargeSystem.GetBackCharged() && !sharedProperties.GetBackPressed && animator.GetBool("isAirborne") == false && sharedProperties.GetForwardPressed)
             {
                 MBisonCompletesScissorKick(kickStrength, kickType);
+            }
+            else if (chargeSystem.GetDownCharged() && !sharedProperties.GetDownPressed && animator.GetBool("isAirborne") == false && pressedUp)
+            {
+                MBisonCompletesHeadStomp(kickType);
             }
             else if (animator.GetBool("isAttacking") == false)
             {
@@ -856,6 +865,20 @@ public class Player : MonoBehaviour {
         animator.SetInteger("psychoCrusherPunchType", punchType);
         chargeSystem.SetBackCharged(false);
         chargeSystem.ResetBackChargedProperties();
+    }
+
+    void MBisonCompletesHeadStomp(int kickType)
+    {
+        Debug.Log("Psycho crushered");
+        if (animator.GetBool("isAttacking") == false)
+        {
+            character.AttackState();
+            animator.Play("MBisonHeadStomp", 0);
+        }
+        animator.SetTrigger("headStompInputed");
+        animator.SetInteger("headStompKickType", kickType);
+        chargeSystem.SetDownCharged(false);
+        chargeSystem.ResetDownChargedProperties();
     }
 
     bool CheckHadoukenSequence(){

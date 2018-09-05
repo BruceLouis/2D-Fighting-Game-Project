@@ -9,6 +9,7 @@ public class MBison : MonoBehaviour {
     private Rigidbody2D physicsbody;
 
     private float amountTimeTravelledTimer;
+    private Vector2 direction;
 
     // Use this for initialization
     void Start ()
@@ -35,9 +36,26 @@ public class MBison : MonoBehaviour {
             character.AtTheCorner();
             physicsbody.isKinematic = true;
         }
+        else if (animator.GetBool("headStompLanded"))
+        {
+            physicsbody.isKinematic = true;
+        }
         else
         {
             physicsbody.isKinematic = false;
+        }
+        
+        if (animator.GetBool("reverseActive"))
+        {
+            //using the wind method to make M Bison smoothly jump back and land forward
+            if (direction == Vector2.right)
+            {
+                physicsbody.AddForce(new Vector2(3f, 0f));
+            }
+            else
+            {
+                physicsbody.AddForce(new Vector2(-3f, 0f));
+            }
         }
     }
 
@@ -141,5 +159,83 @@ public class MBison : MonoBehaviour {
                 character.MoveProperties(40f, 30f, 5f, 70f, 2, 9, 1, 4f);
                 break;
         }
+    }
+
+    void MBisonHeadStomp()
+    {
+        /*   we will use the cannonball solution here since this particular attack of M Bison's is very similar to how a cannonball works
+         *   where m bison will launch towards the opponent's head (towards the opponent for now) regardless of where M Bison stands at
+         *   the 1 in the parameter is multiplier. for the devil's reverse, the multiplier would be 1.5
+         */
+
+        CannonBallTrajectory(1f);
+        switch (animator.GetInteger("headStompKickType"))
+        {
+            case 0:
+                character.MoveProperties(20f, 15f, 0f, 30f, 1, 0, 1, 4f);
+                break;
+            case 1:
+                character.MoveProperties(20f, 15f, 0f, 35f, 1, 0, 1, 4f);
+                break;
+            default:
+                character.MoveProperties(20f, 15f, 0f, 40f, 1, 0, 1, 4f);
+                break;
+        }
+    }
+
+    void CannonBallTrajectory(float multiplier)
+    {
+        float angle;
+        Vector3 targetPosition = GetComponentInParent<SharedProperties>().GetPositionOfOtherFighter();
+
+        // Distance along the y axis between objects
+
+        // Planar distance between objects
+        Vector2 planarTarget = new Vector2(targetPosition.x, 0);
+        Vector2 planarPostion = new Vector2(transform.position.x, 0);
+
+        float distance = Vector3.Distance(planarTarget, planarPostion) * multiplier;
+
+        if (Mathf.Abs(distance) < 1f)
+        {
+            angle = 80f * Mathf.Deg2Rad;
+        }
+        else if (Mathf.Abs(distance) >= 1f && Mathf.Abs(distance) < 2f)
+        {
+            angle = 75f * Mathf.Deg2Rad;
+        }
+        else if (Mathf.Abs(distance) >= 2f && Mathf.Abs(distance) < 3f)
+        {
+            angle = 65f * Mathf.Deg2Rad;
+        }
+        else
+        {
+            angle = 55f * Mathf.Deg2Rad;
+        }
+
+        float gravity = Physics2D.gravity.magnitude;
+
+
+        float initialVelocity = (1 / Mathf.Cos(angle)) * Mathf.Sqrt((0.5f * gravity * Mathf.Pow(distance, 2)) / (distance * Mathf.Tan(angle))); //1.0f is yOffset
+        Vector2 targetVelocity = new Vector2(initialVelocity * Mathf.Cos(angle), initialVelocity * Mathf.Sin(angle));
+
+        // Rotate our velocity to match the direction between the two objects
+        float angleBetweenObjects = Vector2.Angle(Vector2.right, planarTarget - planarPostion);
+        Vector3 finalVelocity = Quaternion.AngleAxis(angleBetweenObjects, Vector2.up) * targetVelocity;
+
+        // Fire!
+        physicsbody.velocity = finalVelocity;
+    }
+
+    void MBisonHeadStompHit()
+    {
+        character.TakeOffVelocity(0f, 0f);
+    }
+
+    void MBisonHeadStompReverse()
+    {
+        character.MoveProperties(25f, 15f, 2f, 40f, 1, 0, 1, 4f);
+        character.TakeOffVelocity(-1.5f, 4f);
+        direction = character.side == Character.Side.P1 ? Vector2.right : Vector2.left;        
     }
 }

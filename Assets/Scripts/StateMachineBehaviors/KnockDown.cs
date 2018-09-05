@@ -35,6 +35,8 @@ public class KnockDown : StateMachineBehaviour {
 		animator.ResetTrigger("hyakkishuInputed");
         animator.ResetTrigger("scissorKicksInputed");
         animator.ResetTrigger("psychoCrusherInputed");
+        animator.ResetTrigger("headStompInputed");
+        animator.ResetTrigger("somerSaultInputed");
         animator.ResetTrigger("motionSuperInputed");
     }
 

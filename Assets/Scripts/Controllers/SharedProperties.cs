@@ -120,6 +120,7 @@ public class SharedProperties : MonoBehaviour {
 			return Mathf.Abs(player.GetDistance());
 		}
 	}
+
     public float GetDistanceFromOtherFighter(){
 		if (opponent != null){
 			return opponent.GetDistance();
@@ -128,4 +129,16 @@ public class SharedProperties : MonoBehaviour {
 			return player.GetDistance();
 		}
 	}		
+
+    public Vector3 GetPositionOfOtherFighter()
+    {
+        if (opponent != null)
+        {
+            return FindObjectOfType<Player>().GetComponentInChildren<Character>().transform.position;
+        }
+        else
+        {
+            return FindObjectOfType<Opponent>().GetComponentInChildren<Character>().transform.position;
+        }
+    }
 }

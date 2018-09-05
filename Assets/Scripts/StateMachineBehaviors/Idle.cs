@@ -36,7 +36,9 @@ public class Idle : StateMachineBehaviour {
 		animator.ResetTrigger("hyakkishuInputed");
 		animator.ResetTrigger("scissorKicksInputed");
 		animator.ResetTrigger("psychoCrusherInputed");
-		animator.ResetTrigger("motionSuperInputed"); 
+        animator.ResetTrigger("headStompInputed");
+        animator.ResetTrigger("somerSaultInputed");
+        animator.ResetTrigger("motionSuperInputed"); 
     }
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
 	//override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {

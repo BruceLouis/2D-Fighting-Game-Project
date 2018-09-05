@@ -158,7 +158,8 @@ public class HitBox : MonoBehaviour {
 		if (attacker.GetHitType() != Character.HitType.normal && attacker.GetHitType() != Character.HitType.hurricaneKick && attacker.GetHitType() != Character.HitType.rekka){
 			OtherHitStunProperties(attacker, receiver, anim, attAnim, sparkPlace, receiverRigid);
 		}
-		else{
+		else
+        {
 			if (anim.GetBool("isAirborne") == true){
 				if (receiver.GetHealth () <= 0f){	
 					if (attacker.GetComponent<FeiLong>() != null){				
@@ -214,6 +215,10 @@ public class HitBox : MonoBehaviour {
 					PushBack(attacker, receiverRigid, attackerRigid);
 				}
 			} 	
+            if (attacker.GetComponent<MBison>() != null && attAnim.GetBool("headStompActive"))
+            {
+                attAnim.SetTrigger("headStompHit");
+            }
 		}
 		switch(attacker.GetSparkType()){
 			case Character.SparkType.normal:
@@ -424,6 +429,14 @@ public class HitBox : MonoBehaviour {
         else if (attacker.GetHitType() == Character.HitType.otherKnockDown)
         {
             recAnim.Play("KnockDownBlendTree", 0, 0f);
+            if (receiver.GetHealth() <= 0f)
+            {
+                TimeControl.slowDownTimer = KOSlowDown;
+            }
+            else
+            {
+                TimeControl.slowDownTimer = bigHitSlowDown;
+            }
             if (attacker.GetComponent<MBison>() != null)
             {
                 GotKnockedUp(attacker, receiver, attAnim, recAnim, receiverRigid, 2f, 3f);
