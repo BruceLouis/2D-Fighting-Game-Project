@@ -93,8 +93,9 @@ public class Character : MonoBehaviour {
 			animator.SetBool("tigerUppercutActive", false);
 			animator.SetBool("tigerKneeActive", false);			
 			animator.SetBool("scissorKicksActive", false);			
-			animator.SetBool("headStompActive", false);			
-		}
+			animator.SetBool("headStompActive", false);
+            animator.SetBool("devilReverseActive", false);
+        }
 	}
 
 	public void AttackState(){
@@ -225,11 +226,11 @@ public class Character : MonoBehaviour {
 	
 	public void CharacterRoundhouse(){
 		if (animator.GetBool("isLiftingOff") == false){		
-			AudioSource.PlayClipAtPoint(normalAttackSound, transform.position);	
 			if (animator.GetBool("isStanding")){
 				animator.Play("StandRoundhouse",0);
 				MoveProperties(40f, 20f, 12f, 55f, 2, 0, 1);
-			}
+                AudioSource.PlayClipAtPoint(normalAttackSound, transform.position);
+            }
 			else if (animator.GetBool("isCrouching")){
 				animator.Play("CrouchRoundhouse",0);
                 if (GetComponent<MBison>() != null)
@@ -239,6 +240,7 @@ public class Character : MonoBehaviour {
                 else
                 {
                     MoveProperties(40f, 20f, 12f, 60f, 0, 1, 1);
+                    AudioSource.PlayClipAtPoint(normalAttackSound, transform.position);
                 }
 			}
 			else if (animator.GetBool("isAirborne")){
@@ -249,7 +251,8 @@ public class Character : MonoBehaviour {
 					animator.Play("JumpNeutralRoundhouse",0);
 				}			
 				MoveProperties(40f, 8.5f, 6f, 55f, 1, 0, 1);
-			}	
+                AudioSource.PlayClipAtPoint(normalAttackSound, transform.position);
+            }	
 		}
 	}
 	
@@ -351,6 +354,10 @@ public class Character : MonoBehaviour {
     
 	public void TossedBySagat(){
 		YouGonnaGetTossed (20f, 3f, 4f);
+	}
+
+	public void TossedByMBison(){
+		YouGonnaGetTossed (60f, -4f, 3f);
 	}
 
 	public void MoveProperties(	float hitstun, float blockstun, float pushback, float damage, 
@@ -482,6 +489,9 @@ public class Character : MonoBehaviour {
 		}
         else if (GetComponent<Sagat>() != null){
             offset = SetOffset(offset, -0.2f, 0.2f);
+		}
+        else if (GetComponent<MBison>() != null){
+            offset = SetOffset(offset, 0.35f, 0.2f);
 		}
 		GameObject newSuperEffect = Instantiate(superEffect, transform.position + offset, Quaternion.identity) as GameObject;
 		newSuperEffect.tag = gameObject.tag;

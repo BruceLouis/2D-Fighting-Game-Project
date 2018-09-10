@@ -1,13 +1,19 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class MBison : MonoBehaviour {
 
+    [SerializeField] AudioClip superStartSound, psychoCrusherSound, psychoCrusherEffectSound, psychoSound, reverseSound;
+    [SerializeField] AudioClip scissorKicksSound, headStompLaunchSound, headStompHitSound, somerSaultSound, slideSound;
+    [SerializeField] float headStompGravity;
+
     private Character character;
     private Animator animator;
     private Rigidbody2D physicsbody;
 
+    private bool kneePressNightmareActive, headStompActive, devilReverseActive;
     private float amountTimeTravelledTimer;
     private Vector2 direction;
 
@@ -21,6 +27,10 @@ public class MBison : MonoBehaviour {
 
     void FixedUpdate()
     {
+        kneePressNightmareActive = animator.GetBool("superActive");
+        headStompActive = animator.GetBool("headStompActive");
+        devilReverseActive = animator.GetBool("devilReverseActive");
+
         if (animator.GetBool("isSweeping"))
         {
             character.AtTheCorner();
@@ -31,7 +41,7 @@ public class MBison : MonoBehaviour {
                 animator.SetBool("isSweeping", false);
             }
         }
-        else if (animator.GetBool("psychoCrusherActive"))
+        else if (animator.GetBool("psychoCrusherActive") || kneePressNightmareActive)
         {
             character.AtTheCorner();
             physicsbody.isKinematic = true;
@@ -47,18 +57,19 @@ public class MBison : MonoBehaviour {
         
         if (animator.GetBool("reverseActive"))
         {
-            //using the wind method to make M Bison smoothly jump back and land forward
-            if (direction == Vector2.right)
-            {
-                physicsbody.AddForce(new Vector2(3f, 0f));
-            }
-            else
-            {
-                physicsbody.AddForce(new Vector2(-3f, 0f));
-            }
+            WindForReverses(3f);
+        }
+
+        if (headStompActive || devilReverseActive)
+        {
+            physicsbody.gravityScale = headStompGravity;
+        }
+        else
+        {
+            physicsbody.gravityScale = 1f;
         }
     }
-
+    
     void MBisonSweepStartUp(float amountTimeTravelled)
     {
         amountTimeTravelledTimer = amountTimeTravelled;
@@ -93,6 +104,31 @@ public class MBison : MonoBehaviour {
                     character.TakeOffVelocity(3.5f, 2f);
                     break;
             }
+        }
+    }
+    
+    void MBisonKneePressNightmare()
+    {
+        if (!animator.GetBool("isInHitStun") && !animator.GetBool("isKnockedDown"))
+        {
+            character.TakeOffVelocity(3f, 0f);
+        }
+        GetComponentInChildren<SpriteRenderer>().sortingLayerName = "Characters";
+    }
+
+    void MBisonSuperProperties(int type)
+    {
+        switch (type)
+        {
+            case 0:
+                character.MoveProperties(40f, 30f, 5f, 50f, 2, 4, 1, 0f);
+                break;
+            case 1:
+                character.MoveProperties(40f, 30f, 10f, 60f, 2, 4, 1, 0f);
+                break;
+            default:
+                character.MoveProperties(40f, 20f, 12f, 100f, 0, 8, 1, 0f);
+                break;
         }
     }
 
@@ -168,7 +204,7 @@ public class MBison : MonoBehaviour {
          *   the 1 in the parameter is multiplier. for the devil's reverse, the multiplier would be 1.5
          */
 
-        CannonBallTrajectory(1f);
+        CannonBallTrajectory(1f, headStompGravity);
         switch (animator.GetInteger("headStompKickType"))
         {
             case 0:
@@ -183,8 +219,23 @@ public class MBison : MonoBehaviour {
         }
     }
 
-    void CannonBallTrajectory(float multiplier)
+    void MBisonDevilReverse()
     {
+        /*   we will use the cannonball solution here since this particular attack of M Bison's is very similar to how a cannonball works
+         *   where m bison will launch towards the opponent's head (towards the opponent for now) regardless of where M Bison stands at
+         *   the 1 in the parameter is multiplier. for the devil's reverse, the multiplier would be 1.5
+         */
+
+        CannonBallTrajectory(1.5f, headStompGravity);
+        direction = character.side == Character.Side.P1 ? Vector2.right : Vector2.left;
+    }
+
+    void CannonBallTrajectory(float multiplier, float scale)
+    {
+        /*  this could be improved by using time as the known constant instead so that we can calculate the angles
+         *  on demand, rather than give magic numbers to the angles based on distance.
+         */
+        
         float angle;
         Vector3 targetPosition = GetComponentInParent<SharedProperties>().GetPositionOfOtherFighter();
 
@@ -213,10 +264,10 @@ public class MBison : MonoBehaviour {
             angle = 55f * Mathf.Deg2Rad;
         }
 
-        float gravity = Physics2D.gravity.magnitude;
+        float gravity = Physics2D.gravity.magnitude * scale;
 
 
-        float initialVelocity = (1 / Mathf.Cos(angle)) * Mathf.Sqrt((0.5f * gravity * Mathf.Pow(distance, 2)) / (distance * Mathf.Tan(angle))); //1.0f is yOffset
+        float initialVelocity = (1 / Mathf.Cos(angle)) * Mathf.Sqrt((0.5f * gravity * Mathf.Pow(distance, 2)) / (distance * Mathf.Tan(angle))); 
         Vector2 targetVelocity = new Vector2(initialVelocity * Mathf.Cos(angle), initialVelocity * Mathf.Sin(angle));
 
         // Rotate our velocity to match the direction between the two objects
@@ -232,10 +283,85 @@ public class MBison : MonoBehaviour {
         character.TakeOffVelocity(0f, 0f);
     }
 
-    void MBisonHeadStompReverse()
+    void MBisonReverse(int reverseType)
     {
         character.MoveProperties(25f, 15f, 2f, 40f, 1, 0, 1, 4f);
-        character.TakeOffVelocity(-1.5f, 4f);
-        direction = character.side == Character.Side.P1 ? Vector2.right : Vector2.left;        
+        if (reverseType <= 0)
+        {
+            character.TakeOffVelocity(-1.5f, 4f);
+        }
+        else
+        {
+            character.TakeOffVelocity(-1.5f, 3f);
+        }
+    }
+    
+    void DetermineReverseDirection()
+    {
+        direction = character.side == Character.Side.P1 ? Vector2.right : Vector2.left;
+    }
+
+    void WindForReverses(float speed)
+    {
+        //using the wind method to make M Bison smoothly jump back and land forward
+        if (direction == Vector2.right)
+        {
+            physicsbody.AddForce(new Vector2(speed, 0f));
+        }
+        else
+        {
+            physicsbody.AddForce(new Vector2(-speed, 0f));
+        }
+    }
+
+    void PlaySuperStartSound()
+    {
+        AudioSource.PlayClipAtPoint(superStartSound, transform.position);
+    }
+
+    void PlaySlideSound()
+    {
+        AudioSource.PlayClipAtPoint(slideSound, transform.position);
+    }
+
+    void PlayScissorKicksSound()
+    {
+        AudioSource.PlayClipAtPoint(scissorKicksSound, transform.position);
+    }
+
+    void PlayPsychoSound()
+    {
+        AudioSource.PlayClipAtPoint(psychoSound, transform.position);
+    }
+
+    void PlayPsychoCrusherSound()
+    {
+        AudioSource.PlayClipAtPoint(psychoCrusherSound, transform.position);
+        AudioSource.PlayClipAtPoint(psychoCrusherEffectSound, transform.position);
+    }
+
+    void PlayHeadStompLaunchSound()
+    {
+        AudioSource.PlayClipAtPoint(headStompLaunchSound, transform.position);
+    }
+
+    void PlayHeadStompHitSound()
+    {
+        AudioSource.PlayClipAtPoint(headStompHitSound, transform.position);
+    }
+
+    void PlaySomerSaultSound()
+    {
+        AudioSource.PlayClipAtPoint(somerSaultSound, transform.position);
+    }
+
+    void PlayReverseSound()
+    {
+        AudioSource.PlayClipAtPoint(reverseSound, transform.position);
+    }
+
+    public bool GetKneePressNightmareActive()
+    {
+        return kneePressNightmareActive;
     }
 }

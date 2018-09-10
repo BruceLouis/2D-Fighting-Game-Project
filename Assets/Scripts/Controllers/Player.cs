@@ -16,7 +16,7 @@ public class Player : MonoBehaviour {
 	public GameObject mugShotObject;
 	public GameObject[] streetFighterCharacters;
 	public Text nameText;
-	public Sprite kenMugShot, feiLongMugShot, balrogMugShot, akumaMugShot, sagatMugShot;
+	public Sprite kenMugShot, feiLongMugShot, balrogMugShot, akumaMugShot, sagatMugShot, mbisonMugShot;
     public bool isAI, doInitiateCharacter;
     
 	private Animator animator;
@@ -40,6 +40,7 @@ public class Player : MonoBehaviour {
 	private BalrogAI balrogAI;
 	private AkumaAI akumaAI;
 	private SagatAI sagatAI;
+	private MBisonAI mbisonAI;
 	
 	private bool pressedForward, pressedBackward, pressedCrouch, pressedUp, introPlayed;
 	private float distance, distanceFromOpponent;	
@@ -97,6 +98,10 @@ public class Player : MonoBehaviour {
         else if (character.GetComponent<Sagat>() != null){
 			sagatAI = GetComponentInChildren<SagatAI>();
             CharacterInitialize(sagatMugShot, "Sagat", sagatAI.Behaviors);
+        }
+        else if (character.GetComponent<MBison>() != null){
+			mbisonAI = GetComponentInChildren<MBisonAI>();
+            CharacterInitialize(mbisonMugShot, "M Bison", mbisonAI.Behaviors);
         }
 		
 		projectileP1Parent = GameObject.Find("ProjectileP1Parent");
@@ -458,7 +463,7 @@ public class Player : MonoBehaviour {
 			if (CheckMotionSuperSequence () && animator.GetBool ("isAirborne") == false && character.GetSuper >= 100f){
 				CharacterCompletesMotionSuper ("Balrog", "GigatonPunch"); 
 			}
-			else if (chargeSystem.GetBackCharged () && !sharedProperties.GetBackPressed && animator.GetBool ("isAirborne") == false) {
+			else if (chargeSystem.GetBackCharged () && !sharedProperties.GetBackPressed && animator.GetBool ("isAirborne") == false && sharedProperties.GetForwardPressed) {
 				BalrogCompletesDashRushes (punchStrength, punchType);
 			}
 			else if (chargeSystem.GetDownCharged () && !sharedProperties.GetDownPressed && animator.GetBool ("isAirborne") == false && pressedUp) {
@@ -508,11 +513,15 @@ public class Player : MonoBehaviour {
         }
         else if (character.GetComponent<MBison>() != null)
         {
-			if (chargeSystem.GetBackCharged() && !sharedProperties.GetBackPressed && animator.GetBool("isAirborne") == false)
+			if (chargeSystem.GetBackCharged() && !sharedProperties.GetBackPressed && animator.GetBool("isAirborne") == false && sharedProperties.GetForwardPressed)
             {
                 MBisonCompletesPsychoCrusher(punchType);
             }
-            else if (animator.GetBool("reverseActive") == true)
+            else if (chargeSystem.GetDownCharged() && !sharedProperties.GetDownPressed && animator.GetBool("isAirborne") == false && pressedUp)
+            {
+                MBisonCompletesDevilReverse();
+            }
+            else if (animator.GetBool("reverseActive") == true || animator.GetBool("devilReverseActive") == true)
             {
                 animator.SetTrigger("somerSaultInputed");
             }
@@ -587,7 +596,11 @@ public class Player : MonoBehaviour {
         }
         else if (character.GetComponent<MBison>() != null)
         {
-            if (chargeSystem.GetBackCharged() && !sharedProperties.GetBackPressed && animator.GetBool("isAirborne") == false && sharedProperties.GetForwardPressed)
+            if (CheckMotionSuperSequence() && animator.GetBool("isAirborne") == false && character.GetSuper >= 100f)
+            {
+                CharacterCompletesMotionSuper("MBison", "KneePressNightmare");
+            }
+            else if (chargeSystem.GetBackCharged() && !sharedProperties.GetBackPressed && animator.GetBool("isAirborne") == false && sharedProperties.GetForwardPressed)
             {
                 MBisonCompletesScissorKick(kickStrength, kickType);
             }
@@ -869,7 +882,7 @@ public class Player : MonoBehaviour {
 
     void MBisonCompletesHeadStomp(int kickType)
     {
-        Debug.Log("Psycho crushered");
+        Debug.Log("Head stomped");
         if (animator.GetBool("isAttacking") == false)
         {
             character.AttackState();
@@ -877,6 +890,19 @@ public class Player : MonoBehaviour {
         }
         animator.SetTrigger("headStompInputed");
         animator.SetInteger("headStompKickType", kickType);
+        chargeSystem.SetDownCharged(false);
+        chargeSystem.ResetDownChargedProperties();
+    }
+
+    void MBisonCompletesDevilReverse()
+    {
+        Debug.Log("Psycho crushered");
+        if (animator.GetBool("isAttacking") == false)
+        {
+            character.AttackState();
+            animator.Play("MBisonDevilReverse", 0);
+        }
+        animator.SetTrigger("headStompInputed");
         chargeSystem.SetDownCharged(false);
         chargeSystem.ResetDownChargedProperties();
     }

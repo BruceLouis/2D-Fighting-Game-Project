@@ -98,7 +98,7 @@ public class HitBox : MonoBehaviour {
 				    	}
 						else{
 							//successful block
-							InBlockStun(hitCharacter, hurtCharAnim, hurtPhysicsbody, hitPhysicsbody, sparkEffect);		
+							InBlockStun(hitCharacter, hurtCharAnim, hitCharAnim, hurtPhysicsbody, hitPhysicsbody, sparkEffect);		
 						}			
 					}
 					else{
@@ -121,7 +121,7 @@ public class HitBox : MonoBehaviour {
 		cancellable = false;
 	}
 	
-	void InBlockStun(Character attacker, Animator anim, Rigidbody2D receiverRigid, Rigidbody2D attackerRigid, Vector3 sparkPlace){
+	void InBlockStun(Character attacker, Animator anim, Animator attAnim, Rigidbody2D receiverRigid, Rigidbody2D attackerRigid, Vector3 sparkPlace){
 		float blockStunTimer = attacker.GetEnforceBlockStun() * 0.2f;
 		anim.SetBool("isInBlockStun", true);
 		AudioSource.PlayClipAtPoint(blockHit, transform.position);
@@ -130,8 +130,12 @@ public class HitBox : MonoBehaviour {
 		} 
 		else{
 			anim.Play("StandBlockStun",0,0f);
-		}
-		anim.SetFloat ("blockStunTimer", blockStunTimer);
+        }
+        if (attacker.GetComponent<MBison>() != null && attAnim.GetBool("headStompActive"))
+        {
+            attAnim.SetTrigger("headStompHit");
+        }
+        anim.SetFloat ("blockStunTimer", blockStunTimer);
 		TimeControl.slowDownTimer = normalHitSlowDown;
 		PushBack(attacker, receiverRigid, attackerRigid);
 		Instantiate(blockSpark, sparkPlace, Quaternion.identity);
@@ -167,6 +171,9 @@ public class HitBox : MonoBehaviour {
 					}
 					else if (attacker.GetComponent<Balrog>() != null){
 						SuperKO (attacker.GetComponent<Balrog>().GetGigatonPunchActive);
+					}	
+					else if (attacker.GetComponent<MBison>() != null){
+						SuperKO (attacker.GetComponent<MBison>().GetKneePressNightmareActive);
 					}			
 					GotKOed (receiver, anim, receiverRigid);
 				}
@@ -195,8 +202,12 @@ public class HitBox : MonoBehaviour {
 					}
 					else if (attacker.GetComponent<Balrog>() != null){
 						SuperKO (attacker.GetComponent<Balrog>().GetGigatonPunchActive);
-					}
-					GotKOed (receiver, anim, receiverRigid);
+                    }
+                    else if (attacker.GetComponent<MBison>() != null)
+                    {
+                        SuperKO(attacker.GetComponent<MBison>().GetKneePressNightmareActive);
+                    }
+                    GotKOed (receiver, anim, receiverRigid);
 				}
 				else{
 					if (anim.GetBool("isCrouching") == true){
@@ -249,7 +260,12 @@ public class HitBox : MonoBehaviour {
                 receiver.side = Character.Side.P1;
                 receiver.SideSwitch();
             }
-            if (receiver.GetHealth() <= 0f) {
+            if (receiver.GetHealth() <= 0f)
+            {
+                if (attacker.GetComponent<MBison>() != null)
+                {
+                    SuperKO(attacker.GetComponent<MBison>().GetKneePressNightmareActive);
+                }
                 GotKOed(receiver, recAnim, receiverRigid);
             }
             else {

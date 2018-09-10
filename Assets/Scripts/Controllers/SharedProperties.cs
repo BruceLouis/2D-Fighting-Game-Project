@@ -63,6 +63,9 @@ public class SharedProperties : MonoBehaviour {
             else if (throwingCharacter.GetComponent<Sagat>() != null){
 				ThrowSnapPoint (throwingCharacter, thrownCharacter, 0.4f);
 			}
+            else if (throwingCharacter.GetComponent<MBison>() != null){
+				ThrowSnapPoint (throwingCharacter, thrownCharacter, 0.4f);
+			}
 		}
 	}	
 	
@@ -70,11 +73,9 @@ public class SharedProperties : MonoBehaviour {
 		int decision = Random.Range (0, 100);
 		bool doesAIAntiAir = DoesAIAntiAir(decision, frequency);		
 		if (doesAIAntiAir){
-//			Debug.Log (gameObject.name + " anti aired");
 			antiAir  ();
 		}
 		else{
-//			Debug.Log (gameObject.name + " didnt anti air");
 			regularDecisions ();
 		}
 	}	

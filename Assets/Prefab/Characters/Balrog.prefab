@@ -532,9 +532,8 @@ MonoBehaviour:
   health: 1050
   landingDust: {fileID: 1229361437117194, guid: dd02c7bc3b3a1e247a245fc24dd5b1a9,
     type: 2}
-  superEffect: {fileID: 1460280132473584, guid: cf70789e49981334bb73ba7342474df2,
-    type: 2}
-  demonSpark: {fileID: 1151641010263658, guid: 44cf356800d1fa64595be0e49ea242e4, type: 2}
+  superEffect: {fileID: 100000, guid: 3d4907e6bd39f474b8fd8220920e65c4, type: 2}
+  demonSpark: {fileID: 100000, guid: f06e78284f831ae469c74624ab5d513b, type: 2}
   KOsound: {fileID: 8300000, guid: 8081004046f519f449ee99cccfa87b1f, type: 3}
   fellSound: {fileID: 8300000, guid: 44d2a74b3d0ed2746ba8492917f7564b, type: 3}
   akumaDemonSound: {fileID: 8300000, guid: 1092c471819d73a4493f1829b3f9b2c9, type: 3}

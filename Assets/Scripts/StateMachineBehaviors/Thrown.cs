@@ -16,7 +16,8 @@ public class Thrown : StateMachineBehaviour {
 		animator.SetBool("isMidAirHit", false);		
 		animator.SetBool("isThrown", true);
 		animator.SetInteger("hyakkishuAttackType", 0);
-		animator.ResetTrigger("shoryukenInputed");	
+        animator.ResetTrigger("headStompHit");
+        animator.ResetTrigger("shoryukenInputed");	
 		animator.ResetTrigger("reverseShoryukenInputed");	
 		animator.ResetTrigger("hadoukenInputed");
         animator.ResetTrigger("upperTigerShotInputed");

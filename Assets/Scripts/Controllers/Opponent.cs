@@ -12,7 +12,7 @@ public class Opponent : MonoBehaviour {
     public GameObject mugShotObject;
 	public GameObject[] streetFighterCharacters;
 	public Text nameText;
-	public Sprite kenMugShot, feiLongMugShot, balrogMugShot, akumaMugShot, sagatMugShot;
+	public Sprite kenMugShot, feiLongMugShot, balrogMugShot, akumaMugShot, sagatMugShot, mbisonMugShot;
 	public bool isAI, doInitiateCharacter;
 	
 	private Animator animator;
@@ -33,6 +33,7 @@ public class Opponent : MonoBehaviour {
 	private BalrogAI balrogAI;
 	private AkumaAI akumaAI;
 	private SagatAI sagatAI;
+	private MBisonAI mbisonAI;
 	
 	private bool pressedForward, pressedBackward, pressedCrouch, introPlayed;
 	private float distance, distanceFromPlayer;
@@ -86,6 +87,11 @@ public class Opponent : MonoBehaviour {
         {
 			sagatAI = GetComponentInChildren<SagatAI>();
             CharacterInitialize(sagatMugShot, "Sagat", sagatAI.Behaviors);
+        }
+        else if (character.GetComponent<MBison>() != null)
+        {
+			mbisonAI = GetComponentInChildren<MBisonAI>();
+            CharacterInitialize(mbisonMugShot, "M Bison", mbisonAI.Behaviors);
         }
 
         projectileP2Parent = GameObject.Find("ProjectileP2Parent");
@@ -298,6 +304,13 @@ public class Opponent : MonoBehaviour {
 				if (animator.GetBool ("isAttacking") == false) {
 					character.AttackState ();
 					animator.Play ("SagatTigerCannon", 0);
+				}
+				animator.SetTrigger ("motionSuperInputed");
+			}
+			else if (character.GetComponent<MBison>() != null){		
+				if (animator.GetBool ("isAttacking") == false) {
+					character.AttackState ();
+					animator.Play ("MBisonKneePressNightmare", 0);
 				}
 				animator.SetTrigger ("motionSuperInputed");
 			}

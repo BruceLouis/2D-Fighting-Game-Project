@@ -18,7 +18,8 @@ public class KnockDown : StateMachineBehaviour {
         animator.SetBool("isLanding", false);
         animator.SetFloat("hitStunTimer", 0.0f);
 		animator.SetInteger("hyakkishuAttackType", 0);
-		animator.ResetTrigger("shoryukenInputed");	
+        animator.ResetTrigger("headStompHit");
+        animator.ResetTrigger("shoryukenInputed");	
 		animator.ResetTrigger("reverseShoryukenInputed");	
 		animator.ResetTrigger("hadoukenInputed");
         animator.ResetTrigger("upperTigerShotInputed");

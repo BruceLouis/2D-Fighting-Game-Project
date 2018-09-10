@@ -19,6 +19,7 @@ public class Idle : StateMachineBehaviour {
 		animator.SetBool("isMidAirHit", false);			
 		animator.SetBool("hasntHit", true);
 		animator.SetInteger("hyakkishuAttackType", 0);
+		animator.ResetTrigger("headStompHit");	
 		animator.ResetTrigger("shoryukenInputed");	
 		animator.ResetTrigger("reverseShoryukenInputed");	
 		animator.ResetTrigger("hadoukenInputed");	

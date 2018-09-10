@@ -105,6 +105,7 @@ GameObject:
   - component: {fileID: 95828152868057200}
   - component: {fileID: 114762640520210318}
   - component: {fileID: 114826051747726552}
+  - component: {fileID: 114570221827957274}
   m_Layer: 8
   m_Name: M Bison
   m_TagString: Untagged
@@ -550,6 +551,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60825f62cf533044b84564c909c1392f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114570221827957274
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1434858866864076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 563333859b1495d49848e4424fad60f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114748162190692786
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -589,10 +601,9 @@ MonoBehaviour:
   health: 1050
   landingDust: {fileID: 1229361437117194, guid: dd02c7bc3b3a1e247a245fc24dd5b1a9,
     type: 2}
-  superEffect: {fileID: 1460280132473584, guid: cf70789e49981334bb73ba7342474df2,
-    type: 2}
-  demonSpark: {fileID: 1151641010263658, guid: 44cf356800d1fa64595be0e49ea242e4, type: 2}
-  KOsound: {fileID: 8300000, guid: 63b5cce1c571eaf41b335b81941cb5b7, type: 3}
+  superEffect: {fileID: 100000, guid: 3d4907e6bd39f474b8fd8220920e65c4, type: 2}
+  demonSpark: {fileID: 100000, guid: f06e78284f831ae469c74624ab5d513b, type: 2}
+  KOsound: {fileID: 8300000, guid: 812f6fa1a05c62442af218e7bc907d18, type: 3}
   fellSound: {fileID: 8300000, guid: 44d2a74b3d0ed2746ba8492917f7564b, type: 3}
   akumaDemonSound: {fileID: 8300000, guid: 1092c471819d73a4493f1829b3f9b2c9, type: 3}
   akumaDemonKOSound: {fileID: 8300000, guid: f4c55cbba24d72446ab5fc76c0bf9e0e, type: 3}
@@ -614,6 +625,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b6e25fff4989db4488f1cfdae967e9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  superStartSound: {fileID: 8300000, guid: 7a43afcfdeecfef4ea4b4edc4f122cfe, type: 3}
+  psychoCrusherSound: {fileID: 8300000, guid: b6eb687c92043f042b134456efc47c83, type: 3}
+  psychoCrusherEffectSound: {fileID: 8300000, guid: bc29ba411b9e00840b2d292033a7a6b6,
+    type: 3}
+  psychoSound: {fileID: 8300000, guid: f9dfae5e7b2f4cc479458b5b0519b52d, type: 3}
+  reverseSound: {fileID: 8300000, guid: 42614826a9562ac43928d01b76738e7b, type: 3}
+  scissorKicksSound: {fileID: 8300000, guid: f0477d51ba44d1043b3575bfac04789d, type: 3}
+  headStompLaunchSound: {fileID: 8300000, guid: 6fd3a17807ab25a4e98e7dfa003c2f2e,
+    type: 3}
+  headStompHitSound: {fileID: 8300000, guid: 12bbadb3a58b30e428d32e79fbe2085b, type: 3}
+  somerSaultSound: {fileID: 8300000, guid: 19682f7ed3e0f414391419f3f639a6cd, type: 3}
+  slideSound: {fileID: 8300000, guid: 0dcb15e4fc4427647ad61f854f43080f, type: 3}
+  headStompGravity: 1.75
 --- !u!212 &212228040159670020
 SpriteRenderer:
   m_ObjectHideFlags: 1
