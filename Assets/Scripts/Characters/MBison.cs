@@ -236,7 +236,10 @@ public class MBison : MonoBehaviour {
          *  on demand, rather than give magic numbers to the angles based on distance.
          */
         
-        float angle;
+        float angle, distance, xVelocity, yVelocity;
+        float gravity = Physics2D.gravity.magnitude * scale;
+        float timeTravelled = 0.85f;
+
         Vector3 targetPosition = GetComponentInParent<SharedProperties>().GetPositionOfOtherFighter();
 
         // Distance along the y axis between objects
@@ -245,31 +248,16 @@ public class MBison : MonoBehaviour {
         Vector2 planarTarget = new Vector2(targetPosition.x, 0);
         Vector2 planarPostion = new Vector2(transform.position.x, 0);
 
-        float distance = Vector3.Distance(planarTarget, planarPostion) * multiplier;
+        distance = Vector3.Distance(planarTarget, planarPostion) * multiplier;
+        
+        xVelocity = distance / timeTravelled;
+        yVelocity = 0.5f * gravity * Mathf.Pow(timeTravelled, 2f);
 
-        if (Mathf.Abs(distance) < 1f)
-        {
-            angle = 80f * Mathf.Deg2Rad;
-        }
-        else if (Mathf.Abs(distance) >= 1f && Mathf.Abs(distance) < 2f)
-        {
-            angle = 75f * Mathf.Deg2Rad;
-        }
-        else if (Mathf.Abs(distance) >= 2f && Mathf.Abs(distance) < 3f)
-        {
-            angle = 65f * Mathf.Deg2Rad;
-        }
-        else
-        {
-            angle = 55f * Mathf.Deg2Rad;
-        }
+        angle = Mathf.Atan(yVelocity / xVelocity);
 
-        float gravity = Physics2D.gravity.magnitude * scale;
-
-
-        float initialVelocity = (1 / Mathf.Cos(angle)) * Mathf.Sqrt((0.5f * gravity * Mathf.Pow(distance, 2)) / (distance * Mathf.Tan(angle))); 
+        float initialVelocity = (1 / Mathf.Cos(angle)) * Mathf.Sqrt((0.5f * gravity * Mathf.Pow(distance, 2)) / (distance * Mathf.Tan(angle)));
         Vector2 targetVelocity = new Vector2(initialVelocity * Mathf.Cos(angle), initialVelocity * Mathf.Sin(angle));
-
+        
         // Rotate our velocity to match the direction between the two objects
         float angleBetweenObjects = Vector2.Angle(Vector2.right, planarTarget - planarPostion);
         Vector3 finalVelocity = Quaternion.AngleAxis(angleBetweenObjects, Vector2.up) * targetVelocity;
