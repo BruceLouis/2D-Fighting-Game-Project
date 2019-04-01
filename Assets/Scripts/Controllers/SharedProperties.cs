@@ -8,6 +8,8 @@ public class SharedProperties : MonoBehaviour {
 	
 	public delegate void RegularDecisions();
 	public delegate void AIAntiAirs();
+
+	public delegate void DecisionTree(List<string> decisionBox, int minDiv, int maxDiv);
 	
 	private Player player;
 	private Opponent opponent;
@@ -77,6 +79,21 @@ public class SharedProperties : MonoBehaviour {
 		}
 		else{
 			regularDecisions ();
+		}
+	}	
+
+	public void RefinedAIAntiAirDecision (
+        int frequency, DecisionTree decisionTree,    
+        List<string> antiAirDecisionBox, int AAminDiv, int AAmaxDiv,
+        List<string> regDecisionBox, int regMinDiv, int regMaxDiv)
+    {		
+		int willAntiAir = Random.Range (0, 100);
+		bool doesAIAntiAir = DoesAIAntiAir(willAntiAir, frequency);		
+		if (doesAIAntiAir){
+            decisionTree  (antiAirDecisionBox, AAminDiv, AAmaxDiv);
+		}
+		else{
+			decisionTree (regDecisionBox, regMinDiv, regMaxDiv);
 		}
 	}	
 

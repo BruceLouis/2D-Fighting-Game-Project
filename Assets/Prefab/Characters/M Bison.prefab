@@ -562,6 +562,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 563333859b1495d49848e4424fad60f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  decisionTimer: 40
+  antiAirTimer: 0
 --- !u!114 &114748162190692786
 MonoBehaviour:
   m_ObjectHideFlags: 1

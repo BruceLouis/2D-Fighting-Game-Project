@@ -164,6 +164,20 @@ public class AIControls : MonoBehaviour {
 			character.CharacterRoundhouse();
 		}
 	}
+
+	public void AIJumpStrong(){
+		if (GetConditionsAirborneAttack()) {					
+			character.AttackState();
+			character.CharacterStrong();
+		}
+	}
+	
+	public void AIJumpForwardAttack(){
+		if (GetConditionsAirborneAttack()){					
+			character.AttackState();
+			character.CharacterForward();
+		}
+	}
 	
 	public void AILowForward(){
 		if (GetConditions()){	
