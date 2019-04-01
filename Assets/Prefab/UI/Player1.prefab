@@ -1,21 +1,11 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &100100000
-Prefab:
-  m_ObjectHideFlags: 1
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications: []
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1179629423511966}
-  m_IsPrefabAsset: 1
 --- !u!1 &1179629423511966
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4654944007310282}
@@ -33,9 +23,10 @@ GameObject:
   m_IsActive: 1
 --- !u!4 &4654944007310282
 Transform:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1179629423511966}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.5, y: 0, z: 0}
@@ -46,9 +37,10 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &114008331208910594
 MonoBehaviour:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1179629423511966}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -57,11 +49,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mugShotObject: {fileID: 0}
   streetFighterCharacters:
-  - {fileID: 1311962846860956, guid: a54394606edf4464e9da4297728e604a, type: 2}
-  - {fileID: 1313107464066380, guid: e03ec49ecee8e8b4cac1c2deb0233a40, type: 2}
-  - {fileID: 1647165389008910, guid: 58480a3eded57ba49861dd4628e30675, type: 2}
-  - {fileID: 1388078500905076, guid: f9293da83d08c084ba426b68f315fd3c, type: 2}
-  - {fileID: 1423683084757912, guid: 24075f5c2142cff4e9e5b1fc55d150f0, type: 2}
+  - {fileID: 1311962846860956, guid: a54394606edf4464e9da4297728e604a, type: 3}
+  - {fileID: 1313107464066380, guid: e03ec49ecee8e8b4cac1c2deb0233a40, type: 3}
+  - {fileID: 1647165389008910, guid: 58480a3eded57ba49861dd4628e30675, type: 3}
+  - {fileID: 1388078500905076, guid: f9293da83d08c084ba426b68f315fd3c, type: 3}
+  - {fileID: 1423683084757912, guid: 24075f5c2142cff4e9e5b1fc55d150f0, type: 3}
+  - {fileID: 1434858866864076, guid: 060d1259da34a5a42b99777e1fa49b48, type: 3}
   nameText: {fileID: 0}
   kenMugShot: {fileID: 21300000, guid: 57b925a7041ae334ba11c7e6239d2d67, type: 3}
   feiLongMugShot: {fileID: 21300000, guid: e7cb0cb8d48489b4ebe6f7e8488ea3a8, type: 3}
@@ -71,48 +64,12 @@ MonoBehaviour:
   mbisonMugShot: {fileID: 21300000, guid: 73e4a976f738a6840bd688c18758ab0a, type: 3}
   isAI: 0
   doInitiateCharacter: 1
---- !u!114 &114162688545481180
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1179629423511966}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f713ae485db8c5c40bac930f14a10e3e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  backChargeReached: 60
-  backChargedWindow: 30
-  downChargeReached: 60
-  downChargedWindow: 30
---- !u!114 &114343357549231888
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1179629423511966}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7cc01722d219ad4469a81ac7bd439934, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &114614451169553616
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1179629423511966}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7775ad9d8130394fbb0317e0301a51b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114714675968792412
 MonoBehaviour:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1179629423511966}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -125,3 +82,43 @@ MonoBehaviour:
   reverseShoryukenComboTimer: 20
   shunGokuSatsuComboTimer: 30
   motionSuperComboTimer: 50
+--- !u!114 &114162688545481180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1179629423511966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f713ae485db8c5c40bac930f14a10e3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  backChargeReached: 60
+  backChargedWindow: 30
+  downChargeReached: 60
+  downChargedWindow: 30
+--- !u!114 &114614451169553616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1179629423511966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7775ad9d8130394fbb0317e0301a51b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114343357549231888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1179629423511966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cc01722d219ad4469a81ac7bd439934, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

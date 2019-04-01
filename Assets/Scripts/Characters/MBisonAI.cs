@@ -330,7 +330,7 @@ public class MBisonAI : MonoBehaviour {
         int airFierceInBox = 40;
         int airForwardInBox = 10;
         int airStrongInBox = 10;
-        int bigFatNothingInBox = 75;
+        int bigFatNothingInBox = 150;
 
         int sumInBox = airRoundhouseInBox + airFierceInBox + airForwardInBox + airStrongInBox + bigFatNothingInBox;
 
@@ -388,7 +388,7 @@ public class MBisonAI : MonoBehaviour {
         InsertNewAction(otherFighterBlockedDecisions, "SpecialCancelPsychoCrusher", specialCancelPsychoCrusherInBox);
         InsertNewAction(otherFighterBlockedDecisions, "SpecialCancelHeadStomp", specialCancelHeadStompInBox);
         InsertNewAction(otherFighterBlockedDecisions, "SpecialCancelDevilsReverse", specialCancelDevilsReverseInBox);
-        InsertNewAction(otherFighterBlockedDecisions, "Super", superInBox);
+        InsertNewAction(otherFighterBlockedDecisions, "SuperOnBlock", superInBox);
     }
 
     void OtherFighterGotHitDecisionTrees()
@@ -417,7 +417,7 @@ public class MBisonAI : MonoBehaviour {
         InsertNewAction(otherFighterGotHitDecisions, "LowForward", lowForwardInBox);
         InsertNewAction(otherFighterGotHitDecisions, "SpecialCancelScissorKick", specialCancelScissorKickInBox);
         InsertNewAction(otherFighterGotHitDecisions, "SpecialCancelPsychoCrusher", specialCancelPsychoCrusherInBox);
-        InsertNewAction(otherFighterGotHitDecisions, "Super", superInBox);
+        InsertNewAction(otherFighterGotHitDecisions, "SuperOnHit", superInBox);
     }
 
     void KnockDownDecisionTrees()
@@ -677,7 +677,7 @@ public class MBisonAI : MonoBehaviour {
         }
         else if (decisionBox[decision] == "SpecialCancelPsychoCrusher")
         {
-            if (chargeSystem.GetDownCharged())
+            if (chargeSystem.GetBackCharged())
             {
                 AIPsychoCrushers();
                 AIcontrols.AICharges();
@@ -734,6 +734,36 @@ public class MBisonAI : MonoBehaviour {
             else
             {
                 AIcontrols.AICrouch();
+                AIcontrols.AICharges();
+                character.SetBackPressed(true);
+            }
+        }
+        else if (decisionBox[decision] == "SuperOnBlock")
+        {
+            if (character.GetSuper >= 100f)
+            {
+                AIKneePressNightmares();
+                AIcontrols.AICharges();
+                character.SetBackPressed(true);
+            }
+            else
+            {
+                AIcontrols.AIForward(3);
+                AIcontrols.AICharges();
+                character.SetBackPressed(true);
+            }
+        }
+        else if (decisionBox[decision] == "SuperOnHit")
+        {
+            if (character.GetSuper >= 100f)
+            {
+                AIKneePressNightmares();
+                AIcontrols.AICharges();
+                character.SetBackPressed(true);
+            }
+            else
+            {
+                AIcontrols.AIForward(10);
                 AIcontrols.AICharges();
                 character.SetBackPressed(true);
             }
@@ -939,7 +969,6 @@ public class MBisonAI : MonoBehaviour {
     private int NormalizedDifference(int beneficaryDecision, int sum)
     {
         int normalizedDifference = DECISION_MAX - sum;
-        Debug.Log(normalizedDifference);
 
         if (normalizedDifference != 0)
         {

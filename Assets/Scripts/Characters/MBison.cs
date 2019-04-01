@@ -204,7 +204,10 @@ public class MBison : MonoBehaviour {
          *   the 1 in the parameter is multiplier. for the devil's reverse, the multiplier would be 1.5
          */
 
-        CannonBallTrajectory(1f, headStompGravity);
+        if (!animator.GetBool("isInHitStun") && !animator.GetBool("isKnockedDown"))
+        {
+            CannonBallTrajectory(1f, headStompGravity);
+        }
         switch (animator.GetInteger("headStompKickType"))
         {
             case 0:
@@ -226,8 +229,11 @@ public class MBison : MonoBehaviour {
          *   the 1 in the parameter is multiplier. for the devil's reverse, the multiplier would be 1.5
          */
 
-        CannonBallTrajectory(1.5f, headStompGravity);
-        direction = character.side == Character.Side.P1 ? Vector2.right : Vector2.left;
+        if (!animator.GetBool("isInHitStun") && !animator.GetBool("isKnockedDown"))
+        {
+            CannonBallTrajectory(1.5f, headStompGravity);
+            direction = character.side == Character.Side.P1 ? Vector2.right : Vector2.left;
+        }
     }
 
     void CannonBallTrajectory(float multiplier, float scale)
@@ -268,19 +274,26 @@ public class MBison : MonoBehaviour {
 
     void MBisonHeadStompHit()
     {
-        character.TakeOffVelocity(0f, 0f);
+        if (!animator.GetBool("isInHitStun") && !animator.GetBool("isKnockedDown"))
+        {
+            character.TakeOffVelocity(0f, 0f);
+        }
     }
 
     void MBisonReverse(int reverseType)
     {
         character.MoveProperties(25f, 15f, 2f, 40f, 1, 0, 1, 4f);
-        if (reverseType <= 0)
+
+        if (!animator.GetBool("isInHitStun") && !animator.GetBool("isKnockedDown"))
         {
-            character.TakeOffVelocity(-1.5f, 4f);
-        }
-        else
-        {
-            character.TakeOffVelocity(-1.5f, 3f);
+            if (reverseType <= 0)
+            {
+                character.TakeOffVelocity(-1.5f, 4f);
+            }
+            else
+            {
+                character.TakeOffVelocity(-1.5f, 3f);
+            }
         }
     }
     
