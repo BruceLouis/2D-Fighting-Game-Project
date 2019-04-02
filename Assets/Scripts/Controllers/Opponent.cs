@@ -321,17 +321,22 @@ public class Opponent : MonoBehaviour {
             }
 
         }	
-		if (Input.GetKeyDown(KeyCode.Alpha4)){
-			if (character.GetComponent<Ken>() != null){
-				if (animator.GetBool("isAttacking") == false && animator.GetBool("isAirborne") == false){
+		if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+			if (character.GetComponent<Ken>() != null)
+            {
+				if (animator.GetBool("isAttacking") == false && animator.GetBool("isAirborne") == false)
+                {
 					animator.Play("KenHurricaneKickLiftOff",0);
 					character.AttackState();
 				}
 				animator.SetTrigger("hurricaneKickInputed");
 				animator.SetInteger("hurricaneKickType", 2);
 			}
-			else if (character.GetComponent<FeiLong>() != null){
-				if (animator.GetBool("isAttacking") == false){
+			else if (character.GetComponent<FeiLong>() != null)
+            {
+				if (animator.GetBool("isAttacking") == false)
+                {
 					character.AttackState();
 					animator.Play("FeiLongRekkaKun",0);
 				}
@@ -356,27 +361,34 @@ public class Opponent : MonoBehaviour {
 			
 			if (animator.GetBool("isInHitStun") == false && animator.GetBool("isInBlockStun") == false 
 			    && animator.GetBool("isLiftingOff") == false && animator.GetBool("isAirborne") == false 
-			    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isMidAirRecovering") == false){
-				if (character.GetComponent<Ken>() != null){
+			    && animator.GetBool("isKnockedDown") == false && animator.GetBool("isMidAirRecovering") == false)
+            {
+				if (character.GetComponent<Ken>() != null)
+                {
 				    animator.SetTrigger("shoryukenInputed");			
-					if (animator.GetBool("isAttacking") == false){
+					if (animator.GetBool("isAttacking") == false)
+                    {
 						character.AttackState();
 						animator.Play("KenShoryukenFierce",0);
 					}
 					animator.SetTrigger("shoryukenInputed");
 					animator.SetInteger("shoryukenPunchType", 2);
 				}
-				else if (character.GetComponent<FeiLong>() != null){
-					if (animator.GetBool("isAttacking") == false){
+				else if (character.GetComponent<FeiLong>() != null)
+                {
+					if (animator.GetBool("isAttacking") == false)
+                    {
 						character.AttackState();
 						animator.Play("FeiLongShienKyakuShort",0);
 					}
 					animator.SetTrigger("reverseShoryukenInputed");
 					animator.SetInteger("shienKyakuKickType", 0);
 				}
-				else if (character.GetComponent<Akuma>() != null){
+				else if (character.GetComponent<Akuma>() != null)
+                {
 					animator.SetTrigger("shoryukenInputed");			
-					if (animator.GetBool("isAttacking") == false){
+					if (animator.GetBool("isAttacking") == false)
+                    {
 						character.AttackState();
 						animator.Play("AkumaShoryukenFierce",0);
 					}
@@ -390,6 +402,9 @@ public class Opponent : MonoBehaviour {
                         character.AttackState();
                         animator.Play("MBisonHeadStomp", 0);
                     }
+                    animator.SetTrigger("headStompInputed");
+                    animator.SetInteger("headStompKickType", 2);
+                    animator.SetTrigger("somerSaultInputed");
                 }
             }
 		}

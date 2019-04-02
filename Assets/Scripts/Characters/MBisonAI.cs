@@ -78,7 +78,7 @@ public class MBisonAI : MonoBehaviour {
             {
                 if (animator.GetBool("reverseActive") == true || animator.GetBool("devilReverseActive") == true)
                 {
-                    animator.SetTrigger("somerSaultInputed");
+                    SomerSaultDecisions();
                 }
                 else
                 {
@@ -843,6 +843,15 @@ public class MBisonAI : MonoBehaviour {
                 chargeSystem.ResetDownChargedProperties();
                 chargeSystem.ResetDownCharged();
             }
+        }
+    }
+
+    void SomerSaultDecisions()
+    {
+        int somerSaultDecision = Random.Range(0, 100);
+        if (somerSaultDecision < 3)
+        {
+            animator.SetTrigger("somerSaultInputed");
         }
     }
 
