@@ -6,6 +6,9 @@ public class LevelManager : MonoBehaviour {
 
 	public void LoadLevel(string name){
 		Debug.Log ("New Level load: " + name);
-		SceneManager.LoadScene(name);
+        TimeControl.paused = false;
+        TimeControl.slowDown = false;
+        TimeControl.slowDownTimer = 0f;
+        SceneManager.LoadScene(name);
 	}
 }

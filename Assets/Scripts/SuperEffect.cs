@@ -5,9 +5,11 @@ using UnityEngine;
 public class SuperEffect : MonoBehaviour {
 
 	ParticleSystem theParticleSystem;
+    ParticleSystem[] childrenParticleSystems;
 	
 	void Start () {
 		theParticleSystem = GetComponent<ParticleSystem>();
+        childrenParticleSystems = GetComponentsInChildren<ParticleSystem>();
 	}
 
 	// Update is called once per frame
@@ -20,5 +22,24 @@ public class SuperEffect : MonoBehaviour {
 				TimeControl.inSuperStartup[1] = false;
 			}			
 		}
+        if (theParticleSystem.isEmitting)
+        {
+            if (TimeControl.paused)
+            {
+                foreach (ParticleSystem item in childrenParticleSystems)
+                {
+                    ParticleSystem.MainModule itemMainModule = item.main;
+                    itemMainModule.useUnscaledTime = false;
+                }
+            }
+            else
+            {
+                foreach (ParticleSystem item in childrenParticleSystems)
+                {
+                    ParticleSystem.MainModule itemMainModule = item.main;
+                    itemMainModule.useUnscaledTime = true;
+                }
+            }
+        }
 	}
 }

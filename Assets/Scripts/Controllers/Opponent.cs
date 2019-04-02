@@ -109,7 +109,7 @@ public class Opponent : MonoBehaviour {
 			animator.Play("IntroPose",0);
 			introPlayed = true;
 		}			
-		else if (TimeControl.gameState == TimeControl.GameState.fight){
+		else if (TimeControl.gameState == TimeControl.GameState.fight && !TimeControl.paused){
 			
 			sharedProperties.IsThrown(animator, playerCharacter, character);		
 			

@@ -72,10 +72,10 @@ public class MBison : MonoBehaviour {
     
     void MBisonSweepStartUp(float amountTimeTravelled)
     {
-        amountTimeTravelledTimer = amountTimeTravelled;
-        animator.SetBool("isSweeping", true);
         if (!animator.GetBool("isInHitStun") && !animator.GetBool("isKnockedDown"))
         {
+            amountTimeTravelledTimer = amountTimeTravelled;
+            animator.SetBool("isSweeping", true);
             character.TakeOffVelocity(2.5f, 0f);
         }
     }

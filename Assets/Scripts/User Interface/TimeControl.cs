@@ -15,7 +15,7 @@ using UnityEngine;
 
 public class TimeControl : MonoBehaviour {
 
-	public static bool slowDown, gettingDemoned, demonKO, superKO;
+	public static bool slowDown, gettingDemoned, demonKO, superKO, paused;
 	public static bool[] inSuperStartup;
 	public static float slowDownTimer;	
 	public static string winner;
@@ -124,14 +124,18 @@ public class TimeControl : MonoBehaviour {
 			shunGokuSatsuPanel.SetActive(false);
 		}
 		
-		if (slowDown && !inSuperStartup[0] && !inSuperStartup[1]){
+		if (slowDown && !inSuperStartup[0] && !inSuperStartup[1] && !paused){
 			Time.timeScale = 0.5f;
 			slowDownTimer--;
 		}
-		if (slowDownTimer <= 0 && !inSuperStartup[0] && !inSuperStartup[1] && !demonKO && !superKO){
+		if (slowDownTimer <= 0 && !inSuperStartup[0] && !inSuperStartup[1] && !demonKO && !superKO && !paused){
 			slowDown = false;
 			Time.timeScale = 1f;
 		}		
+        if (paused)
+        {
+            Time.timeScale = 0f;
+        }
 	}
 
 	IEnumerator SuperPauseP1(){
