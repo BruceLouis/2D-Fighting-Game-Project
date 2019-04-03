@@ -27,4 +27,9 @@ public class PauseMenu : MonoBehaviour
         TimeControl.paused = false;
         menu.SetActive(false);
     }
+
+    public void MainMenuClicked()
+    {
+        FindObjectOfType<CharacterChoice>().GetMainMenuClicked = true;
+    }
 }

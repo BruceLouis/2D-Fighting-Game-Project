@@ -4,17 +4,32 @@ using UnityEngine;
 
 public class CharacterChoice : MonoBehaviour {
 
-	private int charChoice; 
+	private int charChoice;
+    private bool mainMenuClicked = false;
 	
-	void Awake(){
+	void Awake()
+    {
 		GameObject.DontDestroyOnLoad(gameObject);
 	}
-	
-	public void ChooseCharacter(int chooseChar){
+
+    void Update()
+    {
+        if (mainMenuClicked)
+        {
+            Destroy(gameObject);
+        }            
+    }
+
+    public void ChooseCharacter(int chooseChar){
 		charChoice = chooseChar;
 	}
 	
 	public int GetChosenChar(){
 		return charChoice;
 	}	
+
+    public bool GetMainMenuClicked {
+        get { return mainMenuClicked; }
+        set { mainMenuClicked = value; }
+    }
 }
