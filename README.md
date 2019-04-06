@@ -1,7 +1,7 @@
 ﻿# 2D Fighting Game Project
 
 2D fighting game
-http://www.sharemygame.com/share/dec0eec5-b863-4d2d-b19c-9d507c457772
+https://brucelouis.itch.io/street-fighter
 
 Every sprite, every background, every sound effects implemented into this game is owned by Capcom. The music is Barbarians by Johannes Bornlöf
 As of now this is a Street Fighter Clone. It’s a pure hobby project where I would implement my favorites from 2D fighting games. Right now there are 5 playable characters. 
