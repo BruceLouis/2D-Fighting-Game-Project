@@ -71,23 +71,20 @@ public class Balrog : MonoBehaviour {
 		
 	void DashRushStartUp(float distanceTravel){
 		Vector3 travelDistance;
-		if (character.side == Character.Side.P1){
-			travelDistance = new Vector3 (distanceTravel, 0f, 0f);
-            if (!animator.GetBool("isInHitStun") && !animator.GetBool("isKnockedDown"))
-            {
+        if (!animator.GetBool("isInHitStun") && !animator.GetBool("isKnockedDown"))
+        {
+            if (character.side == Character.Side.P1){
+			    travelDistance = new Vector3 (distanceTravel, 0f, 0f);
                 physicsbody.velocity = new Vector2(4f, 0f);
-            }
-		}
-		else{
-			travelDistance = new Vector3 (-distanceTravel, 0f, 0f);
-            if (!animator.GetBool("isInHitStun") && !animator.GetBool("isKnockedDown"))
-            {
+		    }
+		    else{
+			    travelDistance = new Vector3 (-distanceTravel, 0f, 0f);
 			    physicsbody.velocity = new Vector2 (-4f,0f);
             }
-		}
-		startPos = transform.position;
-		endPos = transform.position + travelDistance;
-		animator.SetBool("isDashRushTravelling", true);
+            startPos = transform.position;
+            endPos = transform.position + travelDistance;
+            animator.SetBool("isDashRushTravelling", true);
+        }
 	}	
 	
 	void DashRushGotThere(){

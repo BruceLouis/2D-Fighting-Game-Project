@@ -30,13 +30,13 @@ public class MBison : MonoBehaviour {
         kneePressNightmareActive = animator.GetBool("superActive");
         headStompActive = animator.GetBool("headStompActive");
         devilReverseActive = animator.GetBool("devilReverseActive");
+        amountTimeTravelledTimer--;
 
         if (animator.GetBool("isSweeping"))
         {
             character.AtTheCorner();
-            amountTimeTravelledTimer--;
             physicsbody.isKinematic = true;
-            if (amountTimeTravelledTimer <= 0f)
+            if (amountTimeTravelledTimer <= 0f || animator.GetBool("isInHitStun") || animator.GetBool("isKnockedDown"))
             {
                 animator.SetBool("isSweeping", false);
             }
