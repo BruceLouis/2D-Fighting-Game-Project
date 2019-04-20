@@ -21,7 +21,7 @@ public class Balrog : MonoBehaviour {
 		physicsbody = GetComponent<Rigidbody2D>();			
 	}
 	
-	void Update () {
+	void FixedUpdate () {
         distanceFromOtherGuy = GetComponentInParent<SharedProperties>().GetAbDistanceFromOtherFighter();
         if (animator.GetBool("isDashRushTravelling") && !animator.GetBool("isInHitStun") && !animator.GetBool("isKnockedDown"))
         {

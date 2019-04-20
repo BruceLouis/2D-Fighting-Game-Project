@@ -118,7 +118,8 @@ public class FeiLong : MonoBehaviour {
 	}
 	
 	public void FeiLongRekkaKen(){
-		if (animator.GetBool("isLiftingOff") == false){	
+		if (animator.GetBool("isLiftingOff") == false && !animator.GetBool("isInHitStun") && !animator.GetBool("isKnockedDown"))
+        {	
 			switch(animator.GetInteger("rekkaPunchType")){
 				case 0:
 					character.MoveProperties(40f, 30f, 15f, 20f, 2, 5, 1, 4f);
@@ -138,7 +139,8 @@ public class FeiLong : MonoBehaviour {
 	}	
 	
 	public void FeiLongRekkaKenFinal(){
-		if (animator.GetBool("isLiftingOff") == false){	
+		if (animator.GetBool("isLiftingOff") == false && !animator.GetBool("isInHitStun") && !animator.GetBool("isKnockedDown"))
+        {	
 			switch(animator.GetInteger("rekkaPunchType")){
 			 	case 0:
 					character.MoveProperties(40f, 20f, 15f, 35f, 2, 2, 2, 4.5f);
