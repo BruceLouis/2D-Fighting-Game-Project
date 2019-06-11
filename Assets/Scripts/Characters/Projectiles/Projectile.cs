@@ -142,8 +142,8 @@ public class Projectile : MonoBehaviour
             if (hurtCharAnimator.GetBool("isInHitStun"))
             {
                 comboCounter.GetComboCountP1++;
-                comboCounter.GetStartTimer = false;
-                comboCounter.ResetComboFinishedTimer();
+                comboCounter.GetStartTimerP1 = false;
+                comboCounter.ResetComboFinishedTimerP1();
             }
         }
         else if (gameObject.tag == "Player2")
@@ -151,8 +151,8 @@ public class Projectile : MonoBehaviour
             if (hurtCharAnimator.GetBool("isInHitStun"))
             {
                 comboCounter.GetComboCountP2++;
-                comboCounter.GetStartTimer = false;
-                comboCounter.ResetComboFinishedTimer();
+                comboCounter.GetStartTimerP2 = false;
+                comboCounter.ResetComboFinishedTimerP2();
             }
         }
         if (hurtCharacter.GetHealth() <= 0f)

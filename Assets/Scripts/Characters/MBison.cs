@@ -57,7 +57,11 @@ public class MBison : MonoBehaviour {
         
         if (animator.GetBool("reverseActive"))
         {
-            WindForReverses(3f);
+            WindForReverses(4f);
+        }
+        else if (animator.GetBool("headStompReverseActive"))
+        {
+            WindForReverses(10f);
         }
 
         if (headStompActive || devilReverseActive)
@@ -237,11 +241,7 @@ public class MBison : MonoBehaviour {
     }
 
     void CannonBallTrajectory(float multiplier, float scale)
-    {
-        /*  this could be improved by using time as the known constant instead so that we can calculate the angles
-         *  on demand, rather than give magic numbers to the angles based on distance.
-         */
-        
+    {        
         float angle, distance, xVelocity, yVelocity;
         float gravity = Physics2D.gravity.magnitude * scale;
         float timeTravelled = 0.85f;
@@ -288,7 +288,7 @@ public class MBison : MonoBehaviour {
         {
             if (reverseType <= 0)
             {
-                character.TakeOffVelocity(-1.5f, 4f);
+                character.TakeOffVelocity(-3.5f, 4f);
             }
             else
             {

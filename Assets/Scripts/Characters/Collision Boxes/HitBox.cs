@@ -145,15 +145,15 @@ public class HitBox : MonoBehaviour {
 		if (attacker.gameObject.tag == "Player1"){
 			if (anim.GetBool("isInHitStun")){
 				comboCounter.GetComboCountP1++;		
-				comboCounter.GetStartTimer = false;
-				comboCounter.ResetComboFinishedTimer();
+				comboCounter.GetStartTimerP1 = false;
+				comboCounter.ResetComboFinishedTimerP1();
 			}
 		}
 		else if (attacker.gameObject.tag == "Player2"){
 			if (anim.GetBool("isInHitStun")){
 				comboCounter.GetComboCountP2++;		
-				comboCounter.GetStartTimer = false;	
-				comboCounter.ResetComboFinishedTimer();
+				comboCounter.GetStartTimerP2 = false;	
+				comboCounter.ResetComboFinishedTimerP2();
 			}
 		}
 		float hitStunTimer = attacker.GetEnforceHitStun() * 0.2f;
@@ -231,7 +231,7 @@ public class HitBox : MonoBehaviour {
                 attAnim.SetTrigger("headStompHit");
             }
 		}
-		switch(attacker.GetSparkType()){
+		switch (attacker.GetSparkType()){
 			case Character.SparkType.normal:
 				AudioSource.PlayClipAtPoint(normalHit, transform.position);
 				Instantiate(hitSpark, sparkPlace, Quaternion.identity);

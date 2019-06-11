@@ -146,7 +146,7 @@ public class Player : MonoBehaviour {
 		}		
 		if (!animator.GetBool("isInHitStun")){
 			if (comboCounter.GetComboCountP2 > 1){
-				comboCounter.GetStartTimer = true;
+				comboCounter.GetStartTimerP2 = true;
 			}
 			comboCounter.GetComboCountP2 = 1;
 		}
