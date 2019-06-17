@@ -11,8 +11,8 @@ public class SharedProperties : MonoBehaviour {
 
 	public delegate void DecisionTree(List<string> decisionBox, int minDiv, int maxDiv);
 	
-	private Player player;
-	private Opponent opponent;
+	private Player player, foePlayer;
+	private Opponent opponent, foeOpponent;
 	private Animator animator;
 	private Character character;
 	private bool isKOSoundPlayed, pressedForward, pressedBackward, pressedCrouch; 	
@@ -20,10 +20,12 @@ public class SharedProperties : MonoBehaviour {
 	void Start(){		
 		if (GetComponent<Player>() != null){
 			player = GetComponent<Player>();
+			foeOpponent = FindObjectOfType<Opponent>();
 		}
 		else if (GetComponent<Opponent>() != null){
 			opponent = GetComponent<Opponent>();
-		}
+            foePlayer = FindObjectOfType<Player>();
+        }
 		animator = GetComponentInChildren<Animator>();
 		character = GetComponentInChildren<Character>();
 		isKOSoundPlayed = false;
@@ -128,9 +130,21 @@ public class SharedProperties : MonoBehaviour {
 	public bool GetForwardPressed{
 		get { return pressedForward; }
 		set { pressedForward = value; }
-	}	
-	
-	public float GetAbDistanceFromOtherFighter(){
+    }
+
+    public bool GetOtherFighterAirborne()
+    {
+        if (player != null)
+        {
+            return foeOpponent.GetComponentInChildren<Character>().GetAirborne();
+        }
+        else
+        {
+            return foePlayer.GetComponentInChildren<Character>().GetAirborne();
+        }
+    }
+
+    public float GetAbDistanceFromOtherFighter(){
 		if (opponent != null){
 			return Mathf.Abs(opponent.GetDistance());
 		}
@@ -146,7 +160,7 @@ public class SharedProperties : MonoBehaviour {
 		else {
 			return player.GetDistance();
 		}
-	}		
+	}	    
 
     public Vector3 GetPositionOfOtherFighter()
     {

@@ -215,19 +215,19 @@ public class TimeControl : MonoBehaviour {
 
         CountedDown(threeSound, "3");
 
-        yield return new WaitForSecondsRealtime(1f);
+        yield return new WaitForSeconds(1f);
 
         CountedDown(twoSound, "2");
 
-        yield return new WaitForSecondsRealtime(1f);
+        yield return new WaitForSeconds(1f);
 
         CountedDown(oneSound, "1");
 
-        yield return new WaitForSecondsRealtime(1f);
+        yield return new WaitForSeconds(1f);
 
         CountedDown(fightSound, "FIGHT");
 
-        yield return new WaitForSecondsRealtime(1f);
+        yield return new WaitForSeconds(1f);
 
         gameState = GameState.fight;
         countDownText.text = "";

@@ -8,7 +8,7 @@ public class PauseMenu : MonoBehaviour
 
     public void MenuClicked()
     {
-        if (TimeControl.gameState == TimeControl.GameState.fight)
+        if (TimeControl.gameState != TimeControl.GameState.KOHappened && TimeControl.gameState != TimeControl.GameState.victoryPose)
         {
             TimeControl.paused = !TimeControl.paused;
             if (TimeControl.paused)

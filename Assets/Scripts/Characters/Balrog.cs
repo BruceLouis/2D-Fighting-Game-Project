@@ -71,15 +71,30 @@ public class Balrog : MonoBehaviour {
 		
 	void DashRushStartUp(float distanceTravel){
 		Vector3 travelDistance;
-        if (!animator.GetBool("isInHitStun") && !animator.GetBool("isKnockedDown"))
+        float distanceFromOtherDude = GetComponentInParent<SharedProperties>().GetAbDistanceFromOtherFighter();
+        if (!animator.GetBool("isInHitStun") && !animator.GetBool("isKnockedDown") )
         {
             if (character.side == Character.Side.P1){
 			    travelDistance = new Vector3 (distanceTravel, 0f, 0f);
-                physicsbody.velocity = new Vector2(4f, 0f);
+                if (distanceFromOtherDude <= 0.5f && !GetComponentInParent<SharedProperties>().GetOtherFighterAirborne())
+                {
+                    physicsbody.velocity = new Vector2(1f, 0f);
+                }
+                else
+                {
+                    physicsbody.velocity = new Vector2(4f, 0f);
+                }
 		    }
 		    else{
 			    travelDistance = new Vector3 (-distanceTravel, 0f, 0f);
-			    physicsbody.velocity = new Vector2 (-4f,0f);
+                if (distanceFromOtherDude <= 0.5f && !GetComponentInParent<SharedProperties>().GetOtherFighterAirborne())
+                {
+                    physicsbody.velocity = new Vector2(-1f, 0f);
+                }
+                else
+                {
+                    physicsbody.velocity = new Vector2(-4f, 0f);
+                }
             }
             startPos = transform.position;
             endPos = transform.position + travelDistance;
