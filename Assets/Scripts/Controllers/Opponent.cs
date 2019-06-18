@@ -202,18 +202,26 @@ public class Opponent : MonoBehaviour {
 		if (Input.GetKey(KeyCode.Alpha2)){
 			if (character.side == Character.Side.P1){
 				pressedForward = true;
-			}
+                character.transform.Translate(Vector3.right * character.GetWalkSpeed() * Time.deltaTime);
+                animator.SetBool("isWalkingForward", true);
+            }
 			else{
 				pressedBackward = true;
-			}
+                character.transform.Translate(Vector3.left * character.GetWalkSpeed() * Time.deltaTime);
+                animator.SetBool("isWalkingBackward", true);
+            }
 		}
 		if (Input.GetKey(KeyCode.Alpha1)){
 			if (character.side == Character.Side.P2){
 				pressedForward = true;
-			}
+                character.transform.Translate(Vector3.left * character.GetWalkSpeed() * Time.deltaTime);
+                animator.SetBool("isWalkingForward", true);
+            }
 			else{
 				pressedBackward = true;
-			}
+                character.transform.Translate(Vector3.right * character.GetWalkSpeed() * Time.deltaTime);
+                animator.SetBool("isWalkingBackward", true);
+            }
 		}
 		if (Input.GetKeyUp(KeyCode.Alpha2)){
 			if (character.side == Character.Side.P1){

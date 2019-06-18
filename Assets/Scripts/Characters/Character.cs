@@ -39,7 +39,7 @@ public class Character : MonoBehaviour {
 					accumulateSuper, super, leftEdgeDistance, rightEdgeDistance;
 	
 	private bool 	backPressed, airborne, midAirRecovering, didntHit, changePosition,
-					isHitStunned, isBlockStunned, isKnockDown, isThrown, isKO, isRecoveryDirectionRight;
+					isHitStunned, isBlockStunned, isKnockDown, isThrown, isKO;
     		
 	void Start(){
 		hitBox = GetComponentInChildren<HitBox>();
@@ -318,16 +318,11 @@ public class Character : MonoBehaviour {
 		animator.SetBool("isWalkingForward", false);
 		animator.SetBool("isWalkingBackward", false);
 	}
-
-    public void DetermineDirectionRecovery()
-    {
-        float distance = GetComponentInParent<SharedProperties>().GetDistanceFromOtherFighter();
-        isRecoveryDirectionRight = distance < 0f ? false : true;
-    }
-	
+    	
 	public void MidAirRecovery()
     {
-        physicsbody.velocity = isRecoveryDirectionRight ? new Vector2(-1.5f, 2f) : new Vector2(1.5f, 2f); //should always roll away from the other character
+        float distance = GetComponentInParent<SharedProperties>().GetDistanceFromOtherFighter();
+        physicsbody.velocity = distance < 0f ? new Vector2(1.5f, 2f) : new Vector2(-1.5f, 2f); //will always roll away from the other character
     }	
 	
 	public void Sweep(){
