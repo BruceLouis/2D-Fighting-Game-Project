@@ -32,6 +32,8 @@ public class MBison : MonoBehaviour {
         devilReverseActive = animator.GetBool("devilReverseActive");
         amountTimeTravelledTimer--;
 
+        Debug.Log("Side: " + character.side);
+        Debug.Log("direction: " + direction);
         if (animator.GetBool("isSweeping"))
         {
             character.AtTheCorner();
@@ -288,7 +290,7 @@ public class MBison : MonoBehaviour {
         {
             if (reverseType <= 0)
             {
-                character.TakeOffVelocity(-3.5f, 4f);
+                HeadStompTakeOffVelocity(-3.5f, 4f);
             }
             else
             {
@@ -296,7 +298,22 @@ public class MBison : MonoBehaviour {
             }
         }
     }
-    
+   
+    void HeadStompTakeOffVelocity(float x, float y)
+    {
+        if (!animator.GetBool("isInHitStun") && !animator.GetBool("isKnockedDown"))
+        {
+            if (character.side == Character.Side.P1)
+            {
+                physicsbody.velocity = new Vector2(x, y);
+            }
+            else
+            {
+                physicsbody.velocity = new Vector2(-x, y);
+            }
+        }
+    }
+
     void DetermineReverseDirection()
     {
         direction = character.side == Character.Side.P1 ? Vector2.right : Vector2.left;

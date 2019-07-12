@@ -322,7 +322,7 @@ public class Player : MonoBehaviour {
 			}
 		}
 		else{
-			if (animator.GetBool("isAttacking") == false){
+//			if (animator.GetBool("isAttacking") == false){
 				if (distance < 0 && character.side == Character.Side.P1){			
 					character.side = Character.Side.P2;
 					sharedProperties.CharacterNeutralState();
@@ -331,9 +331,9 @@ public class Player : MonoBehaviour {
 					character.side = Character.Side.P1;
 					sharedProperties.CharacterNeutralState();
 				}
-			}
-			if (animator.GetBool ("isAirborne") == false && animator.GetBool ("isThrown") == false && animator.GetBool ("isWalkingForward") == false 
-			    && animator.GetBool ("throwTargetAcquired") == false && animator.GetBool ("isLiftingOff") == false && animator.GetBool ("isWalkingBackward") == false				    
+//			}
+			if (animator.GetBool ("isAirborne") == false && animator.GetBool ("isThrown") == false && animator.GetBool ("isWalkingForward") == false && animator.GetBool("isAttacking") == false
+                && animator.GetBool ("throwTargetAcquired") == false && animator.GetBool ("isLiftingOff") == false && animator.GetBool ("isWalkingBackward") == false				    
 			    && animator.GetBool ("isInHitStun") == false && animator.GetBool ("isInBlockStun") == false && animator.GetBool("isKnockedDown") == false && animator.GetBool ("isLanding") == false) {
 				
 				character.SideSwitch();

@@ -161,7 +161,7 @@ public class Opponent : MonoBehaviour {
 
     void SideSwitch(){		
 		//determine which side			
-		if (animator.GetBool("isAttacking") == false){
+//		if (animator.GetBool("isAttacking") == false){
 			if (distance < 0 && character.side == Character.Side.P1){			
 				character.side = Character.Side.P2;
 				sharedProperties.CharacterNeutralState();
@@ -170,11 +170,11 @@ public class Opponent : MonoBehaviour {
 				character.side = Character.Side.P1;
 				sharedProperties.CharacterNeutralState();
 			}
-		}
+//		}
 		//only after character is not in these states will the sprite actually switch sides
 		if (animator.GetBool ("isAirborne") == false && animator.GetBool ("isThrown") == false && animator.GetBool ("isWalkingForward") == false && animator.GetBool ("isLanding") == false
-		    && animator.GetBool ("throwTargetAcquired") == false && animator.GetBool ("isLiftingOff") == false && animator.GetBool ("isWalkingBackward") == false				    
-		    && animator.GetBool ("isInHitStun") == false && animator.GetBool ("isInBlockStun") == false && animator.GetBool("isKnockedDown") == false) {
+		    && animator.GetBool ("throwTargetAcquired") == false && animator.GetBool ("isLiftingOff") == false && animator.GetBool ("isWalkingBackward") == false && animator.GetBool("isAttacking") == false
+            && animator.GetBool ("isInHitStun") == false && animator.GetBool ("isInBlockStun") == false && animator.GetBool("isKnockedDown") == false) {
 			
 			character.SideSwitch();
 		}
@@ -202,27 +202,25 @@ public class Opponent : MonoBehaviour {
 		if (Input.GetKey(KeyCode.Alpha2)){
 			if (character.side == Character.Side.P1){
 				pressedForward = true;
-                character.transform.Translate(Vector3.right * character.GetWalkSpeed() * Time.deltaTime);
                 animator.SetBool("isWalkingForward", true);
             }
 			else{
 				pressedBackward = true;
-                character.transform.Translate(Vector3.left * character.GetWalkSpeed() * Time.deltaTime);
                 animator.SetBool("isWalkingBackward", true);
             }
-		}
+            character.transform.Translate(Vector3.right * character.GetWalkSpeed() * Time.deltaTime);
+        }
 		if (Input.GetKey(KeyCode.Alpha1)){
 			if (character.side == Character.Side.P2){
 				pressedForward = true;
-                character.transform.Translate(Vector3.left * character.GetWalkSpeed() * Time.deltaTime);
                 animator.SetBool("isWalkingForward", true);
             }
 			else{
 				pressedBackward = true;
-                character.transform.Translate(Vector3.right * character.GetWalkSpeed() * Time.deltaTime);
                 animator.SetBool("isWalkingBackward", true);
             }
-		}
+            character.transform.Translate(Vector3.left * character.GetWalkSpeed() * Time.deltaTime);
+        }
 		if (Input.GetKeyUp(KeyCode.Alpha2)){
 			if (character.side == Character.Side.P1){
 				pressedForward = false;
