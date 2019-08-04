@@ -63,7 +63,7 @@ public class Projectile : MonoBehaviour
         {
             TimeControl.slowDownTimer = 100f;
         }
-        recAnim.Play("KnockDownBlendTree", 0);
+        recAnim.Play("KnockDownBlendTree", 0, 0f);
         if (receiver.side == Character.Side.P1)
         {
             recRigid.velocity = new Vector2(-2f, 4f);

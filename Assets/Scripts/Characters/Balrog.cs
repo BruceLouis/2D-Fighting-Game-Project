@@ -26,7 +26,7 @@ public class Balrog : MonoBehaviour {
         if (animator.GetBool("isDashRushTravelling") && !animator.GetBool("isInHitStun") && !animator.GetBool("isKnockedDown"))
         {
 			physicsbody.isKinematic = true;		
-			if (Vector3.Distance(transform.position, endPos) <= 0.25f || distanceFromOtherGuy <= 0.75f){
+			if (Vector3.Distance(transform.position, endPos) <= 0.5f || distanceFromOtherGuy <= 1f){
 				animator.SetBool("didRushPunchGetThere", true);		
 			}
 		}
@@ -78,7 +78,7 @@ public class Balrog : MonoBehaviour {
 			    travelDistance = new Vector3 (distanceTravel, 0f, 0f);
                 if (distanceFromOtherDude <= 0.5f && !GetComponentInParent<SharedProperties>().GetOtherFighterAirborne())
                 {
-                    physicsbody.velocity = new Vector2(1f, 0f);
+                    physicsbody.velocity = new Vector2(1.5f, 0f);
                 }
                 else
                 {
@@ -89,7 +89,7 @@ public class Balrog : MonoBehaviour {
 			    travelDistance = new Vector3 (-distanceTravel, 0f, 0f);
                 if (distanceFromOtherDude <= 0.5f && !GetComponentInParent<SharedProperties>().GetOtherFighterAirborne())
                 {
-                    physicsbody.velocity = new Vector2(-1f, 0f);
+                    physicsbody.velocity = new Vector2(-1.5f, 0f);
                 }
                 else
                 {
