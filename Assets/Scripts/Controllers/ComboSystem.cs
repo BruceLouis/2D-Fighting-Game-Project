@@ -55,7 +55,6 @@ public class ComboSystem : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {	
-		QuarterCircleStart();
 		HadoukenSequence();		
 		ShoryukenSequence();	
 		HurricaneKickSequence();	
@@ -63,23 +62,7 @@ public class ComboSystem : MonoBehaviour {
 		ShunGokuSatsuSequence();
 		MotionSuperSequence();
 	}
-	
-	void QuarterCircleStart(){
-		if (Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.LeftArrow)){
-			if (hadoukenComboIterator == 0){			
-				ComboSequencer(hadoukenComboIterator, hadoukenSequence);
-				hadoukenComboIterator++;			
-			}
-			if (hurricaneKickComboIterator == 0){			
-				ComboSequencer(hurricaneKickComboIterator, hurricaneKickSequence);
-				hurricaneKickComboIterator++;
-			}			
-			if (motionSuperComboIterator == 0){			
-				ComboSequencer(motionSuperComboIterator, motionSuperSequence);
-				motionSuperComboIterator++;			
-			}
-		}
-	}
+
 	
 	void ComboSequencer(int i, bool[] comboSequence){
 		try{
@@ -88,10 +71,16 @@ public class ComboSystem : MonoBehaviour {
 		catch{
 			Debug.LogWarning("array index i: " + i + " out of range");
 		}
-	}	
-		
-	void HadoukenSequence(){		
-		if (character.side == Character.Side.P1){	
+    }
+    
+	void HadoukenSequence()
+    {
+        if (character.side == Character.Side.P1){	
+            if (Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.RightArrow) && (hadoukenComboIterator == 0))
+            {
+                ComboSequencer(hadoukenComboIterator, hadoukenSequence);
+                hadoukenComboIterator++;
+            }
 			if (Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.RightArrow) && hadoukenComboIterator == 1){
 				ComboSequencer(hadoukenComboIterator, hadoukenSequence);
 				hadoukenComboIterator++;
@@ -101,6 +90,11 @@ public class ComboSystem : MonoBehaviour {
 			}
 		}
 		else{	
+            if (Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.LeftArrow) && (hadoukenComboIterator == 0))
+            {
+                ComboSequencer(hadoukenComboIterator, hadoukenSequence);
+                hadoukenComboIterator++;
+            }
 			if (Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.LeftArrow) && hadoukenComboIterator == 1){
 				ComboSequencer(hadoukenComboIterator, hadoukenSequence);
 				hadoukenComboIterator++;
@@ -163,7 +157,13 @@ public class ComboSystem : MonoBehaviour {
 		
 	void HurricaneKickSequence(){	
 		if (character.side == Character.Side.P2){
-			if (Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.RightArrow) && hurricaneKickComboIterator == 1){
+
+            if (Input.GetKey(KeyCode.DownArrow) && hurricaneKickComboIterator == 0 && !Input.GetKey(KeyCode.LeftArrow))
+            {
+                ComboSequencer(hurricaneKickComboIterator, hurricaneKickSequence);
+                hurricaneKickComboIterator++;
+            }
+            if (Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.RightArrow) && hurricaneKickComboIterator == 1){
 				ComboSequencer(hurricaneKickComboIterator, hurricaneKickSequence);	
 				hurricaneKickComboIterator++;
 			}		
@@ -172,7 +172,13 @@ public class ComboSystem : MonoBehaviour {
 			}
 		}
 		else{
-			if (Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.LeftArrow) && hurricaneKickComboIterator == 1){
+            
+            if (Input.GetKey(KeyCode.DownArrow) && hurricaneKickComboIterator == 0 && !Input.GetKey(KeyCode.RightArrow))
+            {
+                ComboSequencer(hurricaneKickComboIterator, hurricaneKickSequence);
+                hurricaneKickComboIterator++;
+            }
+            if (Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.LeftArrow) && hurricaneKickComboIterator == 1){
 				ComboSequencer(hurricaneKickComboIterator, hurricaneKickSequence);		
 				hurricaneKickComboIterator++;
 			}		
@@ -273,8 +279,14 @@ public class ComboSystem : MonoBehaviour {
 	
 	void MotionSuperSequence(){
 		
-		if (character.side == Character.Side.P1){	
-			if (Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.RightArrow) && motionSuperComboIterator == 1){
+		if (character.side == Character.Side.P1)
+        {
+            if (Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.RightArrow) && motionSuperComboIterator == 0)
+            {
+                ComboSequencer(motionSuperComboIterator, motionSuperSequence);
+                motionSuperComboIterator++;
+            }
+            if (Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.RightArrow) && motionSuperComboIterator == 1){
 				ComboSequencer(motionSuperComboIterator, motionSuperSequence);
 				motionSuperComboIterator++;
 			}		
@@ -294,8 +306,14 @@ public class ComboSystem : MonoBehaviour {
 				ComboSequencer(motionSuperComboIterator, motionSuperSequence);
 			}			
 		}
-		else{	
-			if (Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.LeftArrow) && motionSuperComboIterator == 1){
+		else
+        {
+            if (Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.LeftArrow) && motionSuperComboIterator == 0)
+            {
+                ComboSequencer(motionSuperComboIterator, motionSuperSequence);
+                motionSuperComboIterator++;
+            }
+            if (Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.LeftArrow) && motionSuperComboIterator == 1){
 				ComboSequencer(motionSuperComboIterator, motionSuperSequence);
 				motionSuperComboIterator++;
 			}		
