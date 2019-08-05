@@ -356,12 +356,12 @@ public class BalrogAI : MonoBehaviour {
 			AIcontrols.AIJump ();
 			character.SetBackPressed (false);
 		}
-		else if (decision <= 65 && decision > 19) {
+		else if (decision <= 71 && decision > 19) {
 			AIcontrols.AICrouch ();
 			AIcontrols.AICharges ();
 			character.SetBackPressed (true);
 		}
-		else if (decision <= 72 && decision > 65) {
+		else if (decision <= 78 && decision > 71) {
 			if (chargeSystem.GetBackCharged () && !animator.GetBool ("isAttacking")) {
 				AIKickRushesShortOrForward ();
 				AIcontrols.AICharges ();
@@ -374,7 +374,7 @@ public class BalrogAI : MonoBehaviour {
 				decisionTimer = 0f;
 			}
 		}
-		else if (decision <= 79 && decision > 72) {
+		else if (decision <= 85 && decision > 78) {
 			if (chargeSystem.GetBackCharged () && !animator.GetBool ("isAttacking")) {
 				AIDashLowJabOrStrong ();
 				AIcontrols.AICharges ();
@@ -387,7 +387,7 @@ public class BalrogAI : MonoBehaviour {
 				decisionTimer = 0f;
 			}
 		}
-		else if (decision <= 82 && decision > 79) {
+		else if (decision <= 88 && decision > 85) {
 			if (chargeSystem.GetBackCharged () && !animator.GetBool ("isAttacking")) {
 				AIDashStraightJabOrStrong ();
 				AIcontrols.AICharges ();
@@ -400,7 +400,7 @@ public class BalrogAI : MonoBehaviour {
 				decisionTimer = 0f;
 			}
 		}
-		else if (decision <= 85 && decision > 82) {
+		else if (decision <= 91 && decision > 88) {
 			if (chargeSystem.GetDownCharged () && !animator.GetBool ("isAttacking")) {
 				AIHeadButt ();
 				AIcontrols.AICharges ();
@@ -841,8 +841,7 @@ public class BalrogAI : MonoBehaviour {
 			}
 		}
 	}
-	
-			
+				
 	void AIKickRushesShortOrForward(){		
 		int randNum = Random.Range (0,10);
 		if (AIcontrols.GetConditionsSpecialAttack()){			
